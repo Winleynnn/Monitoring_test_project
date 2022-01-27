@@ -35,12 +35,15 @@ y = df['Soil Moisture']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 for clt in clt_lst:
     clf = clt(
-        n_estimators=69,
+        n_estimators=200,
         n_jobs=-1,
         random_state=42
 
     )
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
-    print(f"Accuracy: {clf.score(X_test, y_test)}, classifier - {clt}")
+    accur_sc = clf.score(X_test, y_test)
+    print(f"Accuracy: {accur_sc}, classifier - {clt}")
+    with open('selection_result.txt', 'a') as history_data:
+        history_data.write(f"\nAccuracy: {accur_sc}, params: {clf}")
 
