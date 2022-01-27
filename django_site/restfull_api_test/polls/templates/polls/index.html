@@ -2,35 +2,65 @@
 <html>
 	<head>
 		<meta charset="utf-8"/>
-		<link rel="stylesheet" href="site.css" type="text/css"/>
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/site.css' %}" type="text/css"/>
 		<title>Сайт эр-телеком</title>
 	</head>
-	<body>
+	<body class = "cool_body">
 		<div class= "header">
 			<a>Самое лучшее оформление</a>
 		</div>
-
-		<div class="buttons">
-			<a class="page1">Графики</a>
-			<a class="page2">Таблица ИИ</a>
-		</div>
-		<div class= "content">
-			<div class="parnames">
-				<a>Выбор параметров для отображения:</a>
-				<ul>
-					<li>Параметр 1</li>
-					<li>Параметр 2</li>
-					<li>Параметр 3</li>
-					<li>Параметр 4</li>
-				</ul>
-			</div>
-			<div class="grafic">
-				<a>Место для графиков</a>
-				<div class="container">
-					<canvas id="myChart" width="600" height="200"></canvas>
+		<div class="tabs">
+		  <div class="tab-2">
+			<label for="tab2-1">Графики</label>
+			<input id="tab2-1" name="tabs-two" type="radio" checked="checked">
+			<div>
+				  <div class= "content">
+						<div class="parnames">
+							<a>Выбор параметров для отображения:</a>
+							<ul>
+								<li>Параметр 1</li>
+								<li>Параметр 2</li>
+								<li>Параметр 3</li>
+								<li>Параметр 4</li>
+							</ul>
+						</div>
+						<div class="grafic">
+							<div class="container">
+								<canvas id="myChart" width="600" height="200"></canvas>
+							</div>
+						</div>
 				</div>
 			</div>
-		</div>
+		  </div>
+		  <div class="tab-2">
+			<label for="tab2-2">Таблица ИИ</label>
+			<input id="tab2-2" name="tabs-two" type="radio">
+			<div>
+			  <a>КОНТЕНТ ТАБЛИЦ</a>
+			  <table class="iksweb">
+				<tbody>
+					<tr>
+						<td>Дата</td>
+						<td>Средняя температура воздуха, °C</td>
+						<td>Относительная влажность воздуха, %</td>
+						<td>Средняя температура почвы, °C</td>
+						<td>Влажность почвы, %</td>
+					</tr>
+					{% for a in data %}
+					<tr>
+						<td>{{a.date}}</td>
+						<td>{{a.air_temp_avg}}</td>
+						<td>{{a.relative_humidity_avg}}</td>
+						<td>{{a.soil_temp_avg}}</td>
+						<td>{{a.soil_moisture}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		  </div>
+		</div>		
 		<div class="display">
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 				<script type = "text/javascript">
@@ -42,27 +72,49 @@
 								{% for a in data %}
 								'{{a.date}}',{% endfor %}
 							],
-							datasets: [{
-								label: 'Средняя температура воздуха, °C',
-								data: [
-									{% for a in data %}
-									{{a.air_temp_avg}},{% endfor %}
-								],
-								backgroundColor: ['rgba(255, 255,255, 0.2)'],
-								borderColor: ['rgba(150, 25, 15, 1)'],
-								borderWidth: 1
+							datasets: [
+								{
+									label: 'Средняя температура воздуха, °C',
+									data: [
+										{% for a in data %}
+										{{a.air_temp_avg}},{% endfor %}
+									],
+									backgroundColor: ['rgba(255, 255,255, 0.2)'],
+									borderColor: ['rgba(150, 25, 15, 1)'],
+									borderWidth: 1
 								},
 								{
-								label: 'Средняя влажность почвы, %',
-								data: [
-									{% for a in data %}
-									{{a.soil_moisture}},{% endfor %}
-								],
-								backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-								borderColor: ['rgba(25, 150, 15, 1)'],
-								borderWidth: 1
-								}]
-						},
+									label: 'Относительная влажность воздуха, %',
+									data: [
+										{% for a in data %}
+										{{a.relative_humidity_avg}},{% endfor %}
+									],
+									backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+									borderColor: ['rgba(25, 150, 15, 1)'],
+									borderWidth: 1
+								},						
+								{
+									label: 'Средняя температура почвы, °C',
+									data: [
+										{% for a in data %}
+										{{a.soil_temp_avg}},{% endfor %}
+									],
+									backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+									borderColor: ['rgba(25, 150, 15, 1)'],
+									borderWidth: 1
+								},
+								{
+									label: 'Средняя влажность почвы, %',
+									data: [
+										{% for a in data %}
+										{{a.soil_moisture}},{% endfor %}
+									],
+									backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+									borderColor: ['rgba(25, 150, 15, 1)'],
+									borderWidth: 1
+								},		
+							]
+								},
 						options: {
 							scales: {
 								y: {
