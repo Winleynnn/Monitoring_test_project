@@ -43,32 +43,25 @@
 								'{{a.date}}',{% endfor %}
 							],
 							datasets: [{
-								label: '# of Votes',
+								label: 'Средняя температура воздуха, °C',
 								data: [
 									{% for a in data %}
 									{{a.air_temp_avg}},{% endfor %}
 								],
-								backgroundColor: [ 
-									'rgba(255, 255,255, 0.2)',
-									'rgba(255, 0,0, 0.2)', //заполнение
-									'rgba(0, 158, 158, 0.2)',
-									'rgba(0, 158, 158, 0.2)',
-									'rgba(0, 158, 158, 0.2)',
-									'rgba(0, 158, 158, 0.2)',
-									'rgba(0, 158, 158, 0.2)'
-								],
-								borderColor: [ //цвета точек
-									'rgba(150, 25, 15, 1)', //линия и 1 точка
-									'rgba(0, 150, 255, 1)',
-									'rgba(0, 0, 255, 1)', 
-									'rgba(0, 0, 255, 1)', 
-									'rgba(0, 0, 255, 1)',
-									'rgba(0, 0, 255, 1)',
-									'rgba(0, 0, 255, 1)',
-									'rgba(0, 0, 255, 1)'
-								],
+								backgroundColor: ['rgba(255, 255,255, 0.2)'],
+								borderColor: ['rgba(150, 25, 15, 1)'],
 								borderWidth: 1
-							}]
+								},
+								{
+								label: 'Средняя влажность почвы, %',
+								data: [
+									{% for a in data %}
+									{{a.soil_moisture}},{% endfor %}
+								],
+								backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+								borderColor: ['rgba(25, 150, 15, 1)'],
+								borderWidth: 1
+								}]
 						},
 						options: {
 							scales: {
