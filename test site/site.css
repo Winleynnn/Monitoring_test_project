@@ -1,0 +1,47 @@
+.header {
+	background-color: azure;
+	height: 90px;
+		text-align: center;
+}
+.header a {
+
+	font-size: 30px;
+	font-style: italic;
+}
+.content {
+	display: inline-flex;
+	width: 100%;
+}
+.buttons {
+	padding-top: 30px;
+	padding-left: 100px;
+	margin-bottom: 30px;
+}
+.page1 {
+	font-size: 18px;
+	padding-right: 15px;
+	border: solid;
+}
+.buttons a:hover {
+	cursor: pointer;
+	background-color: aquamarine;
+}
+.page2 {
+	font-size: 18px;
+	border: solid;
+	margin-left: -6px;
+}
+.page2 active {
+	
+}
+.parnames {
+	background-color: cornflowerblue;
+	width: 20%;
+}
+.grafic {
+	/*background-color: coral;*/
+	width:80%;
+}
+.content ul {
+	 list-style: none;
+}
