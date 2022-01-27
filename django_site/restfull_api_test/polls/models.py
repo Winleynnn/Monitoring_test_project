@@ -9,6 +9,9 @@ class Data(models.Model):
     soil_temp_avg = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     soil_moisture = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
+    def __str__(self):
+        return self.date
+
 def ass():
     # login/pass: demo_api/demo4
     import re
