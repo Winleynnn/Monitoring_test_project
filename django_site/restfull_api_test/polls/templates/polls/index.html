@@ -1,14 +1,18 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8"/>
-		{% load static %}
-		<link rel="stylesheet" href="{% static 'css/site.css' %}" type="text/css"/>
-		<title>Сайт эр-телеком</title>
-	</head>
-	<body class = "cool_body">
+{% extends "polls/header.html" %}
+		<script type = "text/javascript"
+			 src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+		  <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
+		  </script>
+		  <!-- Compiled and minified JavaScript -->
+		  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 		<div class= "header">
 			<a>Самое лучшее оформление</a>
+			{% include "polls/navbar.html" %}
+    		{% include "polls/messages.html" %}
+    		<div class="container">
+        		{% block content %}
+       			{% endblock %}
+    		</div>
 		</div>
 		<div class="tabs">
 		  <div class="tab-2">
@@ -116,5 +120,4 @@
 					});					
 				</script>
 		</div>
-	</body>
-</html>
+	
