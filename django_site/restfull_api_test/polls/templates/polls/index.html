@@ -19,6 +19,7 @@
 						<div class="grafic">
 							<div class="container">
 								<canvas id="myChart"></canvas>
+								<canvas id="myChart2"></canvas>
 							</div>
 						</div>
 				</div>
@@ -73,16 +74,6 @@
 									backgroundColor: ['rgba(255, 255,255, 0.2)'],
 									borderColor: ['rgba(150, 25, 15, 1)'],
 									borderWidth: 1
-								},
-								{
-									label: 'Относительная влажность воздуха, %',
-									data: [
-										{% for a in data %}
-										{{a.relative_humidity_avg}},{% endfor %}
-									],
-									backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-									borderColor: ['rgba(25, 150, 15, 1)'],
-									borderWidth: 1
 								},						
 								{
 									label: 'Средняя температура почвы, °C',
@@ -93,7 +84,36 @@
 									backgroundColor: ['rgba(255, 255, 255, 0.2)'],
 									borderColor: ['rgba(25, 150, 15, 1)'],
 									borderWidth: 1
+								},	
+							]
 								},
+						options: {
+							scales: {
+								y: {
+									beginAtZero: true
+								}
+							}
+						}				
+					});				
+					const ctx2 = document.getElementById('myChart2').getContext('2d');
+					const myChart2 = new Chart(ctx2, {
+						type: 'line',
+						data: {														
+							labels: [
+								{% for a in data %}
+								'{{a.date}}',{% endfor %}
+							],
+							datasets: [
+								{
+									label: 'Относительная влажность воздуха, %',
+									data: [
+										{% for a in data %}
+										{{a.relative_humidity_avg}},{% endfor %}
+									],
+									backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+									borderColor: ['rgba(25, 150, 15, 1)'],
+									borderWidth: 1
+								},						
 								{
 									label: 'Средняя влажность почвы, %',
 									data: [
@@ -113,7 +133,7 @@
 								}
 							}
 						}				
-					});					
+					});				
 				</script>
 		</div>
 	</body>
