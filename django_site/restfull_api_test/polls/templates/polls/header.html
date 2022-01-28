@@ -1,28 +1,26 @@
 <head>
     {% load static %}
     <!-- Prism CSS -->
-    <link href="{% static 'tinymce/css/prism.css' %}" rel="stylesheet">
     <!-- Compiled and minified CSS -->
     <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
-      <link rel = "stylesheet"
-         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel = "stylesheet"
-         href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
-      <script type = "text/javascript"
-         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
-      <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
-      </script>
-      <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel = "stylesheet" href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/site2.css' %}" type="text/css"/>
+    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <link href="{% static 'tinymce/css/prism.css' %}" rel="stylesheet">
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 </head>
 
 <body>
+    {% if user.is_authenticated %}
     {% include "polls/navbar.html" %}
     {% include "polls/messages.html" %}
     {% include "polls/index.html" %}
+    {% else %}
+    <script>
+        document.location.replace('/login')
+    </script>
+    {% endif %}
     <div class="container">
         {% block content %}
         {% endblock %}
