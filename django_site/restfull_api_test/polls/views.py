@@ -8,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 def index(request):
     latest_twenty = Data.objects.all()[1500:1550]
-    return render(request, "polls/index.html", {'data' : latest_twenty})
+    return render(request, "polls/header.html", {'data' : latest_twenty})
 
 def logout_request(request):
     logout(request)
