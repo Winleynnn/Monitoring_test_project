@@ -23,7 +23,6 @@
 			<input id="tab2-2" name="tabs-two" type="radio">
 			<div>
 				<table class="table" id="myTable">
-				<tbody>
 					<thead>
 					<tr>
 						<th onclick="sortTable(0)">Дата </th>
@@ -33,16 +32,17 @@
 						<th onclick="sortTable(4)">Влажность почвы, %</th>
 					</tr>
 					</thead>
+					<tbody>
 					{% for a in data %}
-					<tr>
-						<td>{{a.date}}</td>
-						<td>{{a.air_temp_avg}}</td>
-						<td>{{a.relative_humidity_avg}}</td>
-						<td>{{a.soil_temp_avg}}</td>
-						<td>{{a.soil_moisture}}</td>
-					</tr>
+						<tr>
+							<td>{{a.date}}</td>
+							<td>{{a.air_temp_avg}}</td>
+							<td>{{a.relative_humidity_avg}}</td>
+							<td>{{a.soil_temp_avg}}</td>
+							<td>{{a.soil_moisture}}</td>
+						</tr>
 					{% endfor %}
-				</tbody>
+					</tbody>
 				</table>
 			</div>
 		</div>
