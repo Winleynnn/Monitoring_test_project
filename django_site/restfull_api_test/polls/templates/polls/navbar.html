@@ -1,9 +1,9 @@
-<nav class = "blue lighten-3">
-    <div class="nav-wrapper">
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+<nav class = "top_nav">
+    <div class="nav_container">
+        <ul class="nav_list">
             {% if user.is_authenticated %}
-            <li><a href="/account">{{user.username|title}}</a></li>
-            <li><a href="/logout">Выйти</a></li>
+            <a href="/account"><li>{{user.username|title}}</li></a>
+            <a href="/logout"><li>Выйти</li></a>
             <!-- <li><a href="/">Главная страница</a></li> -->
             {% endif %}
         </ul>

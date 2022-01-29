@@ -1,14 +1,14 @@
 {% block content %}
-<head>
-    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
-</head>
+    {% if user.is_authenticated %}
+    <script>
+        document.location.replace('/')
+    </script>
+    {% else %}
     <form method="POST">
         {% csrf_token %}
         {{form.as_p}}
 
         <button class = "btn" style = "background-color: blue lighten-3; color: white" type = "submit">Войти</button>
     </form>
-
-
+    {% endif %}
 {% endblock %}

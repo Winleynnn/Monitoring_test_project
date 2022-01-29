@@ -1,13 +1,5 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from .models import Station_0020CF3B
-
-
-def index(request):
-    latest_twenty = Station_0020CF3B.objects.all()[1500:1550]
-    return render(request, "polls/index.html", {'data' : latest_twenty})
-=======
-from .models import Data
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -15,9 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 def index(request):
-    latest_twenty = Data.objects.all()[1500:1550]
+    latest_twenty = Station_0020CF3B.objects.all()[1500:1550]
     return render(request, "polls/header.html", {'data' : latest_twenty})
->>>>>>> authentication
 
 def logout_request(request):
     logout(request)
