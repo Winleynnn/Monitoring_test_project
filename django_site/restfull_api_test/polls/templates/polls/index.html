@@ -1,5 +1,3 @@
-<div class= "header">
-	<a>Самое лучшее оформление</a>
 	<div class="container">
 		<div class="dropdown dropdown-dark">
 			<select name="two" class="dropdown-select">
@@ -8,132 +6,151 @@
 			</select>
 		</div>
 	</div>
-</div>
-<div class="tabs">
-	<div class="tab-2">
-	<label for="tab2-1">Графики</label>
-	<input id="tab2-1" name="tabs-two" type="radio" checked="checked">
-	<div>
-		<div class= "content">
-			<div class="grafic">
-				<div class="container">
-					<canvas id="myChart" height=70px></canvas>
-					<canvas id="myChart2" height=70px></canvas>
-				</div>
-			</div>
+	<div class="tabs">
+		<div class="tab-2">
+		  <label for="tab2-1">Графики</label>
+		  <input id="tab2-1" name="tabs-two" type="radio" checked="checked">
+		  <div>
+					  <div class="graphic">
+							  <canvas id="myChart" class="chart1" height= "100px"></canvas>
+							  <canvas id="myChart2" class="chart2" height= "100px"></canvas>
+					  </div>
+		  </div>
 		</div>
-	</div>
-	</div>
-	<div class="tab-2">
-	<label for="tab2-2">Таблица ИИ</label>
-	<input id="tab2-2" name="tabs-two" type="radio">
-	<div>
-		<a>КОНТЕНТ ТАБЛИЦ</a>
-		<table class="iksweb">
-		<tbody>
-			<tr>
-				<td>Дата</td>
-				<td>Средняя температура воздуха, °C</td>
-				<td>Относительная влажность воздуха, %</td>
-				<td>Средняя температура почвы, °C</td>
-				<td>Влажность почвы, %</td>
-			</tr>
-			{% for a in data %}
-			<tr>
-				<td>{{a.date}}</td>
-				<td>{{a.air_temp_avg}}</td>
-				<td>{{a.relative_humidity_avg}}</td>
-				<td>{{a.soil_temp_avg}}</td>
-				<td>{{a.soil_moisture}}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	</div>
-	</div>
-</div>		
-<div class="display">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-		<script type = "text/javascript">
-			const ctx = document.getElementById('myChart').getContext('2d');
-			const myChart = new Chart(ctx, {
-				type: 'line',
-				data: {														
-					labels: [
-						{% for a in data %}
-						'{{a.date}}',{% endfor %}
-					],
-					datasets: [
-						{
-							label: 'Средняя температура воздуха, °C',
-							data: [
-								{% for a in data %}
-								{{a.air_temp_avg}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255,255, 0.2)'],
-							borderColor: ['rgba(150, 25, 15, 1)'],
-							borderWidth: 1
-						},						
-						{
-							label: 'Средняя температура почвы, °C',
-							data: [
-								{% for a in data %}
-								{{a.soil_temp_avg}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-							borderColor: ['rgba(25, 150, 15, 1)'],
-							borderWidth: 1
-						},	
-					]
-						},
-						options: {
-					scales: {
-						y: {
-							beginAtZero: true
-						}
-					}
-				}				
-			});					
-			const ctx2 = document.getElementById('myChart2').getContext('2d');
-			const myChart2 = new Chart(ctx2, {
-				type: 'line',
-				data: {														
-					labels: [
-						{% for a in data %}
-						'{{a.date}}',{% endfor %}
-					],
-					datasets: [
-						{
-							label: 'Относительная влажность воздуха, %',
-							data: [
-								{% for a in data %}
-								{{a.relative_humidity_avg}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-							borderColor: ['rgba(25, 150, 15, 1)'],
-							borderWidth: 1
-						},						
-						{
-							label: 'Средняя влажность почвы, %',
-							data: [
-								{% for a in data %}
-								{{a.soil_moisture}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-							borderColor: ['rgba(25, 150, 15, 1)'],
-							borderWidth: 1
-						},		
-					]
-						},
-						options: {
-					scales: {
-						y: {
-							beginAtZero: true
-						}
-					}
-				}				
-			});				
-		</script>
-	</div>
-</body>
+		<div class="tab-2">
+		  <label for="tab2-2">Таблица ИИ</label>
+		  <input id="tab2-2" name="tabs-two" type="radio">
+		  <div>
+			<table class="table" id="myTable">
+			  <tbody>
+				  <thead>
+				  <tr>
+					  <th onclick="sortTable(0)">Дата </th>
+					  <th onclick="sortTable(1)">Средняя температура воздуха, °C</th>
+					  <th onclick="sortTable(2)">Относительная влажность воздуха, %</th>
+					  <th onclick="sortTable(3)">Средняя температура почвы, °C</th>
+					  <th onclick="sortTable(4)">Влажность почвы, %</th>
+				  </tr>
+				  </thead>
+				  {% for a in data %}
+				  <tr>
+					  <td>{{a.date}}</td>
+					  <td>{{a.air_temp_avg}}</td>
+					  <td>{{a.relative_humidity_avg}}</td>
+					  <td>{{a.soil_temp_avg}}</td>
+					  <td>{{a.soil_moisture}}</td>
+				  </tr>
+				  {% endfor %}
+			  </tbody>
+		  </table>
+		  </div>
+		</div>
+	  </div>		
+	  <div class="display">
+			  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+			  <script type = "text/javascript">
+				  const ctx = document.getElementById('myChart').getContext('2d');
+				  const myChart = new Chart(ctx, {
+					  type: 'line',
+					  data: {														
+						  labels: [
+							  {% for a in data %}
+							  '{{a.date}}',{% endfor %}
+						  ],
+						  datasets: [
+							  {
+								  label: 'Средняя температура воздуха, °C',
+								  data: [
+									  {% for a in data %}
+									  {{a.air_temp_avg}},{% endfor %}
+								  ],
+								  backgroundColor: ['rgba(255, 255,255, 0.2)'],
+								  borderColor: ['rgba(200, 0, 15, 1)'],
+								  borderWidth: 2
+							  },						
+							  {
+								  label: 'Средняя температура почвы, °C',
+								  data: [
+									  {% for a in data %}
+									  {{a.soil_temp_avg}},{% endfor %}
+								  ],
+								  backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+								  borderColor: ['rgba(9, 132, 0, 1)'],
+								  
+								  borderWidth: 2
+							  },	
+						  ]
+							  },
+					  options: {
+						  scales: {
+							  y: {
+								  beginAtZero: true
+							  }
+						  }
+					  }				
+				  });				
+				  const ctx2 = document.getElementById('myChart2').getContext('2d');
+				  const myChart2 = new Chart(ctx2, {
+					  type: 'line',
+					  data: {														
+						  labels: [
+							  {% for a in data %}
+							  '{{a.date}}',{% endfor %}
+						  ],
+						  datasets: [
+							  {
+								  label: 'Относительная влажность воздуха, %',
+								  data: [
+									  {% for a in data %}
+									  {{a.relative_humidity_avg}},{% endfor %}
+								  ],
+								  backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+								  borderColor: ['rgba(200, 0, 15, 1)'],
+								  borderWidth: 2
+							  },						
+							  {
+								  label: 'Средняя влажность почвы, %',
+								  data: [
+									  {% for a in data %}
+									  {{a.soil_moisture}},{% endfor %}
+								  ],
+								  backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+								  borderColor: ['rgba(9, 132, 0, 1)'],
+								  borderWidth: 2
+							  },		
+						  ]
+							  },
+					  options: {
+						  scales: {
+							  y: {
+								  beginAtZero: true
+							  }
+						  }
+					  }				
+				  });
+				  
+				  //сортировка таблицы	
+				  document.addEventListener('DOMContentLoaded', () => {
+				  const getSort = ({ target }) => {
+				  const order = (target.dataset.order = -(target.dataset.order || -1));
+				  const index = [...target.parentNode.cells].indexOf(target);
+				  const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
+				  const comparator = (index, order) => (a, b) => order * collator.compare(
+					  a.children[index].innerHTML,
+					  b.children[index].innerHTML
+				  );
+
+				  for(const tBody of target.closest('table').tBodies)
+					  tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+
+				  for(const cell of target.parentNode.cells)
+					  cell.classList.toggle('sorted', cell === target);
+			  };
+
+			  document.querySelectorAll('.table thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+
+		  });
+			  </script>
+	  </div>
+  </body>
 </html>
