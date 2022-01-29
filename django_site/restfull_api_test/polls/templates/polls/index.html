@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -69,9 +70,76 @@
 						type: 'line',
 						data: {														
 							labels: [
+=======
+<div class= "header">
+	<a>Самое лучшее оформление</a>
+	<div class="container">
+		{% block content %}
+		{% endblock %}
+	</div>
+</div>
+<div class="tabs">
+	<div class="tab-2">
+	<label for="tab2-1">Графики</label>
+	<input id="tab2-1" name="tabs-two" type="radio" checked="checked">
+	<div>
+			<div class= "content">
+				<div class="grafic">
+					<div class="container">
+						<canvas id="myChart"></canvas>
+					</div>
+				</div>
+		</div>
+	</div>
+	</div>
+	<div class="tab-2">
+	<label for="tab2-2">Таблица ИИ</label>
+	<input id="tab2-2" name="tabs-two" type="radio">
+	<div>
+		<a>КОНТЕНТ ТАБЛИЦ</a>
+		<table class="iksweb">
+		<tbody>
+			<tr>
+				<td>Дата</td>
+				<td>Средняя температура воздуха, °C</td>
+				<td>Относительная влажность воздуха, %</td>
+				<td>Средняя температура почвы, °C</td>
+				<td>Влажность почвы, %</td>
+			</tr>
+			{% for a in data %}
+			<tr>
+				<td>{{a.date}}</td>
+				<td>{{a.air_temp_avg}}</td>
+				<td>{{a.relative_humidity_avg}}</td>
+				<td>{{a.soil_temp_avg}}</td>
+				<td>{{a.soil_moisture}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+	</div>
+</div>		
+<div class="display">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+		<script type = "text/javascript">
+			const ctx = document.getElementById('myChart').getContext('2d');
+			const myChart = new Chart(ctx, {
+				type: 'line',
+				data: {														
+					labels: [
+						{% for a in data %}
+						'{{a.date}}',{% endfor %}
+					],
+					datasets: [
+						{
+							label: 'Средняя температура воздуха, °C',
+							data: [
+>>>>>>> authentication
 								{% for a in data %}
-								'{{a.date}}',{% endfor %}
+								{{a.air_temp_avg}},{% endfor %}
 							],
+<<<<<<< HEAD
 							datasets: [
 								{
 									label: 'Средняя температура воздуха, °C',
@@ -146,3 +214,51 @@
 		</div>
 	</body>
 </html>
+=======
+							backgroundColor: ['rgba(255, 255,255, 0.2)'],
+							borderColor: ['rgba(150, 25, 15, 1)'],
+							borderWidth: 1
+						},
+						{
+							label: 'Относительная влажность воздуха, %',
+							data: [
+								{% for a in data %}
+								{{a.relative_humidity_avg}},{% endfor %}
+							],
+							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+							borderColor: ['rgba(25, 150, 15, 1)'],
+							borderWidth: 1
+						},						
+						{
+							label: 'Средняя температура почвы, °C',
+							data: [
+								{% for a in data %}
+								{{a.soil_temp_avg}},{% endfor %}
+							],
+							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+							borderColor: ['rgba(25, 150, 15, 1)'],
+							borderWidth: 1
+						},
+						{
+							label: 'Средняя влажность почвы, %',
+							data: [
+								{% for a in data %}
+								{{a.soil_moisture}},{% endfor %}
+							],
+							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+							borderColor: ['rgba(25, 150, 15, 1)'],
+							borderWidth: 1
+						},		
+					]
+						},
+				options: {
+					scales: {
+						y: {
+							beginAtZero: true
+						}
+					}
+				}				
+			});					
+		</script>
+</div>
+>>>>>>> authentication
