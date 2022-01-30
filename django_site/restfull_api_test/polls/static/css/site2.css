@@ -14,83 +14,69 @@ body {
 	margin-top: 20px;
 	background-color: #fff;
 }
-
 button:focus,
 input:focus,
 textarea:focus,
 select:focus {
   outline: none; }
 
+/*----- Tabs -----*/
 .tabs {
-  display: inline-block;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -moz-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin: 0;
-  overflow: hidden; }
-  .tabs [class^="tab"] label,
-  .tabs [class*=" tab"] label {
-    color: black;
-    cursor: pointer;
-    display: block;
-    font-size: 15px;
-    font-weight: 300;
-    line-height: 1em;
-    padding: 30px 0 10px 0;
-    text-align: center; }
-  .tabs [class^="tab"] [type="radio"],
-  .tabs [class*=" tab"] [type="radio"] {
-    border-bottom: 1px solid rgba(239, 237, 239, 0.5);
-    cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    display: block;
-    width: 100%;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out; }
-    .tabs [class^="tab"] [type="radio"]:hover, .tabs [class^="tab"] [type="radio"]:focus,
-    .tabs [class*=" tab"] [type="radio"]:hover,
-    .tabs [class*=" tab"] [type="radio"]:focus {
-      border-bottom: 1px solid #fd264f; }
-    .tabs [class^="tab"] [type="radio"]:checked,
-    .tabs [class*=" tab"] [type="radio"]:checked {
-      border-bottom: 2px solid #fd264f; }
-    .tabs [class^="tab"] [type="radio"]:checked + div,
-    .tabs [class*=" tab"] [type="radio"]:checked + div {
-      opacity: 1; }
-    .tabs [class^="tab"] [type="radio"] + div,
-    .tabs [class*=" tab"] [type="radio"] + div {
-      display: block;
-      opacity: 0;
-      padding: 2rem 0;
-      width: 90%;
-      -webkit-transition: all 0.3s ease-in-out;
-      -moz-transition: all 0.3s ease-in-out;
-      -o-transition: all 0.3s ease-in-out;
-      transition: all 0.3s ease-in-out; }
-    .tabs .tab-2 {
-    width: 50%; 
-    }
-    .tabs .tab-2 [type="radio"] + div {
-      width: 200%;
-      margin-left: 200%; 
-    }
-    .tabs .tab-2 [type="radio"]:checked + div {
-      margin-left: 0; 
-    }
-    .tabs .tab-2:last-child [type="radio"] + div {
-      margin-left: 100%;
-    }
-    .tabs .tab-2:last-child [type="radio"]:checked + div{
-      margin-left: -100%;
-    }
+	width:100%;
+	display:inline-block;
+}
+/*----- Tab Links -----*/
+/* Clearfix */
+	.tab-links:after {
+	display:block;
+	clear:both;
+	content:'';
+}
+.tab-links li {
+	margin:0px 5px;
+	float:left;
+	list-style:none; 
+  
+}
+.tab-links a {
+	padding:9px 15px;
+	display:inline-block;
+	border-radius:5px 5px 5px 5px;
+	background:#88c1e7;
+	font-size:16px;
+	font-weight:600;
+	color:#363636;
+	transition:all linear 0.15s;
+  text-decoration: none;
+  user-select: none;
+  
+}
+.tab-links a:hover {
+	background:#acd3ec;
+	text-decoration:none;
+}
+li.active a, li.active a:hover {
+	background:#fff;
+	color:#363636;
+}
+/*----- Content of Tabs -----*/
+.tab-content {
+	padding:15px;
+	border-radius:3px;
+	box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
 
+}
+.tab {
+	display:none;
+}
+
+.tab.active {
+	display:block;
+}
+.tab-links {
+  
+}
+    
 .table{
 	  width: 100%;
 	  border-collapse:collapse;
@@ -99,171 +85,45 @@ select:focus {
 	background-color: #fff;
 }
 .table, .table td, .table th {
-	  border: 3px solid #000000;
+	  border: 2px solid #000000;
 }
 .table td{
 	  padding: 3px;
 	  width: 30px;
-	  height: 5px;
+	  height: 3px;
 	}
 .table th {
-
 	  font-weight: normal;
 	padding: 3px;
 	  width: 30px;
 	  height: 30px;
 }
-.dropdown {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  height: 28px;
-  width: 150px;
-  background: #f2f2f2;
-  border: 1px solid;
-  border-color: white #f7f7f7 whitesmoke;
-  border-radius: 3px;
-  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
-  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
-  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
-  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.06));
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+.table th:hover {
+    cursor: pointer;
+}
+.table th:active {
+  background-color:rgb(211, 211, 211) ;
+}
+.table td:hover {
+  /*background-color: rgb(201, 201, 201);*/ 
 }
 
-.dropdown:before, .dropdown:after {
-  content: '';
-  position: absolute;
-  z-index: 2;
-  top: 9px;
-  right: 10px;
-  width: 0;
-  height: 0;
-  border: 4px dashed;
-  border-color: #888888 transparent;
-  pointer-events: none;
-}
-
-.dropdown:before {
-  border-bottom-style: solid;
-  border-top: none;
-}
-
-.dropdown:after {
-  margin-top: 7px;
-  border-top-style: solid;
-  border-bottom: none;
-}
-
-.dropdown-select {
-  position: relative;
-  width: 130%;
-  margin: 0;
-  padding: 6px 8px 6px 10px;
-  height: 28px;
-  line-height: 14px;
-  font-size: 12px;
-  color: #62717a;
-  text-shadow: 0 1px white;
-  background: #f2f2f2; /* Fallback for IE 8 */
-  background: rgba(0, 0, 0, 0) !important; /* "transparent" doesn't work with Opera */
-  border: 0;
-  border-radius: 0;
-  -webkit-appearance: none;
-}
-
-.dropdown-select:focus {
-  z-index: 3;
-  width: 100%;
-  color: #394349;
-  outline: 2px solid #49aff2;
-  outline: 2px solid -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-
-.dropdown-select > option {
-  margin: 3px;
-  padding: 6px 8px;
-  text-shadow: none;
-  background: #f2f2f2;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-/* Fix for IE 8 putting the arrows behind the select element. */
-
-.lt-ie9 .dropdown {
-  z-index: 1;
-}
-
-.lt-ie9 .dropdown-select {
-  z-index: -1;
-}
-
-.lt-ie9 .dropdown-select:focus {
-  z-index: 3;
-}
-
-/* Dirty fix for Firefox adding padding where it shouldn't. */
-
-@-moz-document url-prefix() {
-  .dropdown-select {
-    padding-left: 6px;
-  }
-}
-
-.dropdown-dark {
-  background: #444;
-  border-color: #111111 #0a0a0a black;
-  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
-  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
-  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
-  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
-  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.dropdown-dark:before {
-  border-bottom-color: #aaa;
-}
-
-.dropdown-dark:after {
-  border-top-color: #aaa;
-}
-
-.dropdown-dark .dropdown-select {
-  color: #aaa;
-  text-shadow: 0 1px black;
-  background: #444;  /* Fallback for IE 8 */
-}
-
-.dropdown-dark .dropdown-select:focus {
-  color: #ccc;
-}
-
-.dropdown-dark .dropdown-select > option {
-  background: #444;
-  text-shadow: 0 1px rgba(0, 0, 0, 0.4);
-}
+/*Кнопки хедера*/
 .top_nav{
-  background-color: rgb(84, 179, 211);
+  background-color: #7FB5DA;
   display: block;
   width: 100%;
   height: fit-content;
-  margin-bottom:10px;
 }
-
 .nav_container{
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-
 .nav_list{
   margin: 0;
   display:inline-flex;
 }
-
 .nav_list li
 {
   transition: all 0.5s;
@@ -274,12 +134,121 @@ select:focus {
   text-align: right;
   padding: 15px 20px;
 }
-
 .nav_list li:hover{
-  background-color: rgb(126, 215, 245);
+  background-color: rgb(40, 67, 77);
 }
-
 .nav_list a
 {
   text-decoration: none;
+}
+
+/*Выпадающий список */
+.select {
+  position: relative;
+  display: block;
+  min-width: 80px;
+  width: 100%;
+  max-width: 150px;
+  margin: 15px 20px;
+}
+.select__head {
+  width: 100%;
+  max-width: 100%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 14px 15px;
+  font-size: 14px;
+  line-height: 18px;
+  color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  background-color: #fff;
+}
+.select__head::after {
+  width: 10px;
+  height: 6px;
+  background: #FFF url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M4.50495 5.78413L0.205241 1.25827C-0.0684138 0.970375 -0.0684138 0.503596 0.205241 0.215836C0.478652 -0.0719461 0.922098 -0.071946 1.19549 0.215837L5.00007 4.22052L8.80452 0.215953C9.07805 -0.0718292 9.52145 -0.0718292 9.79486 0.215953C10.0684 0.503736 10.0684 0.970492 9.79486 1.25839L5.49508 5.78425C5.35831 5.92814 5.17925 6 5.00009 6C4.82085 6 4.64165 5.928 4.50495 5.78413Z' fill='%23ED266A'/%3E%3C/svg%3E%0A") no-repeat center / cover;
+  position: absolute;
+  right: -15px;
+  bottom: 50%;
+  transform: translateY(50%);
+  content: '';
+  display: block;
+  transition: .2s ease-in;
+}
+.select__head.open::after {
+  transform: translateY(50%) rotate(180deg);
+}
+.select__list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  margin-top: 5px;
+  max-height: 205px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: #424348;
+  scrollbar-color: dark;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+}
+.select__list::-webkit-scrollbar {
+  width: 7px;
+  background-color: #F8F9FA;
+  padding: 5px;
+}
+.select__list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #D9D9D9;
+}
+.select__list .select__item {
+  position: relative;
+  border-top: 1px solid rgba(224, 229, 231, 0.5);
+  padding: 10px 15px;
+  cursor: pointer;
+  list-style-type: none;
+}
+.select__list .select__item:hover {
+  background-color: rgba(224, 229, 231, 0.5);
+}
+
+/*Стили окна авторизации*/
+.log_btn {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #fe6637;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fe6637;
+  transition: .2s ease-in-out;
+}
+.log_btn:before {
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+.log_btn:hover {
+  background: #fe6637;
+  color: #fff;
+}
+.log_btn:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
 }

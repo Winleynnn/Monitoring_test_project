@@ -2,7 +2,7 @@
     <div class="nav_container">
         <ul class="nav_list">
             {% if user.is_authenticated %}
-            <a href="/account"><li>{{user.username|title}}</li></a>
+            <a ><li>{{user.username|title}}</li></a>
             <a href="/logout"><li>Выйти</li></a>
             <!-- <li><a href="/">Главная страница</a></li> -->
             {% endif %}
