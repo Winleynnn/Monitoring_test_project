@@ -1,7 +1,8 @@
 body {
-	background-color: #dddddd;
+	background-color: #EEEEEE;
   overflow-x: hidden;
   margin: 0;
+  font-family: Century Gothic;
 }
 .grafic {
 	background-color: #FFFFFF;
@@ -42,9 +43,9 @@ select:focus {
 	padding:9px 15px;
 	display:inline-block;
 	border-radius:5px 5px 5px 5px;
-	background:#88c1e7;
+	background:#ffffff;
 	font-size:16px;
-	font-weight:600;
+
 	color:#363636;
 	transition:all linear 0.15s;
   text-decoration: none;
@@ -52,11 +53,11 @@ select:focus {
   
 }
 .tab-links a:hover {
-	background:#acd3ec;
+  background:#c8dae6;
 	text-decoration:none;
 }
 li.active a, li.active a:hover {
-	background:#fff;
+	background:#88c1e7;
 	color:#363636;
 }
 /*----- Content of Tabs -----*/
@@ -69,37 +70,53 @@ li.active a, li.active a:hover {
 .tab {
 	display:none;
 }
-
 .tab.active {
 	display:block;
 }
-    
+
 .table{
-	  width: 100%;
-	  border-collapse:collapse;
-	  border-spacing:0;
-	  height: auto;
+	width: 100%;
+	border-collapse:collapse;
+	border-spacing:0;
+	 height: auto;
 	background-color: #fff;
+	font-family:'Times New Roman', Times, serif;
+
 }
 .table, .table td, .table th {
-	  border: 2px solid #000000;
+	border: 2px solid #000000;
 }
 .table td{
-	  padding: 3px;
-	  width: 30px;
-	  height: 3px;
+	padding: 3px;
+	width: 30px;
+	height: 3px;
 	}
 .table th {
-	  font-weight: normal;
+	font-weight: normal;
 	padding: 3px;
-	  width: 30px;
-	  height: 30px;
+	width: 30px;
+	height: 30px;
 }
 .table th:hover {
     cursor: pointer;
 }
-.table th:active {
-  background-color:rgb(211, 211, 211) ;
+
+.table th {
+  background:#fff; 
+}
+.table tbody tr:nth-child(even){
+	background: rgb(199, 199, 199);
+}
+
+.table thead th {
+    color: #ffffff;
+    background: #219c77;
+}
+
+
+.table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
 }
 
 /*Кнопки хедера*/
@@ -129,7 +146,7 @@ li.active a, li.active a:hover {
   padding: 15px 20px;
 }
 .nav_list li:hover{
-  background-color: rgb(40, 67, 77);
+  background-color: #a0d7fc;
 }
 .nav_list a
 {
@@ -224,7 +241,7 @@ li.active a, li.active a:hover {
   overflow: hidden;
   border: 2px solid #7FB5DA;
   border-radius: 8px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: Century Gothic;
   color: #408fc4;
   transition: .2s ease-in-out;
 }
@@ -263,7 +280,7 @@ li.active a, li.active a:hover {
 	top: 50%;
 	left: 50%;
 	margin-top: -140px;
-	margin-left: -170px;
+	margin-left: -200px;
 	background: #fff;
 	border-radius: 3px;
 	border: 1px solid #ccc;
@@ -287,7 +304,7 @@ li.active a, li.active a:hover {
 
 form {
 	margin: 0 auto;
-	margin-top: 20px;
+	
 }
 
 label {
@@ -314,8 +331,8 @@ p a:hover {
 }
 
 input {
-	font-family: "Helvetica Neue", Helvetica, sans-serif;
-	font-size: 12px;
+	font-family: Century Gothic;
+	font-size: 14px;
 	outline: none;
 }
 
@@ -353,7 +370,7 @@ input[type=password]:focus {
 
 	height: 58px;
   margin: 20 -0.4px 0 -0.4px;
-	box-shadow: inset 1 1px 1px #fff;
+	box-shadow: inset 1 1px 1px rgb(0, 0, 0);
 	border-top: 1px solid #ccc;
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;

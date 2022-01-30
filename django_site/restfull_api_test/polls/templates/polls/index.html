@@ -9,7 +9,7 @@
 <div class="tabs">
 	<ul class="tab-links">
 		<li class="active" onmousedown="return false"><a href="#tab1">Графики</a></li>
-		<li><a href="#tab2" onmousedown="return false">Таблицы</a></li>
+		<li  onmousedown="return false"><a href="#tab2">Таблицы</a></li>
 	</ul>
 
 	<div class="tab-content">
@@ -20,7 +20,7 @@
 		</div>
 		</div>
 
-		<div id="tab2" class="tab">
+		<div id="tab2" class="tab"> 
 			<table class="table" id="myTable">
 				<tbody>
 					<thead>
@@ -180,19 +180,19 @@
 			});
 
 			//Табы
-			jQuery(document).ready(function() {
-	        jQuery('.tabs .tab-links a').on('click', function(e) {
-		    var currentAttrValue = jQuery(this).attr('href');
+				jQuery(document).ready(function() {
+				jQuery('.tabs .tab-links a').on('click', function(e) {
+				var currentAttrValue = jQuery(this).attr('href');
 
-           // Show/Hide Tabs
-jQuery('.tabs ' + currentAttrValue).fadeIn(400).siblings().hide();
+			// Show/Hide Tabs
+				jQuery('.tabs ' + currentAttrValue).fadeIn(400).siblings().hide();
 
-            // Change/remove current tab to active
-            jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+				// Change/remove current tab to active
+				jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
 
-            e.preventDefault();
-	        });
-        });
+				e.preventDefault();
+				});
+			});
 	  </script>
 </div>
 </body>
