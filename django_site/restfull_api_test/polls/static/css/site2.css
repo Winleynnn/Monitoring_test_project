@@ -1,5 +1,5 @@
 body {
-	background-color: #D6D6D6;
+	background-color: #dddddd;
   overflow-x: hidden;
   margin: 0;
 }
@@ -73,9 +73,6 @@ li.active a, li.active a:hover {
 .tab.active {
 	display:block;
 }
-.tab-links {
-  
-}
     
 .table{
 	  width: 100%;
@@ -103,9 +100,6 @@ li.active a, li.active a:hover {
 }
 .table th:active {
   background-color:rgb(211, 211, 211) ;
-}
-.table td:hover {
-  /*background-color: rgb(201, 201, 201);*/ 
 }
 
 /*Кнопки хедера*/
@@ -228,10 +222,10 @@ li.active a, li.active a:hover {
   margin: 10px 20px;
   position: relative;
   overflow: hidden;
-  border: 2px solid #fe6637;
+  border: 2px solid #7FB5DA;
   border-radius: 8px;
   font-family: 'Montserrat', sans-serif;
-  color: #fe6637;
+  color: #408fc4;
   transition: .2s ease-in-out;
 }
 .log_btn:before {
@@ -245,10 +239,127 @@ li.active a, li.active a:hover {
   transform: skewX(-45deg);
 }
 .log_btn:hover {
-  background: #fe6637;
+  background: #7FB5DA;
   color: #fff;
 }
 .log_btn:hover:before {
   left: 150px;
   transition: .5s ease-in-out;
+}
+.log_form {
+  text-align: center;
+ 
+}
+.log_form2 {
+  margin-top: 10%;
+}
+
+
+@import url(animate.css);
+#container {
+	position: fixed;
+	width: 340px;
+	height: 280px;
+	top: 50%;
+	left: 50%;
+	margin-top: -140px;
+	margin-left: -170px;
+	background: #fff;
+	border-radius: 3px;
+	border: 1px solid #ccc;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+	-webkit-animation-name: bounceIn;
+	-webkit-animation-fill-mode: both;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-name: bounceIn;
+	-moz-animation-fill-mode: both;
+	-moz-animation-duration: 1s;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-timing-function: linear;
+	animation-name: bounceIn;
+	animation-fill-mode: both;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+}
+
+form {
+	margin: 0 auto;
+	margin-top: 20px;
+}
+
+label {
+	color: #555;
+	display: inline-block;
+	margin-left: 18px;
+	padding-top: 10px;
+	font-size: 14px;
+}
+
+p a {
+	font-size: 11px;
+	color: #aaa;
+	float: right;
+	margin-top: -13px;
+	margin-right: 20px;
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	transition: all .4s ease;
+}
+
+p a:hover {
+	color: #555;
+}
+
+input {
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 12px;
+	outline: none;
+}
+
+input[type=text],
+input[type=password] {
+	color: #777;
+	padding-left: 10px;
+	margin: 10px;
+	margin-top: 12px;
+	margin-left: 18px;
+	width: 290px;
+	height: 35px;
+	border: 1px solid #c7d0d2;
+	border-radius: 2px;
+	box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .4), 0 0 0 5px #f5f7f8;
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	transition: all .4s ease;
+}
+
+input[type=text]:hover,
+input[type=password]:hover {
+	border: 1px solid #b6bfc0;
+	box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .7), 0 0 0 5px #f5f7f8;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+	border: 1px solid #a8c9e4;
+	box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .4), 0 0 0 5px #e6f2f9;
+}
+
+#lower {
+	background: #ecf2f5;
+
+	height: 58px;
+  margin: 20 -0.4px 0 -0.4px;
+	box-shadow: inset 1 1px 1px #fff;
+	border-top: 1px solid #ccc;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+
+input[type=checkbox] {
+	margin-left: 20px;
+	margin-top: 30px;
 }
