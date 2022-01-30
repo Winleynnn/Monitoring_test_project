@@ -12,29 +12,78 @@ def index(request):
     if (request.is_ajax()):
         station_name = 'Station_'
         station_name += request.GET.get('selected_station')
-        if (station_name == 'Station_0020CF3B'):            
-            # 0020CF3B stats : air_temp_avg, date, id, relative_humidity_avg, soil_moisture, soil_temp_avg
-            station_dates = eval(station_name).objects.all()[:50].values_list('date')
-            station_temp = eval(station_name).objects.all()[:50].values_list('air_temp_avg')
-            station_soil_temp = eval(station_name).objects.all()[:50].values_list('soil_temp_avg')           
-            station_humidity = eval(station_name).objects.all()[:50].values_list('relative_humidity_avg')
-            station_soil_moisture = eval(station_name).objects.all()[:50].values_list('soil_moisture')
-            return JsonResponse({
-                                    'name': station_name, 
+        station_mode = request.GET.get('selected_mode')
+        first_date = request.GET.get('first_date')
+        first_date += ' 00:00:00'
+        second_date = request.GET.get('second_date')
+        second_date += ' 23:00:00'
+        if (station_name == 'Station_0020CF3B'):
+            if (station_mode == 'hourly'):
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
+            elif (station_mode == 'daily'):
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+            elif (station_mode == 'weekly'):                
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+                station_dates = selected.values_list('date')[::7]
+                station_temp = selected.values_list('air_temp_avg')[::7]
+                station_soil_temp = selected.values_list('soil_temp_avg')[::7]
+                station_humidity = selected.values_list('relative_humidity_avg')[::7]
+                station_soil_moisture = selected.values_list('soil_moisture')[::7]
+                return JsonResponse({
+                                    'name': station_name,
+                                    'mode': station_mode, 
                                     'dates' : list(station_dates),
                                     'air_temp_avg' : list(station_temp), 
                                     'soil_temp_avg' : list(station_soil_temp),
                                     'relative_humidity_avg' : list(station_humidity),
-                                    'soil_moisture' : list(station_soil_moisture)
+                                    'soil_moisture' : list(station_soil_moisture),
+                                }, status=200)
+            # 0020CF3B stats : air_temp_avg, date, id, relative_humidity_avg, soil_moisture, soil_temp_avg
+            station_dates = selected.values_list('date')
+            station_temp = selected.values_list('air_temp_avg')
+            station_soil_temp = selected.values_list('soil_temp_avg')           
+            station_humidity = selected.values_list('relative_humidity_avg')
+            station_soil_moisture = selected.values_list('soil_moisture')
+            return JsonResponse({
+                                    'name': station_name,
+                                    'mode': station_mode, 
+                                    'dates' : list(station_dates),
+                                    'air_temp_avg' : list(station_temp), 
+                                    'soil_temp_avg' : list(station_soil_temp),
+                                    'relative_humidity_avg' : list(station_humidity),
+                                    'soil_moisture' : list(station_soil_moisture),
                                 }, status=200)
         if (station_name == 'Station_002099C5'):
+            min_date = eval(station_name).objects.filter(id=1).values_list('date')
+            max_date = eval(station_name).objects.latest('date')
+            if (station_mode == 'hourly'):
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
+            elif (station_mode == 'daily'):
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+            elif (station_mode == 'weekly'):                
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+                station_dates = selected.values_list('date')[::7]
+                station_temp = selected.values_list('air_temp_avg')[::7]
+                station_humidity = selected.values_list('relative_humidity_avg')[::7]
+                station_soil_temp_1 = selected.values_list('soil_temp_1')[::7]
+                station_soil_temp_2 = selected.values_list('soil_temp_2')[::7]
+                station_soil_temp_3 = selected.values_list('soil_temp_3')[::7]
+                return JsonResponse({
+                                    'name': station_name,
+                                    'dates' : list(station_dates), 
+                                    'air_temp_avg' : list(station_temp), 
+                                    'relative_humidity_avg' : list(station_humidity), 
+                                    'soil_temp_1' : list(station_soil_temp_1),
+                                    'soil_temp_2' : list(station_soil_temp_2),
+                                    'soil_temp_3' : list(station_soil_temp_3),
+                                }, status=200)
             # 002099C5 stats : air_temp_avg, date, id, relative_humidity_avg, soil_temp_1, soil_temp_2, soil_temp_3
-            station_dates = eval(station_name).objects.all()[:50].values_list('date')
-            station_temp = eval(station_name).objects.all()[:50].values_list('air_temp_avg')
-            station_humidity = eval(station_name).objects.all()[:50].values_list('relative_humidity_avg')
-            station_soil_temp_1 = eval(station_name).objects.all()[:50].values_list('soil_temp_1')
-            station_soil_temp_2 = eval(station_name).objects.all()[:50].values_list('soil_temp_2')
-            station_soil_temp_3 = eval(station_name).objects.all()[:50].values_list('soil_temp_3')
+            station_dates = selected.values_list('date')
+            station_temp = selected.values_list('air_temp_avg')
+            station_humidity = selected.values_list('relative_humidity_avg')
+            station_soil_temp_1 = selected.values_list('soil_temp_1')
+            station_soil_temp_2 = selected.values_list('soil_temp_2')
+            station_soil_temp_3 = selected.values_list('soil_temp_3')
             return JsonResponse({
                                     'name': station_name,
                                     'dates' : list(station_dates), 
@@ -43,10 +92,8 @@ def index(request):
                                     'soil_temp_1' : list(station_soil_temp_1),
                                     'soil_temp_2' : list(station_soil_temp_2),
                                     'soil_temp_3' : list(station_soil_temp_3),
-                                }, 
-                                    status=200)
-    latest_twenty = Station_0020CF3B.objects.all()[:20]
-    return render(request, "polls/header.html", {'data' : latest_twenty})
+                                }, status=200)
+    return render(request, "polls/header.html")
     
 
 def logout_request(request):

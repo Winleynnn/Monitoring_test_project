@@ -1,10 +1,20 @@
 	<div class="container">
 		<div class="dropdown dropdown-dark">
-			<select name="two" class="dropdown-select">
+			<select name="two" class="dropdown-select" id="select_station">
 				<option value="0020CF3B">0020CF3B</option>
 				<option value="002099C5">002099C5</option>
 			</select>
 		</div>
+		<div class="dropdown dropdown-dark">
+			<select name="two" class="dropdown-select"  id="select_mode">
+				<option value="hourly">По часам</option>
+				<option value="daily">По дням</option>
+				<option value="weekly">По неделям</option>
+			</select>
+		</div>
+		<input id="first_date" type="date" name="calendar" value="2021-08-12">
+	   	<input id="second_date" type="date" name="calendar" value="2021-08-13">
+	  	<input id="button_date" type="submit" value="Отправить"></p>
 	</div>
 	<div class="tabs">
 		<div class="tab-2">
@@ -12,6 +22,7 @@
 		<input id="tab2-1" name="tabs-two" type="radio" checked="checked">
 		<div>
 			<p class = "stationName">Station_0020CF3B</p>
+			<p id = "messageNoInfo1"></p>
 			<div class="graphic">
 				<canvas id="myChart" class="chart1" height= "100px"></canvas>
 				<canvas id="myChart2" class="chart2" height= "100px"></canvas>
@@ -21,7 +32,8 @@
 		<div class="tab-2">
 			<label for="tab2-2">Таблица ИИ</label>
 			<input id="tab2-2" name="tabs-two" type="radio">
-			<div>
+			<div>				
+				<p id = "messageNoInfo2"></p>
 				<table class="table" id="myTable">
 					<thead>
 					<tr>

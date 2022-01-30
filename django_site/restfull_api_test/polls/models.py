@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Station_0020CF3B(models.Model):
+    id = models.AutoField(primary_key=True)
     date = models.TextField(null=True)
     air_temp_avg = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     relative_humidity_avg = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -13,6 +14,7 @@ class Station_0020CF3B(models.Model):
         return self.date
 
 class Station_002099C5(models.Model):
+    id = models.AutoField(primary_key=True)
     date = models.TextField(null=True)
     air_temp_avg = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     relative_humidity_avg = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
