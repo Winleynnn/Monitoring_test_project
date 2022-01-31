@@ -6,7 +6,6 @@ function createChart1(label, dataset, dataset2){
         $('#myChart').hide()
         $('#myChart2').hide()
         $('#myTable').hide()
-
     }
     else
     {
@@ -127,8 +126,8 @@ function ajaxCall(timeData){
                 var newRow = tableChild.insertRow(0);
                 newRow.insertCell(0).outerHTML = '<th onclick="sortTable(0)">Дата </th>';
                 newRow.insertCell(1).outerHTML = '<th onclick="sortTable(1)">Средняя температура воздуха, °C</th>';
-                newRow.insertCell(2).outerHTML = '<th onclick="sortTable(2)">Относительная влажность воздуха, %</th>';
-                newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Средняя температура почвы, °C</th>';
+                newRow.insertCell(2).outerHTML = '<th onclick="sortTable(2)">Средняя температура почвы, °C</th>';
+                newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Относительная влажность воздуха, %</th>';
                 newRow.insertCell(4).outerHTML = '<th onclick="sortTable(4)">Влажность почвы, %</th>';
                 tableChild.appendChild(newRow);
                 for (var i in dates)
