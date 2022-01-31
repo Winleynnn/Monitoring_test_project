@@ -60,6 +60,24 @@ $(document).ready(function(){
     var first_date = $('#first_date').val()
     var second_date = $('#second_date').val()
     ajaxCall(timeData)
+    
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd = '0'+dd
+    } 
+
+    if(mm<10) {
+        mm = '0'+mm
+    } 
+
+    today = yyyy + '-' + mm + '-' + dd;
+    $('#second_date').attr({
+        'max' : today
+    })
     $(".custom-select-trigger").on('DOMSubtreeModified', function()
     {
         timeData = 
@@ -111,13 +129,7 @@ function ajaxCall(timeData){
                 var soil_temp = response['soil_temp_avg']
                 var humidity = response['relative_humidity_avg']
                 var soil_moisture = response['soil_moisture']
-                $('#first_date').attr({
-                    'min' : response.min_date
-                })
-                $('#second_date').attr({
-                    'max' : response.max_date
-                })
-                
+
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()
                 tableChild = document.createElement('table')
@@ -195,13 +207,6 @@ function ajaxCall(timeData){
                 var soil_temp_1 = response['soil_temp_1']
                 var soil_temp_2 = response['soil_temp_2']
                 var soil_temp_3 = response['soil_temp_3']
-
-                $('#first_date').attr({
-                    'min' : response.min_date
-                })
-                $('#second_date').attr({
-                    'max' : response.max_date
-                })                    
 
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()
