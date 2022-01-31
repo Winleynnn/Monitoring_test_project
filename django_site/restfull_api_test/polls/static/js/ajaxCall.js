@@ -6,7 +6,7 @@ function createChart1(label, dataset, dataset2){
         $('#myChart').hide()
         $('#myChart2').hide()
         $('#myTable').hide()
-        alert('no info sorry')
+
     }
     else
     {
@@ -61,7 +61,7 @@ $(document).ready(function(){
     var first_date = $('#first_date').val()
     var second_date = $('#second_date').val()
     ajaxCall(timeData)
-    $("#select_station").on('change', function()
+    $(".custom-select-trigger").on('DOMSubtreeModified', function()
     {
         timeData = 
             {
@@ -69,20 +69,7 @@ $(document).ready(function(){
             second_date: second_date,
             selected_station: $('#select_station option:selected').text(),
             selected_mode: $('#select_mode option:selected').val()
-            }
-        
-        ajaxCall(timeData)
-    })
-    $("#select_mode").on('change', function()
-    {
-        timeData = 
-            {
-            first_date: first_date,
-            second_date: second_date,
-            selected_station: $('#select_station option:selected').text(),
-            selected_mode: $('#select_mode option:selected').val()
-            }
-        
+            }        
         ajaxCall(timeData)
     })
     $("#button_date").on('click', function()
@@ -118,7 +105,6 @@ function ajaxCall(timeData){
         type: 'get',
         data: timeData,
         success: function(response){
-            $(".stationName").text(response.name)
             if (response.name == "Station_0020CF3B")
             {
                 var dates = response['dates']

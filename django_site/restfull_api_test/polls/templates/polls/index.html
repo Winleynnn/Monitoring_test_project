@@ -1,4 +1,5 @@
-	<select name="potencial" class="custom-select sources" placeholder="0020CF3B" id="select_station">
+	<div class="container">
+	<select name="potencial" class="custom-select sources" placeholder="0020CF3B" id="select_station" >
 		<option value="0020CF3B" selected>0020CF3B</option>
 		<option value="002099C5">002099C5</option>
 	</select>
@@ -9,8 +10,8 @@
 	</select>
 		<input id="first_date" type="date" name="calendar" value="2021-08-12">
 	   	<input id="second_date" type="date" name="calendar" value="2021-08-13">
-	  	<input id="button_date" type="submit" value="Отправить">
-	
+	  	<input id="button_date" type="submit" value="Отправить" class="ind_btn">
+	</div>
 	<div class="tabs">
 		<ul class="tab-links">
 			<li class="active" onmousedown="return false"><a href="#tab1">Графики</a></li>
@@ -18,7 +19,6 @@
 		</ul>
 		<div class="tab-content">
 			<div id="tab1" class="tab active">
-				<p class = "stationName">Station_0020CF3B</p>
 				<p id = "messageNoInfo1"></p>
 				<div class="graphic">
 					<canvas id="myChart" class="chart1" height= "70px"></canvas>
