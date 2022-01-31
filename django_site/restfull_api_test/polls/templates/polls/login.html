@@ -1,14 +1,21 @@
-{% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/site2.css' %}" type="text/css"/>
+</head>
+    {% block content %}
     {% if user.is_authenticated %}
     <script>
         document.location.replace('/')
     </script>
     {% else %}
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-
-        <button class = "btn" style = "background-color: blue lighten-3; color: white" type = "submit">Войти</button>
-    </form>
+    <div id="container">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div id="lower">
+				<input class="log_btn" type="submit" value="Войти">
+			</div>
+        </form>
+    </div>
     {% endif %}
 {% endblock %}
