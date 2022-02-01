@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import View
 from django.http import JsonResponse
+import os
+from ml_script import ml_predict
 import json
 
 def index(request):
@@ -54,8 +56,6 @@ def index(request):
                                     'soil_moisture' : list(station_soil_moisture),
                                 }, status=200)
         if (station_name == 'Station_002099C5'):
-            min_date = eval(station_name).objects.filter(id=1).values_list('date')
-            max_date = eval(station_name).objects.latest('date')
             if (station_mode == 'hourly'):
                 selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
             elif (station_mode == 'daily'):
@@ -68,6 +68,8 @@ def index(request):
                 station_soil_temp_1 = selected.values_list('soil_temp_1')[::7]
                 station_soil_temp_2 = selected.values_list('soil_temp_2')[::7]
                 station_soil_temp_3 = selected.values_list('soil_temp_3')[::7]
+                file_dir = 'C:/Users/Dmitriy/Desktop/restfull api/data2.csv'
+                predict = ml_predict(file_dir)[::7]
                 return JsonResponse({
                                     'name': station_name,
                                     'dates' : list(station_dates), 
@@ -76,6 +78,7 @@ def index(request):
                                     'soil_temp_1' : list(station_soil_temp_1),
                                     'soil_temp_2' : list(station_soil_temp_2),
                                     'soil_temp_3' : list(station_soil_temp_3),
+                                    'predict' : predict
                                 }, status=200)
             # 002099C5 stats : air_temp_avg, date, id, relative_humidity_avg, soil_temp_1, soil_temp_2, soil_temp_3
             station_dates = selected.values_list('date')
@@ -84,6 +87,8 @@ def index(request):
             station_soil_temp_1 = selected.values_list('soil_temp_1')
             station_soil_temp_2 = selected.values_list('soil_temp_2')
             station_soil_temp_3 = selected.values_list('soil_temp_3')
+            file_dir = 'C:/Users/Dmitriy/Desktop/restfull api/data2.csv'
+            predict = ml_predict(file_dir)
             return JsonResponse({
                                     'name': station_name,
                                     'dates' : list(station_dates), 
@@ -92,6 +97,7 @@ def index(request):
                                     'soil_temp_1' : list(station_soil_temp_1),
                                     'soil_temp_2' : list(station_soil_temp_2),
                                     'soil_temp_3' : list(station_soil_temp_3),
+                                    'predict' : predict
                                 }, status=200)
     return render(request, "polls/header.html")
     

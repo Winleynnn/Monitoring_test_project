@@ -130,6 +130,7 @@ function ajaxCall(timeData){
                 var humidity = response['relative_humidity_avg']
                 var soil_moisture = response['soil_moisture']
 
+
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()
                 tableChild = document.createElement('table')
@@ -141,6 +142,8 @@ function ajaxCall(timeData){
                 newRow.insertCell(2).outerHTML = '<th onclick="sortTable(2)">Средняя температура почвы, °C</th>';
                 newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Относительная влажность воздуха, %</th>';
                 newRow.insertCell(4).outerHTML = '<th onclick="sortTable(4)">Влажность почвы, %</th>';
+                
+
                 tableChild.appendChild(newRow);
                 for (var i in dates)
                 {
@@ -207,6 +210,7 @@ function ajaxCall(timeData){
                 var soil_temp_1 = response['soil_temp_1']
                 var soil_temp_2 = response['soil_temp_2']
                 var soil_temp_3 = response['soil_temp_3']
+                var predict = response['predict']
 
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()
@@ -220,6 +224,7 @@ function ajaxCall(timeData){
                 newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Средняя температура почвы 1, °C</th>';
                 newRow.insertCell(4).outerHTML = '<th onclick="sortTable(4)">Средняя температура почвы 2, °C</th>';
                 newRow.insertCell(5).outerHTML = '<th onclick="sortTable(5)">Средняя температура почвы 3, °C</th>';
+                newRow.insertCell(6).outerHTML = '<th onclick="sortTable(6)">Прогнозируемая влажность почвы, %</th>';
                 tableChild.appendChild(newRow);
                 for (var i in dates)
                 {
@@ -229,7 +234,8 @@ function ajaxCall(timeData){
                     newRow.insertCell(2).innerHTML = humidity[i];
                     newRow.insertCell(3).innerHTML = soil_temp_1[i];
                     newRow.insertCell(4).innerHTML = soil_temp_2[i];    
-                    newRow.insertCell(5).innerHTML = soil_temp_3[i];            
+                    newRow.insertCell(5).innerHTML = soil_temp_3[i];    
+                    newRow.insertCell(6).innerHTML = predict[i];            
                     tableChild.appendChild(newRow);           
                 }
 
@@ -256,6 +262,13 @@ function ajaxCall(timeData){
                         data: humidity,
                         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
                         borderColor: ['rgba(9, 132, 0, 1)'],                            
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Прогнозируемая влажность почвы, %',
+                        data: predict,
+                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                        borderColor: ['rgba(12, 0, 134, 1)'],                            
                         borderWidth: 2
                     }
                 ]
