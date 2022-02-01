@@ -1,8 +1,8 @@
 function createChart1(label, dataset, dataset2){
     if (label[0] == null) 
     {
-        $('#messageNoInfo1').text('no info sorry')
-        $('#messageNoInfo2').text('no info sorry')
+        $('#messageNoInfo1').text('Данных за выбранный период не найдено')
+        $('#messageNoInfo2').text('Данных за выбранный период не найдено')
         $('#myChart').hide()
         $('#myChart2').hide()
         $('#myTable').hide()
