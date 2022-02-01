@@ -68,7 +68,7 @@ def index(request):
                 station_soil_temp_1 = selected.values_list('soil_temp_1')[::7]
                 station_soil_temp_2 = selected.values_list('soil_temp_2')[::7]
                 station_soil_temp_3 = selected.values_list('soil_temp_3')[::7]
-                file_dir = 'C:/Users/Dmitriy/Desktop/restfull api/data2.csv'
+                file_dir = '../../data2.csv'
                 predict = ml_predict(file_dir)[::7]
                 return JsonResponse({
                                     'name': station_name,
@@ -87,7 +87,7 @@ def index(request):
             station_soil_temp_1 = selected.values_list('soil_temp_1')
             station_soil_temp_2 = selected.values_list('soil_temp_2')
             station_soil_temp_3 = selected.values_list('soil_temp_3')
-            file_dir = 'C:/Users/Dmitriy/Desktop/restfull api/data2.csv'
+            file_dir = '../../data2.csv'
             predict = ml_predict(file_dir)
             return JsonResponse({
                                     'name': station_name,

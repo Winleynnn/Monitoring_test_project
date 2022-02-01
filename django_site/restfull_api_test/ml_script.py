@@ -4,7 +4,7 @@ import csv
 
 def ml_predict(x_test):
     #### На этом обучаем
-    df_train = pd.read_csv('C:/Users/Dmitriy/Desktop/restfull api/data.csv')
+    df_train = pd.read_csv('../../data.csv')
     X = df_train[['Air Temperature', 'Relative Humidity', 'Soil Temperature']]
     y = df_train['Soil Moisture']
     ###Тут из цсвшки забираем нужные данные
