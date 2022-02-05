@@ -102,18 +102,7 @@ $(document).ready(function(){
         second_date = $('#second_date').val()        
         ajaxCall(timeData)
     })
-    $("#first_date").on('change', function()
-    {
-        $("#second_date").attr({
-            'min' : $("#first_date").val()
-        })
-    })
-    $("#second_date").on('change', function()
-    {
-        $("#first_date").attr({
-            'max' : $("#second_date").val()
-        })
-    })
+   
 });
 
 function ajaxCall(timeData){

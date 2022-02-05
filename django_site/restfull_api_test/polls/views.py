@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from pip import main
 from .models import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -7,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import View
 from django.http import JsonResponse
 import os
-from ml_script import ml_predict
+from ml_script import ml_predict_test, ml_predict
 import json
 
 def index(request):
@@ -38,7 +39,7 @@ def index(request):
                                     'air_temp_avg' : list(station_temp), 
                                     'soil_temp_avg' : list(station_soil_temp),
                                     'relative_humidity_avg' : list(station_humidity),
-                                    'soil_moisture' : list(station_soil_moisture),
+                                    'soil_moisture' : list(station_soil_moisture)
                                 }, status=200)
             # 0020CF3B stats : air_temp_avg, date, id, relative_humidity_avg, soil_moisture, soil_temp_avg
             station_dates = selected.values_list('date')
@@ -53,7 +54,7 @@ def index(request):
                                     'air_temp_avg' : list(station_temp), 
                                     'soil_temp_avg' : list(station_soil_temp),
                                     'relative_humidity_avg' : list(station_humidity),
-                                    'soil_moisture' : list(station_soil_moisture),
+                                    'soil_moisture' : list(station_soil_moisture)
                                 }, status=200)
         if (station_name == 'Station_002099C5'):
             if (station_mode == 'hourly'):
@@ -68,8 +69,28 @@ def index(request):
                 station_soil_temp_1 = selected.values_list('soil_temp_1')[::7]
                 station_soil_temp_2 = selected.values_list('soil_temp_2')[::7]
                 station_soil_temp_3 = selected.values_list('soil_temp_3')[::7]
+                main_station_data = Station_0020CF3B.objects.all()
+                data_temp = main_station_data.values_list('air_temp_avg', flat=True)
+                data_humidity = main_station_data.values_list('relative_humidity_avg', flat=True)
+                data_soil_temp = main_station_data.values_list('soil_temp_avg', flat=True)
+                data_moist = main_station_data.values_list('soil_moisture', flat=True)
+                main_station_data2 = Station_002099C5.objects.all()
+                data2_temp = main_station_data2.values_list('air_temp_avg', flat=True)
+                data2_humidity = main_station_data2.values_list('relative_humidity_avg', flat=True)
+                data2_soil_temp = main_station_data2.values_list('soil_temp_1', flat=True)
+                predict = ml_predict_test({
+                    'Air Temperature' : list(data_temp), 
+                    'Relative Humidity' : list(data_humidity), 
+                    'Soil Temperature' : list(data_soil_temp),
+                    'Soil Moisture' : list(data_moist)
+                },
+                {
+                    'Air Temperature' : list(data2_temp), 
+                    'Relative Humidity' : list(data2_humidity), 
+                    'Soil Temperature' : list(data2_soil_temp)
+                })
                 file_dir = '../../data2.csv'
-                predict = ml_predict(file_dir)[::7]
+                # predict = ml_predict_test(file_dir)[::7]
                 return JsonResponse({
                                     'name': station_name,
                                     'dates' : list(station_dates), 
@@ -79,7 +100,7 @@ def index(request):
                                     'soil_temp_2' : list(station_soil_temp_2),
                                     'soil_temp_3' : list(station_soil_temp_3),
                                     'predict' : predict
-                                }, status=200)
+                                    }, status=200)
             # 002099C5 stats : air_temp_avg, date, id, relative_humidity_avg, soil_temp_1, soil_temp_2, soil_temp_3
             station_dates = selected.values_list('date')
             station_temp = selected.values_list('air_temp_avg')
@@ -87,8 +108,31 @@ def index(request):
             station_soil_temp_1 = selected.values_list('soil_temp_1')
             station_soil_temp_2 = selected.values_list('soil_temp_2')
             station_soil_temp_3 = selected.values_list('soil_temp_3')
+
             file_dir = '../../data2.csv'
-            predict = ml_predict(file_dir)
+            main_station_data = Station_0020CF3B.objects.all()
+            data_temp = main_station_data.values_list('air_temp_avg', flat=True)
+            data_humidity = main_station_data.values_list('relative_humidity_avg', flat=True)
+            data_soil_temp = main_station_data.values_list('soil_temp_avg', flat=True)
+            data_moist = main_station_data.values_list('soil_moisture', flat=True)
+            main_station_data2 = Station_002099C5.objects.all()
+            data2_temp = main_station_data2.values_list('air_temp_avg', flat=True)
+            data2_humidity = main_station_data2.values_list('relative_humidity_avg', flat=True)
+            data2_soil_temp = main_station_data2.values_list('soil_temp_1', flat=True)
+            predict = ml_predict_test(
+                {
+                    'Air Temperature' : list(data_temp), 
+                    'Relative Humidity' : list(data_humidity), 
+                    'Soil Temperature' : list(data_soil_temp),
+                    'Soil Moisture' : list(data_moist)
+                },
+                {
+                    'Air Temperature' : list(data2_temp), 
+                    'Relative Humidity' : list(data2_humidity), 
+                    'Soil Temperature' : list(data2_soil_temp)
+                })
+            # predict = ml_predict(file_dir)
+
             return JsonResponse({
                                     'name': station_name,
                                     'dates' : list(station_dates), 
