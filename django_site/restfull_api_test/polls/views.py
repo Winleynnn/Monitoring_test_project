@@ -108,8 +108,6 @@ def index(request):
             station_soil_temp_1 = selected.values_list('soil_temp_1')
             station_soil_temp_2 = selected.values_list('soil_temp_2')
             station_soil_temp_3 = selected.values_list('soil_temp_3')
-
-            file_dir = '../../data2.csv'
             main_station_data = Station_0020CF3B.objects.all()
             data_temp = main_station_data.values_list('air_temp_avg', flat=True)
             data_humidity = main_station_data.values_list('relative_humidity_avg', flat=True)
@@ -131,6 +129,7 @@ def index(request):
                     'Relative Humidity' : list(data2_humidity), 
                     'Soil Temperature' : list(data2_soil_temp)
                 })
+            # file_dir = '../../data2.csv'
             # predict = ml_predict(file_dir)
 
             return JsonResponse({
@@ -143,6 +142,47 @@ def index(request):
                                     'soil_temp_3' : list(station_soil_temp_3),
                                     'predict' : predict
                                 }, status=200)
+        if (station_name == 'Station_00000235'):
+            if (station_mode == 'hourly'):
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
+            elif (station_mode == 'daily'):
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+            elif (station_mode == 'weekly'):                
+                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+                station_dates = selected.values_list('date')[::7]
+                station_temp = selected.values_list('air_temp_avg')[::7]
+                station_dew_point = selected.values_list('dew_point')[::7]
+                station_humidity = selected.values_list('relative_humidity_avg')[::7]
+                station_wind_speed_avg = selected.values_list('wind_speed_avg')[::7]
+                station_wind_speed_max = selected.values_list('wind_speed_max')[::7]
+                return JsonResponse({
+                                    'name': station_name,
+                                    'mode': station_mode, 
+                                    'dates' : list(station_dates),
+                                    'air_temp_avg' : list(station_temp), 
+                                    'dew_point' : list(station_dew_point),
+                                    'relative_humidity_avg' : list(station_humidity),
+                                    'wind_speed_avg' : list(station_wind_speed_avg),
+                                    'wind_speed_max' : list(station_wind_speed_max),
+                                }, status=200)
+            # 00000235: id, date, air_temp_avg, relative_humidity_avg, dew_point, wind_speed_avg, wind_speed_max
+            station_dates = selected.values_list('date')
+            station_temp = selected.values_list('air_temp_avg')
+            station_humidity = selected.values_list('relative_humidity_avg')
+            station_dew_point = selected.values_list('dew_point')
+            station_wind_speed_avg = selected.values_list('wind_speed_avg')
+            station_wind_speed_max = selected.values_list('wind_speed_max')
+            return JsonResponse({
+                                    'name': station_name,
+                                    'mode': station_mode, 
+                                    'dates' : list(station_dates),
+                                    'air_temp_avg' : list(station_temp), 
+                                    'relative_humidity_avg' : list(station_humidity),
+                                    'dew_point' : list(station_dew_point),
+                                    'wind_speed_avg' : list(station_wind_speed_avg),
+                                    'wind_speed_max' : list(station_wind_speed_max),
+                                }, status=200)
+        
     return render(request, "polls/header.html")
     
 

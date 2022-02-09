@@ -78,6 +78,7 @@ $(document).ready(function(){
     $('#second_date').attr({
         'max' : today
     })
+
     $(".custom-select-trigger").on('DOMSubtreeModified', function()
     {
         timeData = 
@@ -283,6 +284,96 @@ function ajaxCall(timeData){
                         data: soil_temp_3,
                         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
                         borderColor: ['rgba(9, 0, 243, 1)'],                            
+                        borderWidth: 2
+                    }
+                ]
+                createChart1(dates, S_002099C5_dataset, S_002099C5_dataset_temp);
+            }
+
+            // 00000235: id, date, air_temp_avg, relative_humidity_avg, dew_point, wind_speed_avg, wind_speed_max
+
+            if (response.name == 'Station_00000235')
+            {
+                var dates = response['dates']
+                var air_temp = response['air_temp_avg']
+                var humidity = response['relative_humidity_avg']
+                var dew_point = response['dew_point']
+                var wind_speed_avg = response['wind_speed_avg']
+                var wind_speed_max = response['wind_speed_max']
+
+                tableParent = document.getElementById('myTable').parentNode
+                $("#myTable").remove()
+                tableChild = document.createElement('table')
+                tableChild.id = 'myTable'
+                tableChild.classList.add('table')
+                var newRow = tableChild.insertRow(0);
+                newRow.insertCell(0).outerHTML = '<th onclick="sortTable(0)">Дата </th>';
+                newRow.insertCell(1).outerHTML = '<th onclick="sortTable(1)">Средняя температура воздуха, °C</th>';
+                newRow.insertCell(2).outerHTML = '<th onclick="sortTable(2)">Относительная влажность воздуха, %</th>';
+                newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Точка росы, °C</th>';
+                newRow.insertCell(4).outerHTML = '<th onclick="sortTable(4)">Средняя скорость ветра, м/с</th>';
+                newRow.insertCell(5).outerHTML = '<th onclick="sortTable(5)">Максимальная скорость ветра, м/с</th>';
+                tableChild.appendChild(newRow);
+                for (var i in dates)
+                {
+                    var newRow = tableChild.insertRow(i.indexOf);
+                    newRow.insertCell(0).innerHTML = dates[i];
+                    newRow.insertCell(1).innerHTML = air_temp[i];
+                    newRow.insertCell(2).innerHTML = humidity[i];
+                    newRow.insertCell(3).innerHTML = dew_point[i];
+                    newRow.insertCell(4).innerHTML = wind_speed_avg[i];    
+                    newRow.insertCell(5).innerHTML = wind_speed_max[i];         
+                    tableChild.appendChild(newRow);           
+                }
+
+                tableParent.appendChild(tableChild)
+                
+                $("#myTable tbody").remove()
+                $('#myTable tr:has(td)').wrapAll('<tbody></tbody>')
+                $("#myTable tbody").prependTo("#myTable")
+                $('#myTable tr:has(th)').wrapAll('<thead></thead>')
+                $("#myTable thead").prependTo("#myTable")
+                
+
+                var S_002099C5_dataset = 
+                [
+                    {                     
+                        label: 'Средняя температура воздуха, °C',
+                        data: air_temp,
+                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                        borderColor: ['rgba(200, 0, 15, 1)'],
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Относительная влажность воздуха, %',
+                        data: humidity,
+                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                        borderColor: ['rgba(9, 132, 0, 1)'],                            
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Точка росы, °C',
+                        data: dew_point,
+                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                        borderColor: ['rgba(12, 0, 134, 1)'],                            
+                        borderWidth: 2
+                    }
+                ]
+
+                var S_002099C5_dataset_temp = 
+                [
+                    {                     
+                        label: 'Средняя скорость ветра, м/с',
+                        data: wind_speed_avg,
+                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                        borderColor: ['rgba(200, 0, 15, 1)'],
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Максимальная скорость ветра, м/с',
+                        data: wind_speed_max,
+                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                        borderColor: ['rgba(9, 132, 0, 1)'],                            
                         borderWidth: 2
                     }
                 ]
