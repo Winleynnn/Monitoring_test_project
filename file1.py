@@ -1,4 +1,5 @@
 # login/pass: demo_api/demo4
+from multiprocessing.sharedctypes import Value
 import re
 import requests
 import json
@@ -9,7 +10,8 @@ from Crypto.Hash import HMAC
 from Crypto.Hash import SHA256
 from datetime import datetime
 from dateutil.tz import tzlocal
-
+import pandas as pd
+from pandas.io.json import json_normalize
 
 # Class to perform HMAC encoding
 class AuthHmacMetosGet(AuthBase):
@@ -39,16 +41,36 @@ publicKey = 'b980abf346a6dc2b8a7c91a296e02cd11316618f741f93e5'
 privateKey = '1d20cd076c1dd12ec8519ca5d05160a4236f1062c5b13235'
 
 # Service/Route that you wish to call
-apiRoute = '/data/00000235/hourly/last/4m'
+apiRoute = '/data/00000146/hourly/last/20m'
 #apiRoute = '/station/0020CF3B/sensors'
 
 auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
 response = requests.get(apiURI+apiRoute, headers={'Accept': 'application/json'}, auth=auth)
 
 data = response.json()
+pd.read_json(data).to_excel('data00000146.xlsx')
 
-with open('data.txt', 'w') as outfile:
-    json.dump(data, outfile)
+
+# with open('allData00000146.txt', 'w') as outfile:
+#     json.dump(data, outfile)
+
+# #df = pd.read_json(data)
+# df = (data)
+
+
+
+# a = []
+# with open('dataInfo.txt', 'w') as outfile:
+#     for key, value in data.items():
+#         outfile.write(str(value['name'] + '\n'))
+#         for data in value:
+#             for dates in data['sensors']:
+#                 outfile.write(str('     ' + dates[1] + '\n'))
+
+
+# with open('dataInfo.txt', 'w') as outfile:
+#     for meh in a:
+#         outfile.write(str(meh + '\n'))
 
 # dates = data['dates']
 # main_data = data['data']
