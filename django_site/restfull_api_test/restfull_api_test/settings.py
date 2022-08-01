@@ -76,8 +76,13 @@ WSGI_APPLICATION = 'restfull_api_test.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3'
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'restfull_api_test',
+        'USER': 'django',
+        'PASSWORD': 'projectpilot',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'DEFAULT-CHARACTER-SET': 'utf-8'
     }
 }
 
