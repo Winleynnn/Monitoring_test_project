@@ -10,6 +10,42 @@ from django.http import JsonResponse
 import os
 from ml_script import ml_predict_test, ml_predict
 import json
+import plotly.express as px
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+import pandas as pd
+
+def graph_make(data, request):
+    #dt = pd.read_csv('C:/Users/ralf3/OneDrive/Рабочий стол/Project/django_site/restfull_api_test/Hourly Weather Data in Gallipoli (2008-2021).csv', sep = ';')
+    datafr = pd.DataFrame(data = data)
+    date_time = pd.to_datetime(datafr.pop('DateTime'), format='%d.%m.%Y %H:%M')
+    plot_cols = []
+    for col in datafr.columns():
+        plot_cols += col
+    plot_features = datafr[plot_cols]
+    fig = make_subplots(rows=len(plot_cols), cols=len(plot_cols), subplot_titles=(plot_cols),
+                        column_widths=[0.5, 0.5], shared_xaxes=False)
+    for i in len(plot_cols):
+        if i%2 == 0:
+            fig.add_trace(
+                go.Scatter(x=date_time, y=plot_features[plot_cols[i]], name = plot_cols[i]),
+                row=i+1, col=i+1
+            )
+            fig.update_xaxes(title_text="Date", row=i+1, col=i+1)
+            fig.update_yaxes(title_text=plot_cols[i], row=i+1, col=i+1)
+        else:
+            fig.add_trace(
+                go.Scatter(x=date_time, y=plot_features[i], name = plot_features[i]),
+                row=i+1, col=i
+            )
+            fig.update_xaxes(title_text="Date", row=i+1, col=i)
+            fig.update_yaxes(title_text=plot_cols[i], row=i+1, col=i)
+    
+    # Update title and height
+    fig.update_layout(title_text="Meteo Data", height=700)
+    chart = fig.to_html("C:/Users/ralf3/OneDrive/Рабочий стол/Project/django_site/restfull_api_test/polls/templates/polls/graphs/plotly.html")
+    context = {'chart': chart}
+    return render(request, 'polls/graphs/chart.html', context)
 
 def index(request):
     if (request.is_ajax()):
@@ -47,6 +83,9 @@ def index(request):
             station_soil_temp = selected.values_list('soil_temp_avg')           
             station_humidity = selected.values_list('relative_humidity_avg')
             station_soil_moisture = selected.values_list('soil_moisture')
+            data = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
+            graph_make(data, request = request)
+            #df = pd.DataFrame(data = data)
             return JsonResponse({
                                     'name': station_name,
                                     'mode': station_mode, 
@@ -108,6 +147,9 @@ def index(request):
             station_soil_temp_1 = selected.values_list('soil_temp_1')
             station_soil_temp_2 = selected.values_list('soil_temp_2')
             station_soil_temp_3 = selected.values_list('soil_temp_3')
+            data = [station_dates, station_temp, station_humidity, station_soil_temp_1, station_soil_temp_2, station_soil_temp_3]
+            graph_make(data)
+            #df = pd.DataFrame(data = data)
             main_station_data = Station_0020CF3B.objects.all()
             data_temp = main_station_data.values_list('air_temp_avg', flat=True)
             data_humidity = main_station_data.values_list('relative_humidity_avg', flat=True)
@@ -172,6 +214,9 @@ def index(request):
             station_dew_point = selected.values_list('dew_point')
             station_wind_speed_avg = selected.values_list('wind_speed_avg')
             station_wind_speed_max = selected.values_list('wind_speed_max')
+            data = [station_dates, station_temp, station_humidity, station_dew_point, station_wind_speed_avg, station_wind_speed_max]
+            graph_make(data)
+            #df = pd.DataFrame(data = data)
             return JsonResponse({
                                     'name': station_name,
                                     'mode': station_mode, 

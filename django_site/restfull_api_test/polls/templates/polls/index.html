@@ -22,8 +22,9 @@
 			<div id="tab1" class="tab active">
 				<p id = "messageNoInfo1"></p>
 				<div class="graphic">
-					<canvas id="myChart" class="chart1" height= "70px"></canvas>
-					<canvas id="myChart2" class="chart2" height= "70px"></canvas>
+					<!-- <canvas id="myChart" class="chart1" height= "70px"></canvas>
+					<canvas id="myChart2" class="chart2" height= "70px"></canvas> -->
+					{% include "polls/graphs/plotly.html" %}
 				</div>
 			</div>
 			<div id="tab2" class="tab"> 
@@ -53,95 +54,94 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="display">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 		<script type = "text/javascript">
-			var ctx = document.getElementById('myChart').getContext('2d');
-			var myChart;
-			myChart = new Chart(ctx, {
-				type: 'line',
-				data: {														
-					labels: [
-						{% for a in data %}
-						'{{a.date}}',{% endfor %}
-					],
-					datasets: [
-						{
-							label: 'Средняя температура воздуха, °C',
-							data: [
-								{% for a in data %}
-								{{a.air_temp_avg}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255,255, 0.2)'],
-							borderColor: ['rgba(200, 0, 15, 1)'],
-							borderWidth: 2
-						},						
-						{
-							label: 'Средняя температура почвы, °C',
-							data: [
-								{% for a in data %}
-								{{a.soil_temp_avg}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-							borderColor: ['rgba(9, 132, 0, 1)'],
+			// var ctx = document.getElementById('myChart').getContext('2d');
+			// var myChart;
+			// myChart = new Chart(ctx, {
+			// 	type: 'line',
+			// 	data: {														
+			// 		labels: [
+			// 			{% for a in data %}
+			// 			'{{a.date}}',{% endfor %}
+			// 		],
+			// 		datasets: [
+			// 			{
+			// 				label: 'Средняя температура воздуха, °C',
+			// 				data: [
+			// 					{% for a in data %}
+			// 					{{a.air_temp_avg}},{% endfor %}
+			// 				],
+			// 				backgroundColor: ['rgba(255, 255,255, 0.2)'],
+			// 				borderColor: ['rgba(200, 0, 15, 1)'],
+			// 				borderWidth: 2
+			// 			},						
+			// 			{
+			// 				label: 'Средняя температура почвы, °C',
+			// 				data: [
+			// 					{% for a in data %}
+			// 					{{a.soil_temp_avg}},{% endfor %}
+			// 				],
+			// 				backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+			// 				borderColor: ['rgba(9, 132, 0, 1)'],
 							
-							borderWidth: 2
-						},	
-					]
-						},
-				options: {
-					scales: {
-						y: {
-							beginAtZero: true
-						}
-					}
-				}				
-			});		
-			var myChart2;		
-			var ctx2 = document.getElementById('myChart2').getContext('2d');
-			myChart2 = new Chart(ctx2, {
-				type: 'line',
-				data: {														
-					labels: [
-						{% for a in data %}
-						'{{a.date}}',{% endfor %}
-					],
-					datasets: [
-						{
-							label: 'Относительная влажность воздуха, %',
-							data: [
-								{% for a in data %}
-								{{a.relative_humidity_avg}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-							borderColor: ['rgba(200, 0, 15, 1)'],
-							borderWidth: 2
-						},						
-						{
-							label: 'Средняя влажность почвы, %',
-							data: [
-								{% for a in data %}
-								{{a.soil_moisture}},{% endfor %}
-							],
-							backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-							borderColor: ['rgba(9, 132, 0, 1)'],
-							borderWidth: 2
-						},		
-					]
-						},
-				options: {
-					scales: {
-						y: {
-							beginAtZero: true
-						}
-					}
-				}				
-			});
+			// 				borderWidth: 2
+			// 			},	
+			// 		]
+			// 			},
+			// 	options: {
+			// 		scales: {
+			// 			y: {
+			// 				beginAtZero: true
+			// 			}
+			// 		}
+			// 	}				
+			// });		
+			// var myChart2;		
+			// var ctx2 = document.getElementById('myChart2').getContext('2d');
+			// myChart2 = new Chart(ctx2, {
+			// 	type: 'line',
+			// 	data: {														
+			// 		labels: [
+			// 			{% for a in data %}
+			// 			'{{a.date}}',{% endfor %}
+			// 		],
+			// 		datasets: [
+			// 			{
+			// 				label: 'Относительная влажность воздуха, %',
+			// 				data: [
+			// 					{% for a in data %}
+			// 					{{a.relative_humidity_avg}},{% endfor %}
+			// 				],
+			// 				backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+			// 				borderColor: ['rgba(200, 0, 15, 1)'],
+			// 				borderWidth: 2
+			// 			},						
+			// 			{
+			// 				label: 'Средняя влажность почвы, %',
+			// 				data: [
+			// 					{% for a in data %}
+			// 					{{a.soil_moisture}},{% endfor %}
+			// 				],
+			// 				backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+			// 				borderColor: ['rgba(9, 132, 0, 1)'],
+			// 				borderWidth: 2
+			// 			},		
+			// 		]
+			// 			},
+			// 	options: {
+			// 		scales: {
+			// 			y: {
+			// 				beginAtZero: true
+			// 			}
+			// 		}
+			// 	}				
+			// });
 
-	//Выпадающий список
-				$(".custom-select").each(function() {
+	// Выпадающий список 
+				 $(".custom-select").each(function() {
 			var classes = $(this).attr("class"),
 				id = $(this).attr("id"),
 				name = $(this).attr("name");
@@ -223,7 +223,7 @@
 				e.preventDefault();
 				});
 			});
-		</script>
+		</script> 
 	  </div>
   </body>
 </html>
