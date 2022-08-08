@@ -11,6 +11,8 @@ import os
 from ml_script import ml_predict_test, ml_predict
 import json
 
+from django.db.models import F
+
 def index(request):
     if (request.is_ajax()):
         station_name = 'Station_'
@@ -26,21 +28,7 @@ def index(request):
             elif (station_mode == 'daily'):
                 selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
             elif (station_mode == 'weekly'):                
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-                station_dates = selected.values_list('date')[::7]
-                station_temp = selected.values_list('air_temp_avg')[::7]
-                station_soil_temp = selected.values_list('soil_temp_avg')[::7]
-                station_humidity = selected.values_list('relative_humidity_avg')[::7]
-                station_soil_moisture = selected.values_list('soil_moisture')[::7]
-                return JsonResponse({
-                                    'name': station_name,
-                                    'mode': station_mode, 
-                                    'dates' : list(station_dates),
-                                    'air_temp_avg' : list(station_temp), 
-                                    'soil_temp_avg' : list(station_soil_temp),
-                                    'relative_humidity_avg' : list(station_humidity),
-                                    'soil_moisture' : list(station_soil_moisture)
-                                }, status=200)
+                selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
             # 0020CF3B stats : air_temp_avg, date, id, relative_humidity_avg, soil_moisture, soil_temp_avg
             station_dates = selected.values_list('date')
             station_temp = selected.values_list('air_temp_avg')
@@ -62,45 +50,7 @@ def index(request):
             elif (station_mode == 'daily'):
                 selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
             elif (station_mode == 'weekly'):                
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-                station_dates = selected.values_list('date')[::7]
-                station_temp = selected.values_list('air_temp_avg')[::7]
-                station_humidity = selected.values_list('relative_humidity_avg')[::7]
-                station_soil_temp_1 = selected.values_list('soil_temp_1')[::7]
-                station_soil_temp_2 = selected.values_list('soil_temp_2')[::7]
-                station_soil_temp_3 = selected.values_list('soil_temp_3')[::7]
-                main_station_data = Station_0020CF3B.objects.all()
-                data_temp = main_station_data.values_list('air_temp_avg', flat=True)
-                data_humidity = main_station_data.values_list('relative_humidity_avg', flat=True)
-                data_soil_temp = main_station_data.values_list('soil_temp_avg', flat=True)
-                data_moist = main_station_data.values_list('soil_moisture', flat=True)
-                main_station_data2 = Station_002099C5.objects.all()
-                data2_temp = main_station_data2.values_list('air_temp_avg', flat=True)
-                data2_humidity = main_station_data2.values_list('relative_humidity_avg', flat=True)
-                data2_soil_temp = main_station_data2.values_list('soil_temp_1', flat=True)
-                predict = ml_predict_test({
-                    'Air Temperature' : list(data_temp), 
-                    'Relative Humidity' : list(data_humidity), 
-                    'Soil Temperature' : list(data_soil_temp),
-                    'Soil Moisture' : list(data_moist)
-                },
-                {
-                    'Air Temperature' : list(data2_temp), 
-                    'Relative Humidity' : list(data2_humidity), 
-                    'Soil Temperature' : list(data2_soil_temp)
-                })
-                file_dir = '../../data2.csv'
-                # predict = ml_predict_test(file_dir)[::7]
-                return JsonResponse({
-                                    'name': station_name,
-                                    'dates' : list(station_dates), 
-                                    'air_temp_avg' : list(station_temp), 
-                                    'relative_humidity_avg' : list(station_humidity), 
-                                    'soil_temp_1' : list(station_soil_temp_1),
-                                    'soil_temp_2' : list(station_soil_temp_2),
-                                    'soil_temp_3' : list(station_soil_temp_3),
-                                    'predict' : predict
-                                    }, status=200)
+                selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
             # 002099C5 stats : air_temp_avg, date, id, relative_humidity_avg, soil_temp_1, soil_temp_2, soil_temp_3
             station_dates = selected.values_list('date')
             station_temp = selected.values_list('air_temp_avg')
@@ -148,23 +98,7 @@ def index(request):
             elif (station_mode == 'daily'):
                 selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
             elif (station_mode == 'weekly'):                
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-                station_dates = selected.values_list('date')[::7]
-                station_temp = selected.values_list('air_temp_avg')[::7]
-                station_dew_point = selected.values_list('dew_point')[::7]
-                station_humidity = selected.values_list('relative_humidity_avg')[::7]
-                station_wind_speed_avg = selected.values_list('wind_speed_avg')[::7]
-                station_wind_speed_max = selected.values_list('wind_speed_max')[::7]
-                return JsonResponse({
-                                    'name': station_name,
-                                    'mode': station_mode, 
-                                    'dates' : list(station_dates),
-                                    'air_temp_avg' : list(station_temp), 
-                                    'dew_point' : list(station_dew_point),
-                                    'relative_humidity_avg' : list(station_humidity),
-                                    'wind_speed_avg' : list(station_wind_speed_avg),
-                                    'wind_speed_max' : list(station_wind_speed_max),
-                                }, status=200)
+                selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
             # 00000235: id, date, air_temp_avg, relative_humidity_avg, dew_point, wind_speed_avg, wind_speed_max
             station_dates = selected.values_list('date')
             station_temp = selected.values_list('air_temp_avg')
