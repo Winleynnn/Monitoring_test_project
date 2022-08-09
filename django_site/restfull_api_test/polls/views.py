@@ -15,8 +15,9 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import pandas as pd
 import datetime
+import math
 
-#ЭТА ФНУКЦИЯ ПРОСТО УЖАСНАЯ И ТРЕБУЕТ СЕРЬЕЗНОЙ ДОРАБОТКИ
+#ЭТА ФУНКЦИЯ ПРОСТО УЖАСНАЯ И ТРЕБУЕТ СЕРЬЕЗНОЙ ДОРАБОТКИ
 def graph_make(data, data_name):
     #dt = pd.read_csv('C:/Users/ralf3/OneDrive/Рабочий стол/Project/django_site/restfull_api_test/Hourly Weather Data in Gallipoli (2008-2021).csv', sep = ';')
     df = pd.DataFrame(data = data)
@@ -28,19 +29,54 @@ def graph_make(data, data_name):
     #     plot_cols += col
     #     print(plot_cols)
     plot_features = datafr[plot_cols]
-    fig = make_subplots(rows=2, cols=2, subplot_titles=(plot_cols), shared_xaxes=False)
-    fig.add_trace(go.Scatter(x=date_time, y=plot_features['air_temp_avg'], name = 'Температура воздуха'), row=1, col=1)
-    fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_temp_avg'], name = 'Температура почвы'), row=1, col=2)
-    fig.add_trace(go.Scatter(x=date_time, y=plot_features['relative_humidity_avg'], name = 'Относительная влажность воздуха'), row=2, col=1)
-    fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_moisture'], name = 'Влажность почвы'), row=2, col=2)
-    fig.update_xaxes(title_text="Date", row=1, col=1)
-    fig.update_xaxes(title_text="Date", row=1, col=2)
-    fig.update_xaxes(title_text="Date",  row=2, col=1)
-    fig.update_xaxes(title_text="Date", row=2, col=2)
-    fig.update_yaxes(title_text="Temperature", row=1, col=1)
-    fig.update_yaxes(title_text="Soil Temperature", row=1, col=2)
-    fig.update_yaxes(title_text="Air Humidity",  row=2, col=1)
-    fig.update_yaxes(title_text="Soil Moisture", row=2, col=2)
+    print(datafr)
+    # for i in range(1, len(plot_cols), 1):
+    if (math.sqrt(len(plot_cols)).is_integer()):
+        row = int(math.sqrt(len(plot_cols)))
+        col = int(math.sqrt(len(plot_cols)))
+    else:
+        row = int(math.ceil(math.sqrt(len(plot_cols))))
+        if(math.sqrt(len(plot_cols)) < math.trunc(math.sqrt(len(plot_cols))) + 0.5):
+            col = int(math.floor(math.sqrt(len(plot_cols))))
+        else:
+            col = int(math.ceil(math.sqrt(len(plot_cols))))
+    if (len(plot_cols)%2==0):
+        fig = make_subplots(rows=row, cols=col, subplot_titles=(plot_cols), shared_xaxes=False)
+    else:
+        fig = make_subplots(rows=row, cols=col, subplot_titles=(plot_cols), shared_xaxes=False)
+        # specs=[[{}, {}],
+        #    [{"colspan": row}, None]]
+    print(row + col)
+    num_name = 1
+    for p in range(0, row, 1):
+        for v in range(0, col, 1):
+            row_num = p + 1
+            col_num = v + 1
+            fig.add_trace(go.Scatter(x=date_time, y=plot_features[str(plot_cols[num_name - 1])], name = plot_cols[num_name - 1]), row = row_num, col= col_num)
+            fig.update_xaxes(title_text="Date", row=row_num, col=col_num)
+            fig.update_yaxes(title_text=str(plot_cols[num_name - 1]), row=row_num, col=col_num)
+            print(plot_features.iloc[:, num_name-1:num_name])
+            num_name += 1
+        # if(i%2== 0):
+        #     fig.add_trace(go.Scatter(x=date_time, y=plot_features.iloc[:, i-1:i], name = plot_cols[i]), row=row -(row - i) + 1, col= col - (col - i) + 1)
+        # else:
+        #     fig.add_trace(go.Scatter(x=date_time, y=plot_features.iloc[:, i - 1 if (i!=0) else 0:i], name = plot_cols[i]), row=row -(row - i), col= col -(col - i) + 1)
+        fig.print_grid()
+        print(num_name)
+    #dt = plot_features.iloc[:, 0:1]
+    #fig.add_trace(go.Scatter(x=date_time, y=dt['air_temp_avg'], name = 'Температура воздуха'), row=1, col=1)
+    #print(dt)
+    # fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_temp_avg'], name = 'Температура почвы'), row=1, col=2)
+    # fig.add_trace(go.Scatter(x=date_time, y=plot_features['relative_humidity_avg'], name = 'Относительная влажность воздуха'), row=2, col=1)
+    # fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_moisture'], name = 'Влажность почвы'), row=2, col=2)
+    # fig.update_xaxes(title_text="Date", row=1, col=1)
+    # fig.update_xaxes(title_text="Date", row=1, col=2)
+    # fig.update_xaxes(title_text="Date",  row=2, col=1)
+    # fig.update_xaxes(title_text="Date", row=2, col=2)
+    # fig.update_yaxes(title_text="Temperature", row=1, col=1)
+    # fig.update_yaxes(title_text="Soil Temperature", row=1, col=2)
+    # fig.update_yaxes(title_text="Air Humidity",  row=2, col=1)
+    # fig.update_yaxes(title_text="Soil Moisture", row=2, col=2)
     #for i in range(0, len(plot_cols), 1):
         #временный костыль для работы с одним графиком
         # print(len(plot_cols))
@@ -75,7 +111,9 @@ def graph_make(data, data_name):
     fig.update_layout(title_text="Meteo Data", height=700)
     chart = str(fig.to_html())
     #поменять на относительный путь
-    path_str = "C:/Users/ralf3/OneDrive/Рабочий стол/Project/django_site/restfull_api_test/polls/templates/polls/graphs/chart.html"
+    #path_str = "D:/Project/django_site/restfull_api_test/polls/templates/polls/graphs/chart.html"
+    path_str = "polls/templates/polls/graphs/chart.html"
+    open(path_str, 'w')
     fig.write_html(path_str)
     #return chart
     # context = {'chart': chart}
@@ -185,7 +223,8 @@ def index(request):
             station_soil_temp_2 = selected.values_list('soil_temp_2')
             station_soil_temp_3 = selected.values_list('soil_temp_3')
             data = [station_dates, station_temp, station_humidity, station_soil_temp_1, station_soil_temp_2, station_soil_temp_3]
-            graph_make(data)
+            data_name = ['date', 'air_temp_avg', 'relative_humidity_avg', 'soil_temp_1', 'soil_temp_2', 'soil_temp_3']
+            text_chart = graph_make(data, data_name)
             #df = pd.DataFrame(data = data)
             main_station_data = Station_0020CF3B.objects.all()
             data_temp = main_station_data.values_list('air_temp_avg', flat=True)
@@ -252,6 +291,8 @@ def index(request):
             station_wind_speed_avg = selected.values_list('wind_speed_avg')
             station_wind_speed_max = selected.values_list('wind_speed_max')
             data = [station_dates, station_temp, station_humidity, station_dew_point, station_wind_speed_avg, station_wind_speed_max]
+            data_name = ['date', 'air_temp_avg', 'relative_humidity_avg', 'dew_point', 'wind_speed_avg', 'wind_speed_max']
+            text_chart = graph_make(data, data_name)
             graph_make(data)
             #df = pd.DataFrame(data = data)
             return JsonResponse({

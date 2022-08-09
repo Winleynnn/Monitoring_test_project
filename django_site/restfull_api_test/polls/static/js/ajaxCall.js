@@ -189,7 +189,7 @@ function ajaxCall(timeData){
                         borderWidth: 2
                     }
                 ]
-                createChart1(dates, S_0020CF3B_dataset_temp, S_0020CF3B_dataset_water);
+                // createChart1(dates, S_0020CF3B_dataset_temp, S_0020CF3B_dataset_water);
             }
 
             if (response.name == "Station_002099C5")
