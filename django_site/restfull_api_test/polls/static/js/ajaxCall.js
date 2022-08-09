@@ -1,52 +1,52 @@
 function createChart1(label, dataset, dataset2){
-    if (label[0] == null) 
-    {
-        $('#messageNoInfo1').text('Данных за выбранный период не найдено')
-        $('#messageNoInfo2').text('Данных за выбранный период не найдено')
-        $('#myChart').hide()
-        $('#myChart2').hide()
-        $('#myTable').hide()
-    }
-    else
-    {
-        $('#messageNoInfo1').text('')
-        $('#messageNoInfo2').text('')
-        $('#myChart').show()
-        $('#myChart2').show()
-        $('#myTable').show()
-        var ctx = document.getElementById('myChart').getContext('2d');
-        myChart.destroy()
-        myChart = new Chart(ctx, {
-            type: 'line',
-            data: {														
-                labels: label,
-                datasets: dataset,
-                },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }				
-        });
-        var ctx2 = document.getElementById('myChart2').getContext('2d');
-        myChart2.destroy()
-        myChart2 = new Chart(ctx2, {
-            type: 'line',
-            data: {														
-                labels: label,
-                datasets: dataset2,
-                },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }				
-        })
-    }
+    // if (label[0] == null) 
+    // {
+    //     $('#messageNoInfo1').text('Данных за выбранный период не найдено')
+    //     $('#messageNoInfo2').text('Данных за выбранный период не найдено')
+    //     $('#myChart').hide()
+    //     $('#myChart2').hide()
+    //     $('#myTable').hide()
+    // }
+    // else
+    // {
+    //     $('#messageNoInfo1').text('')
+    //     $('#messageNoInfo2').text('')
+    //     $('#myChart').show()
+    //     $('#myChart2').show()
+    //     $('#myTable').show()
+    //     var ctx = document.getElementById('myChart').getContext('2d');
+    //     myChart.destroy()
+    //     myChart = new Chart(ctx, {
+    //         type: 'line',
+    //         data: {														
+    //             labels: label,
+    //             datasets: dataset,
+    //             },
+    //         options: {
+    //             scales: {
+    //                 y: {
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }				
+    //     });
+    //     var ctx2 = document.getElementById('myChart2').getContext('2d');
+    //     myChart2.destroy()
+    //     myChart2 = new Chart(ctx2, {
+    //         type: 'line',
+    //         data: {														
+    //             labels: label,
+    //             datasets: dataset2,
+    //             },
+    //         options: {
+    //             scales: {
+    //                 y: {
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }				
+    //     })
+    // }
 };
 
 $(document).ready(function(){
@@ -119,6 +119,16 @@ function ajaxCall(timeData){
                 var soil_temp = response['soil_temp_avg']
                 var humidity = response['relative_humidity_avg']
                 var soil_moisture = response['soil_moisture']
+                var chart = response['graph']
+                var graphic = $('.graphic')[0]
+                // id = graphic.childNodes[0].childNodes[2].id
+                graphic.innerHTML = chart
+                // graphic.childNodes[0].childNodes[2].id = id
+
+                var arr = graphic.getElementsByTagName('script')
+                for (var n = 0; n < arr.length; n++)
+                    eval(arr[n].innerHTML)
+
 
 
                 tableParent = document.getElementById('myTable').parentNode
