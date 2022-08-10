@@ -212,6 +212,14 @@ function ajaxCall(timeData){
                 var soil_temp_3 = response['soil_temp_3']
                 var predict = response['predict']
 
+                var chart = response['graph']
+                var graphic = $('.graphic')[0]
+                graphic.innerHTML = chart
+                var arr = graphic.getElementsByTagName('script')
+                for (var n = 0; n < arr.length; n++)
+                    eval(arr[n].innerHTML)
+
+
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()
                 tableChild = document.createElement('table')
@@ -310,6 +318,13 @@ function ajaxCall(timeData){
                 var dew_point = response['dew_point']
                 var wind_speed_avg = response['wind_speed_avg']
                 var wind_speed_max = response['wind_speed_max']
+
+                var chart = response['graph']
+                var graphic = $('.graphic')[0]
+                graphic.innerHTML = chart
+                var arr = graphic.getElementsByTagName('script')
+                for (var n = 0; n < arr.length; n++)
+                    eval(arr[n].innerHTML)
 
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()

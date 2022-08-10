@@ -19,109 +19,54 @@ import math
 from plotly.offline import plot
 from django.db.models import F
 
-#ЭТА ФУНКЦИЯ ПРОСТО УЖАСНАЯ И ТРЕБУЕТ СЕРЬЕЗНОЙ ДОРАБОТКИ
+#функция создания графиков
 def graph_make(data, data_name):
-    #dt = pd.read_csv('C:/Users/ralf3/OneDrive/Рабочий стол/Project/django_site/restfull_api_test/Hourly Weather Data in Gallipoli (2008-2021).csv', sep = ';')
+    #получает данные из базы данных, загружает в датафрейм и транспонирует, назначает названия столбцов
     df = pd.DataFrame(data = data)
     datafr = df.transpose()
-    print(datafr)
     datafr.columns = data_name
+    #удаляет даты из датафрейма и загружает в отдельную переменную
     date_time = pd.to_datetime(datafr.pop(datafr.columns[0]), format='%Y-%m-%d %H:%M:%S')
     plot_cols = data_name[1:]
-    # for col in list(datafr.columns.values.tolist()):
-    #     plot_cols += col
-    #     print(plot_cols)
     plot_features = datafr[plot_cols]
-    print(datafr)
-    # for i in range(1, len(plot_cols), 1):
+    #алгоритм задания грида графиков
+    #если количество переменных является квадратом целого числа - количество строк и столбцов грида равняется этому числу
     if (math.sqrt(len(plot_cols)).is_integer()):
         row = int(math.sqrt(len(plot_cols)))
         col = int(math.sqrt(len(plot_cols)))
+    #иначе количество строк равняется квадратному корню из количества переменных, округленному в большую сторону
     else:
         row = int(math.ceil(math.sqrt(len(plot_cols))))
+        #а количество столбцов округляется к ближайшему целому числу
         if(math.sqrt(len(plot_cols)) < math.trunc(math.sqrt(len(plot_cols))) + 0.5):
             col = int(math.floor(math.sqrt(len(plot_cols))))
         else:
             col = int(math.ceil(math.sqrt(len(plot_cols))))
+    #задание количества графиков
+    #в дальнейшем, если количество графиков не соответствует объему грида - графики в нижней строке грида будут масштабироваться
+    #но пока он просто рисует графики по гриду, а пустые ячейки грида оставляет пустыми. Потом поправлю
     if (len(plot_cols)%2==0):
         fig = make_subplots(rows=row, cols=col, subplot_titles=(plot_cols), shared_xaxes=False)
     else:
+        # specs = []
+        # for i in range(1, len(plot_cols), 1):
+        #     specs += [[{}, {}, {}]]
+        # specs += [[{"colspan": row}, None,{}]]
+        # specs += [[{}, {}, {}]]
         fig = make_subplots(rows=row, cols=col, subplot_titles=(plot_cols), shared_xaxes=False)
-        # specs=[[{}, {}],
-        #    [{"colspan": row}, None]]
-    print(row + col)
+    #отрисовка графиков
+    #просто вложенный цикл проходит по всем ячейкам грида и отрисовывает графики в каждой (пока количество ячеек не превысит количество переменных)
     num_name = 1
-    for p in range(0, row, 1):
-        for v in range(0, col, 1):
-            row_num = p + 1
-            col_num = v + 1
-            fig.add_trace(go.Scatter(x=date_time, y=plot_features[str(plot_cols[num_name - 1])], name = plot_cols[num_name - 1]), row = row_num, col= col_num)
-            fig.update_xaxes(title_text="Date", row=row_num, col=col_num)
-            fig.update_yaxes(title_text=str(plot_cols[num_name - 1]), row=row_num, col=col_num)
-            print(plot_features.iloc[:, num_name-1:num_name])
-            num_name += 1
-        # if(i%2== 0):
-        #     fig.add_trace(go.Scatter(x=date_time, y=plot_features.iloc[:, i-1:i], name = plot_cols[i]), row=row -(row - i) + 1, col= col - (col - i) + 1)
-        # else:
-        #     fig.add_trace(go.Scatter(x=date_time, y=plot_features.iloc[:, i - 1 if (i!=0) else 0:i], name = plot_cols[i]), row=row -(row - i), col= col -(col - i) + 1)
-        fig.print_grid()
-        print(num_name)
-    #dt = plot_features.iloc[:, 0:1]
-    #fig.add_trace(go.Scatter(x=date_time, y=dt['air_temp_avg'], name = 'Температура воздуха'), row=1, col=1)
-    #print(dt)
-    # fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_temp_avg'], name = 'Температура почвы'), row=1, col=2)
-    # fig.add_trace(go.Scatter(x=date_time, y=plot_features['relative_humidity_avg'], name = 'Относительная влажность воздуха'), row=2, col=1)
-    # fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_moisture'], name = 'Влажность почвы'), row=2, col=2)
-    # fig.update_xaxes(title_text="Date", row=1, col=1)
-    # fig.update_xaxes(title_text="Date", row=1, col=2)
-    # fig.update_xaxes(title_text="Date",  row=2, col=1)
-    # fig.update_xaxes(title_text="Date", row=2, col=2)
-    # fig.update_yaxes(title_text="Temperature", row=1, col=1)
-    # fig.update_yaxes(title_text="Soil Temperature", row=1, col=2)
-    # fig.update_yaxes(title_text="Air Humidity",  row=2, col=1)
-    # fig.update_yaxes(title_text="Soil Moisture", row=2, col=2)
-    #for i in range(0, len(plot_cols), 1):
-        #временный костыль для работы с одним графиком
-        # print(len(plot_cols))
-        # if len(plot_cols) == 4:
-            # fig.add_trace(
-            #     go.Scatter(x=date_time, y=plot_features[plot_cols[i]], name = plot_cols[i]),
-            #     row=i+1, col=i+1
-            #     )
-            # fig.add_trace(go.Scatter(x=date_time, y=plot_features['air_temp_avg']), row=1, col=1)
-            # fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_temp_avg']), row=1, col=2)
-            # fig.add_trace(go.Scatter(x=date_time, y=plot_features['relative_humidity_avg']), row=2, col=1)
-            # fig.add_trace(go.Scatter(x=date_time, y=plot_features['soil_moisture']), row=2, col=2)
-            # fig.update_xaxes(title_text="Date", row=1, col=1)
-            # fig.update_xaxes(title_text="Date", row=1, col=2)
-            # fig.update_xaxes(title_text="Date",  row=2, col=1)
-            # fig.update_xaxes(title_text="Date", row=2, col=2)
-            # fig.update_yaxes(title_text="Temperature", row=1, col=1)
-            # fig.update_yaxes(title_text="Soil Temperature", row=1, col=2)
-            # fig.update_yaxes(title_text="Air Humidity",  row=2, col=1)
-            # fig.update_yaxes(title_text="Soil Moisture", row=2, col=2)
-            # fig.update_xaxes(title_text="Date", row=i+1, col=i+1)
-            # fig.update_yaxes(title_text=plot_cols[i], row=i+1, col=i+1)
-        # else:
-        #     fig.add_trace(
-        #         go.Scatter(x=date_time, y=plot_features[plot_cols[i]], name = plot_cols[i]),
-        #         row=i+1, col=i
-        #     )
-        #     fig.update_xaxes(title_text="Date", row=i+1, col=i)
-        #     fig.update_yaxes(title_text=plot_cols[i], row=i+1, col=i)
-    
-    # Update title and height
+    for row_num in range(1, row, 1):
+        for col_num in range(1, col, 1):
+            if(row_num * col_num <= len(plot_cols)):
+                fig.add_trace(go.Scatter(x=date_time, y=plot_features[str(plot_cols[num_name - 1])], name = plot_cols[num_name - 1]), row = row_num, col= col_num)
+                fig.update_xaxes(title_text="Date", row=row_num, col=col_num)
+                fig.update_yaxes(title_text=str(plot_cols[num_name - 1]), row=row_num, col=col_num)
+                num_name += 1
+    #Добавляет название и меняет высоту подложки 
     fig.update_layout(title_text="Meteo Data", height=700)
-    chart = str(fig.to_html())
-    #поменять на относительный путь
-    #path_str = "D:/Project/django_site/restfull_api_test/polls/templates/polls/graphs/chart.html"
-    path_str = "polls/templates/polls/graphs/chart.html"
-    open(path_str, 'w')
-    fig.write_html(path_str)
-    #return chart
-    # context = {'chart': chart}
-    # print(chart)
-    # return render(request, 'polls/graphs/chart.html', context)]
+    #Возвращает код для отрисовки графиков
     fig_plot = plot(fig, output_type='div', include_plotlyjs=True)
     return fig_plot
 
@@ -149,10 +94,8 @@ def index(request):
             station_soil_moisture = selected.values_list('soil_moisture', flat = True)
             data_name_1 = ['date', 'air_temp_avg', 'soil_temp_avg', 'relative_humidity_avg', 'soil_moisture']
             data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
-            print(station_dates)
             print(data_1)
             text_chart = graph_make(data = data_1, data_name = data_name_1)
-            #df = pd.DataFrame(data = data)
             return JsonResponse({
                                     'name': station_name,
                                     'mode': station_mode, 
@@ -177,12 +120,9 @@ def index(request):
             station_soil_temp_1 = selected.values_list('soil_temp_1', flat = True)
             station_soil_temp_2 = selected.values_list('soil_temp_2', flat = True)
             station_soil_temp_3 = selected.values_list('soil_temp_3', flat = True)
-            print(station_dates)
             data_2 = [station_dates, station_temp, station_humidity, station_soil_temp_1, station_soil_temp_2, station_soil_temp_3]
-            print(data_2)
             data_name_2 = ['date', 'air_temp_avg', 'relative_humidity_avg', 'soil_temp_1', 'soil_temp_2', 'soil_temp_3']
             text_chart = graph_make(data = data_2, data_name = data_name_2)
-            #df = pd.DataFrame(data = data)
             main_station_data = Station_0020CF3B.objects.all()
             data_temp = main_station_data.values_list('air_temp_avg', flat=True)
             data_humidity = main_station_data.values_list('relative_humidity_avg', flat=True)
@@ -232,13 +172,9 @@ def index(request):
             station_dew_point = selected.values_list('dew_point', flat = True)
             station_wind_speed_avg = selected.values_list('wind_speed_avg', flat = True)
             station_wind_speed_max = selected.values_list('wind_speed_max', flat = True)
-            print(station_dates)
             data_3 = [station_dates, station_temp, station_humidity, station_dew_point, station_wind_speed_avg, station_wind_speed_max]
-            print(data_3)
             data_name_3 = ['date', 'air_temp_avg', 'relative_humidity_avg', 'dew_point', 'wind_speed_avg', 'wind_speed_max']
             text_chart = graph_make(data = data_3, data_name = data_name_3)
-            #graph_make(data)
-            #df = pd.DataFrame(data = data)
             return JsonResponse({
                                     'name': station_name,
                                     'mode': station_mode, 
