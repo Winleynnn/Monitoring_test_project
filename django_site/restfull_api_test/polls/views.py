@@ -57,8 +57,8 @@ def graph_make(data, data_name):
     #отрисовка графиков
     #просто вложенный цикл проходит по всем ячейкам грида и отрисовывает графики в каждой (пока количество ячеек не превысит количество переменных)
     num_name = 1
-    for row_num in range(1, row, 1):
-        for col_num in range(1, col, 1):
+    for row_num in range(1, row+1, 1):
+        for col_num in range(1, col+1, 1):
             if(row_num * col_num <= len(plot_cols)):
                 fig.add_trace(go.Scatter(x=date_time, y=plot_features[str(plot_cols[num_name - 1])], name = plot_cols[num_name - 1]), row = row_num, col= col_num)
                 fig.update_xaxes(title_text="Date", row=row_num, col=col_num)
