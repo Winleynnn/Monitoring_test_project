@@ -67,7 +67,7 @@ def graph_make(data, data_name):
                 fig.update_yaxes(title_text=str(col_names[num_name - 1]), row=row_num, col=col_num)
                 num_name += 1
     #Добавляет название и меняет высоту подложки 
-    fig.update_layout(title_text="Meteo Data", height=700, width = 1200)
+    fig.update_layout(title_text="Динамика изменения метеорологических параметров", height=700, width = 1200)
     #Возвращает код для отрисовки графиков
     fig_plot = plot(fig, output_type='div', include_plotlyjs=True)
     return fig_plot
