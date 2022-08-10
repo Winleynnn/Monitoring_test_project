@@ -24,10 +24,11 @@ def graph_make(data, data_name):
     #получает данные из базы данных, загружает в датафрейм и транспонирует, назначает названия столбцов
     df = pd.DataFrame(data = data)
     datafr = df.transpose()
-    datafr.columns = data_name
+    datafr.columns = list(data_name.keys())
     #удаляет даты из датафрейма и загружает в отдельную переменную
     date_time = pd.to_datetime(datafr.pop(datafr.columns[0]), format='%Y-%m-%d %H:%M:%S')
-    plot_cols = data_name[1:]
+    plot_cols = list(data_name.keys())[1:]
+    col_names = list(data_name.values())[1:]
     plot_features = datafr[plot_cols]
     #алгоритм задания грида графиков
     #если количество переменных является квадратом целого числа - количество строк и столбцов грида равняется этому числу
@@ -46,26 +47,27 @@ def graph_make(data, data_name):
     #в дальнейшем, если количество графиков не соответствует объему грида - графики в нижней строке грида будут масштабироваться
     #но пока он просто рисует графики по гриду, а пустые ячейки грида оставляет пустыми. Потом поправлю
     if (len(plot_cols)%2==0):
-        fig = make_subplots(rows=row, cols=col, subplot_titles=(plot_cols), shared_xaxes=False)
+        fig = make_subplots(rows=row, cols=col, subplot_titles=(col_names), shared_xaxes=False)
     else:
         # specs = []
         # for i in range(1, len(plot_cols), 1):
         #     specs += [[{}, {}, {}]]
         # specs += [[{"colspan": row}, None,{}]]
         # specs += [[{}, {}, {}]]
-        fig = make_subplots(rows=row, cols=col, subplot_titles=(plot_cols), shared_xaxes=False)
+        fig = make_subplots(rows=row, cols=col, subplot_titles=(col_names), shared_xaxes=False)
     #отрисовка графиков
     #просто вложенный цикл проходит по всем ячейкам грида и отрисовывает графики в каждой (пока количество ячеек не превысит количество переменных)
     num_name = 1
     for row_num in range(1, row+1, 1):
         for col_num in range(1, col+1, 1):
             if(row_num * col_num <= len(plot_cols)):
-                fig.add_trace(go.Scatter(x=date_time, y=plot_features[str(plot_cols[num_name - 1])], name = plot_cols[num_name - 1]), row = row_num, col= col_num)
-                fig.update_xaxes(title_text="Date", row=row_num, col=col_num)
-                fig.update_yaxes(title_text=str(plot_cols[num_name - 1]), row=row_num, col=col_num)
+                fig.add_trace(go.Scatter(x=date_time, y=plot_features[str(plot_cols[num_name - 1])], 
+                    name = col_names[num_name - 1]), row = row_num, col= col_num)
+                fig.update_xaxes(title_text="Дата", row=row_num, col=col_num)
+                fig.update_yaxes(title_text=str(col_names[num_name - 1]), row=row_num, col=col_num)
                 num_name += 1
     #Добавляет название и меняет высоту подложки 
-    fig.update_layout(title_text="Meteo Data", height=700)
+    fig.update_layout(title_text="Динамика изменения метеорологических параметров", height=700, width = 1200)
     #Возвращает код для отрисовки графиков
     fig_plot = plot(fig, output_type='div', include_plotlyjs=True)
     return fig_plot
@@ -92,7 +94,7 @@ def index(request):
             station_soil_temp = selected.values_list('soil_temp_avg', flat = True)           
             station_humidity = selected.values_list('relative_humidity_avg', flat = True)
             station_soil_moisture = selected.values_list('soil_moisture', flat = True)
-            data_name_1 = ['date', 'air_temp_avg', 'soil_temp_avg', 'relative_humidity_avg', 'soil_moisture']
+            data_name_1 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'soil_temp_avg':'Средняя температура почвы', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_moisture':'Влажность почвы'}
             data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
             print(data_1)
             text_chart = graph_make(data = data_1, data_name = data_name_1)
@@ -121,7 +123,7 @@ def index(request):
             station_soil_temp_2 = selected.values_list('soil_temp_2', flat = True)
             station_soil_temp_3 = selected.values_list('soil_temp_3', flat = True)
             data_2 = [station_dates, station_temp, station_humidity, station_soil_temp_1, station_soil_temp_2, station_soil_temp_3]
-            data_name_2 = ['date', 'air_temp_avg', 'relative_humidity_avg', 'soil_temp_1', 'soil_temp_2', 'soil_temp_3']
+            data_name_2 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_temp_1':'Температура почвы 1', 'soil_temp_2':'Температура почвы 2', 'soil_temp_3':'Температура почвы 3'}
             text_chart = graph_make(data = data_2, data_name = data_name_2)
             main_station_data = Station_0020CF3B.objects.all()
             data_temp = main_station_data.values_list('air_temp_avg', flat=True)
@@ -173,7 +175,7 @@ def index(request):
             station_wind_speed_avg = selected.values_list('wind_speed_avg', flat = True)
             station_wind_speed_max = selected.values_list('wind_speed_max', flat = True)
             data_3 = [station_dates, station_temp, station_humidity, station_dew_point, station_wind_speed_avg, station_wind_speed_max]
-            data_name_3 = ['date', 'air_temp_avg', 'relative_humidity_avg', 'dew_point', 'wind_speed_avg', 'wind_speed_max']
+            data_name_3 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'relative_humidity_avg':'Относителбная влажность воздуха', 'dew_point':'Точка росы', 'wind_speed_avg':'Средняя скорость ветра', 'wind_speed_max':'Максимальная скорость ветра'}
             text_chart = graph_make(data = data_3, data_name = data_name_3)
             return JsonResponse({
                                     'name': station_name,
