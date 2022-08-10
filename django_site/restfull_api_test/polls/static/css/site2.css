@@ -4,9 +4,9 @@ body {
   margin: 0;
   font-family: Century Gothic;
 }
-.grafic {
-	background-color: #FFFFFF;
+.graphic {
 	width:100%;
+
 }
 .chart1 {
 	background-color: #fff;
@@ -28,6 +28,9 @@ select:focus {
 }
 /*----- Tab Links -----*/
 /* Clearfix */
+.tab-links {
+  padding-bottom: 7px;
+}
 	.tab-links:after {
 	display:block;
 	clear:both;
@@ -45,7 +48,6 @@ select:focus {
 	border-radius:5px 5px 5px 5px;
 	background:#ffffff;
 	font-size:16px;
-
 	color:#363636;
 	transition:all linear 0.15s;
   text-decoration: none;
@@ -53,16 +55,16 @@ select:focus {
   
 }
 .tab-links a:hover {
-  background:#c8dae6;
+  background:#c1f0f0;
 	text-decoration:none;
 }
 li.active a, li.active a:hover {
-	background:#88c1e7;
-	color:#363636;
+	background:#08cfcf;
+	color:#1f1f1f;
 }
 /*----- Content of Tabs -----*/
 .tab-content {
-	padding:15px;
+	padding:0 15px 20px 15px;
 	border-radius:3px;
 	box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
 
@@ -105,12 +107,12 @@ li.active a, li.active a:hover {
   background:#fff; 
 }
 .table tbody tr:nth-child(even){
-	background: #bdd2e7;
+	background: #c8c8c8;
 }
 
 .table thead th {
     color: #ffffff;
-    background: #219c77;
+    background: #219a78;
 }
 
 
@@ -121,7 +123,8 @@ li.active a, li.active a:hover {
 
 /*Кнопки хедера*/
 .top_nav{
-  background-color: #7FB5DA;
+  background-color: #1caeae;
+  /* background-color: #7FB5DA; */
   display: block;
   width: 100%;
   height: fit-content;
@@ -144,10 +147,10 @@ li.active a, li.active a:hover {
   display: inline-block;
   list-style: none;
   text-align: right;
-  padding: 20px 30px;
+  padding: 20px 20px;
 }
 .nav_list li:hover{
-  background-color: #a0d7fc;
+  background-color: #3edede;
 }
 .nav_list a
 {
@@ -155,8 +158,13 @@ li.active a, li.active a:hover {
 }
 .header_name {
   width: 100%;
-  font-size: 20px; padding: 15px 20px;
+  font-size: 20px; 
+  padding: 15px 20px;
   cursor: default;
+}
+.header_name div {
+  vertical-align: middle;
+  
 }
 
 /*Выпадающий список */
@@ -164,6 +172,12 @@ select {
   z-index: 3;
   float: left;
 
+}
+.select1 {
+  z-index: 4;
+}
+.select2 {
+  z-index: 3;
 }
 /** Custom Select **/
 .custom-select-wrapper {
@@ -181,6 +195,7 @@ select {
   display: inline-block;
   font-family: Century Gothic;
   font-size: 15px;
+
 }
 .custom-select-trigger {
   position: relative;
@@ -292,19 +307,19 @@ select {
 .custom-option:hover,
 .custom-option.selection {
   color: #fff;
-  background-color: #7FB5DA;
+  background-color: #1caeae;
 }
 .ind_btn {
   text-decoration: none;
   display: inline-block;
   padding: 10px 30px;
-  margin: 10px 20px;
+  margin: 10px 15px;
   position: relative;
   overflow: hidden;
-  border: 2px solid #7FB5DA;
+  border: 2px solid #16A9A9;
   border-radius: 8px;
   font-family: Century Gothic;
-  color: #408fc4;
+  color: rgb(20, 112, 112);
   transition: .2s ease-in-out;
 }
 .ind_btn:before {
@@ -318,23 +333,32 @@ select {
   transform: skewX(-45deg);
 }
 .ind_btn:hover {
-  background: #7FB5DA;
+  background: #16A9A9;
   color: #fff;
+  cursor: pointer;
 }
 .ind_btn:hover:before {
   left: 150px;
   transition: .5s ease-in-out;
 }
 #first_date {
-  width: 140px;
-  margin-left: 15px;
+  width: 120px;
+  padding: 5px 0;
+  margin: 0 5px 0 15px;
+  text-align: center;
+  border-radius: 3px;
+  border-width: 0.3px;
 }
 #second_date {
-  width: 140px;
+  width: 120px;
+  padding: 5px 0;
+  text-align: center;
+  border-radius: 3px;
+  border-width: 0.3px;
 }
-
 .container {
   user-select: none;
+
 }
 /*Стили окна авторизации*/
 @-webkit-keyframes bounceIn {
@@ -382,6 +406,7 @@ select {
 .log_btn:hover {
   background: #7FB5DA;
   color: #fff;
+  cursor: pointer;
 }
 .log_btn:hover:before {
   left: 150px;
@@ -489,7 +514,7 @@ input[type=password]:focus {
 }
 
 #lower {
-	background: #ecf2f5;
+	background: #eceff1;
 
 	height: 58px;
   margin: 20 -0.4px 0 -0.4px;
@@ -503,3 +528,4 @@ input[type=checkbox] {
 	margin-left: 20px;
 	margin-top: 30px;
 }
+

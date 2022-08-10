@@ -1,17 +1,17 @@
 	<div class="container">
-	<select name="potencial" class="custom-select sources" placeholder="0020CF3B" id="select_station" >
-		<option value="0020CF3B" selected>0020CF3B</option>
-		<option value="002099C5">002099C5</option>
-		<option value="00000235">00000235</option>
-	</select>
-	<select name="potencial" class="custom-select sources" placeholder="По часам" id="select_mode">
-		<option value="hourly" selected>По часам</option>
-		<option value="daily">По дням</option>
-		<option value="weekly">По неделям</option>
-	</select>
-		<input id="first_date" type="date" name="calendar" value="2021-08-12" max="2021-08-13">
-	   	<input id="second_date" type="date" name="calendar" value="2021-08-13" min="2021-08-12">
-	  	<input id="button_date" type="submit" value="Применить периоды" class="ind_btn">
+		<select name="potencial" class="custom-select sources select1" placeholder="0020CF3B" id="select_station" >
+			<option value="0020CF3B" selected>0020CF3B</option>
+			<option value="002099C5">002099C5</option>
+			<option value="00000235">00000235</option>
+		</select>
+		<select name="potencial" class="custom-select select2 sources" placeholder="По часам" id="select_mode">
+			<option value="hourly" selected>По часам</option>
+			<option value="daily">По дням</option>
+			<option value="weekly">По неделям</option>
+		</select>
+			<input id="first_date" type="date" name="calendar" value="2021-08-12" max="2021-08-13">
+			<input id="second_date" type="date" name="calendar" value="2021-08-13" min="2021-08-12">
+			<input id="button_date" type="submit" value="Применить" class="ind_btn">
 	</div>
 	<div class="tabs">
 		<ul class="tab-links">
@@ -29,7 +29,7 @@
 			</div>
 			<div id="tab2" class="tab"> 
 				<p id = "messageNoInfo2"></p>
-				<table class="table" id="myTable">
+				<table class="table table_sort" id="myTable">
 					<tbody>
 						<thead>
 						<tr>
@@ -41,13 +41,13 @@
 						</tr>
 						</thead>
 						{% for a in data %}
-						<tr>
-							<td>{{a.date}}</td>
-							<td>{{a.air_temp_avg}}</td>
-							<td>{{a.relative_humidity_avg}}</td>
-							<td>{{a.soil_temp_avg}}</td>
-							<td>{{a.soil_moisture}}</td>
-						</tr>
+							<tr>
+								<td>{{a.date}}</td>
+								<td>{{a.air_temp_avg}}</td>
+								<td>{{a.relative_humidity_avg}}</td>
+								<td>{{a.soil_temp_avg}}</td>
+								<td>{{a.soil_moisture}}</td>
+							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
@@ -57,6 +57,7 @@
 	<div class="display">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type = "text/javascript">
 			// var ctx = document.getElementById('myChart').getContext('2d');
 			// var myChart;
@@ -223,6 +224,9 @@
 				e.preventDefault();
 				});
 			});
+
+		//Сортировка таблицы v2
+		
 		</script> 
 	  </div>
   </body>
