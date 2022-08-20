@@ -1,3 +1,4 @@
+from distutils.log import INFO
 from django.db import models
 from polls.models import Station_00000235, Station_002099C5, Station_0020CF3B
 import requests
@@ -70,11 +71,14 @@ def station_0020CF3B_update():
     #     writer.writerow(['Date', 'Air Temperature', 'Relative Humidity', 'Soil Temperature', 'Soil Moisture'])
     #     for i in range(1, len(air_t['values']['avg'])):
     #         writer.writerow([dates[i], air_temperature_avg[i], relative_humidity_avg[i], soil_temperature_avg[i], soil_moisture_avg[i]])
+    count = 0
     for i in range(1, len(air_t['values']['avg'])):
         if ((air_temperature_avg[i] != None) & (relative_humidity_avg[i] != None) & (soil_temperature_avg[i] != None) & (soil_moisture_avg[i] != None)):
-            Station_0020CF3B.objects.create(date=dates[i], air_temp_avg=air_temperature_avg[i], relative_humidity_avg=relative_humidity_avg[i], soil_temp_avg=soil_temperature_avg[i], soil_moisture=soil_moisture_avg[i])
-
-    print('Update for last hour on 0020CF3B complete')
+            timeinfo = Station_0020CF3B.objects.filter(date=dates[i])
+            if (timeinfo.exists() == False):
+                Station_0020CF3B.objects.create(date=dates[i], air_temp_avg=air_temperature_avg[i], relative_humidity_avg=relative_humidity_avg[i], soil_temp_avg=soil_temperature_avg[i], soil_moisture=soil_moisture_avg[i])
+                count += 1
+    print('Update for last day on 0020CF3B complete. ' + str(count) + ' rows added.' )
 
 
 def station_002099C5_update():
@@ -104,11 +108,14 @@ def station_002099C5_update():
     s_t_2 = soil_t_2['values']['avg']
     # s_t_3 = soil_t_3['values']['avg']
 
+    count = 0
     for i in range(1, len(air_t['values']['avg'])):
         if ((air_temp[i] != None) & (rel_hum[i] != None) & (s_t_1[i] != None) & (s_t_2[i] != None)):
-            Station_002099C5.objects.create(date=dates[i], air_temp_avg=air_temp[i], relative_humidity_avg=rel_hum[i], soil_temp_1=s_t_1[i], soil_temp_2=s_t_2[i])
-
-    print('Update for last hour on 002099C5 complete')
+            timeinfo = Station_002099C5.objects.filter(date=dates[i])
+            if (timeinfo.exists() == False):
+                Station_002099C5.objects.create(date=dates[i], air_temp_avg=air_temp[i], relative_humidity_avg=rel_hum[i], soil_temp_1=s_t_1[i], soil_temp_2=s_t_2[i])
+                count += 1
+    print('Update for last day on 002099C5 complete. ' + str(count) + ' rows added.' )
 
 def station_00000235_update():
     apiRoute = '/data/00000235/hourly/last/1d'
@@ -139,11 +146,15 @@ def station_00000235_update():
     wind_avg = wind_speed_avg['values']['avg']
     row = wind_speed_max['values']['max']
 
+    count = 0
+
     for i in range(1, len(air_t['values']['avg'])):
         if ((air_temp[i] != None) & (rel_hum[i] != None) & (dew_p[i] != None) & (wind_avg[i] != None) & (row[i] != None)):
-            Station_00000235.objects.create(date=dates[i], air_temp_avg=air_temp[i], relative_humidity_avg=rel_hum[i], dew_point=dew_p[i], wind_speed_avg=wind_avg[i], wind_speed_max=row[i])
-
-    print('Update for last hour on 00000235 complete')
+            timeinfo = Station_00000235.objects.filter(date=dates[i])
+            if (timeinfo.exists() == False):
+                Station_00000235.objects.create(date=dates[i], air_temp_avg=air_temp[i], relative_humidity_avg=rel_hum[i], dew_point=dew_p[i], wind_speed_avg=wind_avg[i], wind_speed_max=row[i])
+                count += 1
+    print('Update for last day on 00000235 complete. ' + str(count) + ' rows added.' )
 
 def get_station_info():
     station_00000235_update()
@@ -152,7 +163,7 @@ def get_station_info():
 
 def start():
     print('hello')
-    # get_station_info()
-    # scheduler = BackgroundScheduler()
-    # scheduler.add_job(get_station_info, 'interval', hours=1)
-    # scheduler.start()
+    get_station_info()
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(get_station_info, 'interval', hours=23)
+    scheduler.start()
