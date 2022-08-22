@@ -96,7 +96,7 @@ def index(request):
             station_soil_moisture = selected.values_list('soil_moisture', flat = True)
             data_name_1 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'soil_temp_avg':'Средняя температура почвы', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_moisture':'Влажность почвы'}
             data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
-            print(data_1)
+            #print(data_1)
             text_chart = graph_make(data = data_1, data_name = data_name_1)
             return JsonResponse({
                                     'name': station_name,

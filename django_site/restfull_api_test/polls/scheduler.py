@@ -1,16 +1,26 @@
-from distutils.log import INFO
-from django.db import models
 from polls.models import Station_00000235, Station_002099C5, Station_0020CF3B
 import requests
 from requests.auth import AuthBase
 from Crypto.Hash import HMAC
 from Crypto.Hash import SHA256
-from datetime import datetime
-from dateutil.tz import tzlocal
-from datetime import datetime
+from datetime import date, datetime
 from apscheduler.schedulers.background import BackgroundScheduler
+from django.core.management import call_command
+import os
+from threading import Thread
 
 
+def db_backup():
+    # def mainBackup():
+        print('[BACKUP] Starting backup db for ' + str(datetime.now()))
+        if not os.path.exists('backups'):
+            os.mkdir('backups')
+        output_filename = "backups/backup_db_" + str(date.today()) + ".json"
+        with open(output_filename,'w') as output:
+            call_command('dumpdata', format='json',indent=2,stdout=output, exclude=['contenttypes'])
+        print('[BACKUP] Backup db for ' + str(datetime.now()) + ' complete.')
+    # thr1 = Thread(target=mainBackup)
+    # thr1.start()
 
 # login/pass: demo_api/demo4
 # Class to perform HMAC encoding
@@ -41,6 +51,7 @@ publicKey = '390cf046de64c36802b3d85cbf1883bf1294fe919549a3fe'
 privateKey = '838e76d236581a4776b2e4b0f712c6ebc1c7789f32af7aca'
 
 def station_0020CF3B_update():
+    print('[UPDATE] Starting update for last day on 0020CF3B.')
     apiRoute = '/data/0020CF3B/hourly/last/1d'
 
     auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
@@ -78,10 +89,11 @@ def station_0020CF3B_update():
             if (timeinfo.exists() == False):
                 Station_0020CF3B.objects.create(date=dates[i], air_temp_avg=air_temperature_avg[i], relative_humidity_avg=relative_humidity_avg[i], soil_temp_avg=soil_temperature_avg[i], soil_moisture=soil_moisture_avg[i])
                 count += 1
-    print('Update for last day on 0020CF3B complete. ' + str(count) + ' rows added.' )
+    print('[UPDATE] Update for last day on 0020CF3B complete. ' + str(count) + ' rows added.' )
 
 
 def station_002099C5_update():
+    print('[UPDATE] Starting update for last day on 002099C5.')
     apiRoute = '/data/002099C5/hourly/last/1d'
     auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
     response = requests.get(apiURI+apiRoute, headers={'Accept': 'application/json'}, auth=auth)
@@ -115,9 +127,10 @@ def station_002099C5_update():
             if (timeinfo.exists() == False):
                 Station_002099C5.objects.create(date=dates[i], air_temp_avg=air_temp[i], relative_humidity_avg=rel_hum[i], soil_temp_1=s_t_1[i], soil_temp_2=s_t_2[i])
                 count += 1
-    print('Update for last day on 002099C5 complete. ' + str(count) + ' rows added.' )
+    print('[UPDATE] Update for last day on 002099C5 complete. ' + str(count) + ' rows added.' )
 
 def station_00000235_update():
+    print('[UPDATE] Starting update for last day on 00000235.')
     apiRoute = '/data/00000235/hourly/last/1d'
     auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
     response = requests.get(apiURI+apiRoute, headers={'Accept': 'application/json'}, auth=auth)
@@ -154,7 +167,7 @@ def station_00000235_update():
             if (timeinfo.exists() == False):
                 Station_00000235.objects.create(date=dates[i], air_temp_avg=air_temp[i], relative_humidity_avg=rel_hum[i], dew_point=dew_p[i], wind_speed_avg=wind_avg[i], wind_speed_max=row[i])
                 count += 1
-    print('Update for last day on 00000235 complete. ' + str(count) + ' rows added.' )
+    print('[UPDATE] Update for last day on 00000235 complete. ' + str(count) + ' rows added.' )
 
 def get_station_info():
     station_00000235_update()
@@ -162,8 +175,12 @@ def get_station_info():
     station_0020CF3B_update()
 
 def start():
-    print('hello')
-    get_station_info()
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(get_station_info, 'interval', hours=23)
-    scheduler.start()
+    # get_station_info()
+    # db_backup()
+    scheduler_update = BackgroundScheduler()
+    scheduler_update.add_job(get_station_info, 'interval', days=1)
+    scheduler_update.start()
+    
+    scheduler_backup = BackgroundScheduler()
+    scheduler_backup.add_job(db_backup, 'interval', days=30)
+    scheduler_backup.start()
