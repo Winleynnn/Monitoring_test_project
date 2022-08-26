@@ -1,4 +1,4 @@
-function createChart1(label, dataset, dataset2){
+// function createChart1(label, dataset, dataset2){
     // if (label[0] == null) 
     // {
     //     $('#messageNoInfo1').text('Данных за выбранный период не найдено')
@@ -47,7 +47,7 @@ function createChart1(label, dataset, dataset2){
     //         }				
     //     })
     // }
-};
+// };
 
 $(document).ready(function(){
     var timeData = 
@@ -137,11 +137,11 @@ function ajaxCall(timeData){
                 tableChild.id = 'myTable'
                 tableChild.classList.add('table')
                 var newRow = tableChild.insertRow(0);
-                newRow.insertCell(0).outerHTML = '<th onclick="sortTable(0)">Дата </th>';
-                newRow.insertCell(1).outerHTML = '<th onclick="sortTable(1)">Средняя температура воздуха, °C</th>';
-                newRow.insertCell(2).outerHTML = '<th onclick="sortTable(2)">Средняя температура почвы, °C</th>';
-                newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Относительная влажность воздуха, %</th>';
-                newRow.insertCell(4).outerHTML = '<th onclick="sortTable(4)">Влажность почвы, %</th>';
+                newRow.insertCell(0).outerHTML = '<th>Дата</th>';
+                newRow.insertCell(1).outerHTML = '<th>Средняя температура воздуха, °C</th>';
+                newRow.insertCell(2).outerHTML = '<th>Средняя температура почвы, °C</th>';
+                newRow.insertCell(3).outerHTML = '<th>Относительная влажность воздуха, %</th>';
+                newRow.insertCell(4).outerHTML = '<th>Влажность почвы, %</th>';
                 
 
                 tableChild.appendChild(newRow);
@@ -164,42 +164,42 @@ function ajaxCall(timeData){
                 $('#myTable tr:has(th)').wrapAll('<thead></thead>')
                 $("#myTable thead").prependTo("#myTable")
                 
-                var S_0020CF3B_dataset_temp = 
-                [
-                    {                     
-                        label: 'Средняя температура воздуха, °C',
-                        data: air_temp,
-                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
-                        borderColor: ['rgba(200, 0, 15, 1)'],
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Средняя температура почвы, °C',
-                        data: soil_temp,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(9, 132, 0, 1)'],                            
-                        borderWidth: 2
-                    }
-                ]
+                // var S_0020CF3B_dataset_temp = 
+                // [
+                //     {                     
+                //         label: 'Средняя температура воздуха, °C',
+                //         data: air_temp,
+                //         backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                //         borderColor: ['rgba(200, 0, 15, 1)'],
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Средняя температура почвы, °C',
+                //         data: soil_temp,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(9, 132, 0, 1)'],                            
+                //         borderWidth: 2
+                //     }
+                // ]
 
-                var S_0020CF3B_dataset_water = 
-                [
-                    {                     
-                        label: 'Относительная влажность воздуха, %',
-                        data: humidity,
-                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
-                        borderColor: ['rgba(200, 0, 15, 1)'],
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Средняя влажность почвы, %',
-                        data: soil_moisture,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(9, 132, 0, 1)'],                            
-                        borderWidth: 2
-                    }
-                ]
-                createChart1(dates, S_0020CF3B_dataset_temp, S_0020CF3B_dataset_water);
+                // var S_0020CF3B_dataset_water = 
+                // [
+                //     {                     
+                //         label: 'Относительная влажность воздуха, %',
+                //         data: humidity,
+                //         backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                //         borderColor: ['rgba(200, 0, 15, 1)'],
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Средняя влажность почвы, %',
+                //         data: soil_moisture,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(9, 132, 0, 1)'],                            
+                //         borderWidth: 2
+                //     }
+                // ]
+                // createChart1(dates, S_0020CF3B_dataset_temp, S_0020CF3B_dataset_water);
             }
 
             if (response.name == "Station_002099C5")
@@ -226,13 +226,13 @@ function ajaxCall(timeData){
                 tableChild.id = 'myTable'
                 tableChild.classList.add('table')
                 var newRow = tableChild.insertRow(0);
-                newRow.insertCell(0).outerHTML = '<th onclick="sortTable(0)">Дата </th>';
-                newRow.insertCell(1).outerHTML = '<th onclick="sortTable(1)">Средняя температура воздуха, °C</th>';
-                newRow.insertCell(2).outerHTML = '<th onclick="sortTable(2)">Относительная влажность воздуха, %</th>';
-                newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Средняя температура почвы 1, °C</th>';
-                newRow.insertCell(4).outerHTML = '<th onclick="sortTable(4)">Средняя температура почвы 2, °C</th>';
-                newRow.insertCell(5).outerHTML = '<th onclick="sortTable(5)">Средняя температура почвы 3, °C</th>';
-                newRow.insertCell(6).outerHTML = '<th onclick="sortTable(6)">Прогнозируемая влажность почвы, %</th>';
+                newRow.insertCell(0).outerHTML = '<th>Дата</th>';
+                newRow.insertCell(1).outerHTML = '<th>Средняя температура воздуха, °C</th>';
+                newRow.insertCell(2).outerHTML = '<th>Относительная влажность воздуха, %</th>';
+                newRow.insertCell(3).outerHTML = '<th>Средняя температура почвы, °C</th>';
+                newRow.insertCell(4).outerHTML = '<th>Средняя температура почвы, °C</th>';
+                newRow.insertCell(5).outerHTML = '<th>Средняя температура почвы, °C</th>';
+                newRow.insertCell(6).outerHTML = '<th>Прогнозируемая влажность почвы, %</th>';
                 tableChild.appendChild(newRow);
                 for (var i in dates)
                 {
@@ -256,56 +256,56 @@ function ajaxCall(timeData){
                 $("#myTable thead").prependTo("#myTable")
                 
 
-                var S_002099C5_dataset = 
-                [
-                    {                     
-                        label: 'Средняя температура воздуха, °C',
-                        data: air_temp,
-                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
-                        borderColor: ['rgba(200, 0, 15, 1)'],
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Относительная влажность воздуха, %',
-                        data: humidity,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(9, 132, 0, 1)'],                            
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Прогнозируемая влажность почвы, %',
-                        data: predict,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(12, 0, 134, 1)'],                            
-                        borderWidth: 2
-                    }
-                ]
+                // var S_002099C5_dataset = 
+                // [
+                //     {                     
+                //         label: 'Средняя температура воздуха, °C',
+                //         data: air_temp,
+                //         backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                //         borderColor: ['rgba(200, 0, 15, 1)'],
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Относительная влажность воздуха, %',
+                //         data: humidity,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(9, 132, 0, 1)'],                            
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Прогнозируемая влажность почвы, %',
+                //         data: predict,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(12, 0, 134, 1)'],                            
+                //         borderWidth: 2
+                //     }
+                // ]
 
-                var S_002099C5_dataset_temp = 
-                [
-                    {                     
-                        label: 'Температура почвы 1, °C',
-                        data: soil_temp_1,
-                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
-                        borderColor: ['rgba(200, 0, 15, 1)'],
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Температура почвы 2, °C',
-                        data: soil_temp_2,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(9, 132, 0, 1)'],                            
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Температура почвы 3, °C',
-                        data: soil_temp_3,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(9, 0, 243, 1)'],                            
-                        borderWidth: 2
-                    }
-                ]
-                createChart1(dates, S_002099C5_dataset, S_002099C5_dataset_temp);
+                // var S_002099C5_dataset_temp = 
+                // [
+                //     {                     
+                //         label: 'Температура почвы 1, °C',
+                //         data: soil_temp_1,
+                //         backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                //         borderColor: ['rgba(200, 0, 15, 1)'],
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Температура почвы 2, °C',
+                //         data: soil_temp_2,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(9, 132, 0, 1)'],                            
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Температура почвы 3, °C',
+                //         data: soil_temp_3,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(9, 0, 243, 1)'],                            
+                //         borderWidth: 2
+                //     }
+                // ]
+                // createChart1(dates, S_002099C5_dataset, S_002099C5_dataset_temp);
             }
 
             // 00000235: id, date, air_temp_avg, relative_humidity_avg, dew_point, wind_speed_avg, wind_speed_max
@@ -332,12 +332,12 @@ function ajaxCall(timeData){
                 tableChild.id = 'myTable'
                 tableChild.classList.add('table')
                 var newRow = tableChild.insertRow(0);
-                newRow.insertCell(0).outerHTML = '<th onclick="sortTable(0)">Дата </th>';
-                newRow.insertCell(1).outerHTML = '<th onclick="sortTable(1)">Средняя температура воздуха, °C</th>';
-                newRow.insertCell(2).outerHTML = '<th onclick="sortTable(2)">Относительная влажность воздуха, %</th>';
-                newRow.insertCell(3).outerHTML = '<th onclick="sortTable(3)">Точка росы, °C</th>';
-                newRow.insertCell(4).outerHTML = '<th onclick="sortTable(4)">Средняя скорость ветра, м/с</th>';
-                newRow.insertCell(5).outerHTML = '<th onclick="sortTable(5)">Максимальная скорость ветра, м/с</th>';
+                newRow.insertCell(0).outerHTML = '<th>Дата</th>';
+                newRow.insertCell(1).outerHTML = '<th>Средняя температура воздуха, °C</th>';
+                newRow.insertCell(2).outerHTML = '<th>Относительная влажность воздуха, %</th>';
+                newRow.insertCell(3).outerHTML = '<th>Точка росы, °C</th>';
+                newRow.insertCell(4).outerHTML = '<th>Средняя скорость ветра, м/с</th>';
+                newRow.insertCell(5).outerHTML = '<th>Максимальная скорость ветра, м/с</th>';
                 tableChild.appendChild(newRow);
                 for (var i in dates)
                 {
@@ -360,72 +360,72 @@ function ajaxCall(timeData){
                 $("#myTable thead").prependTo("#myTable")
                 
 
-                var S_002099C5_dataset = 
-                [
-                    {                     
-                        label: 'Средняя температура воздуха, °C',
-                        data: air_temp,
-                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
-                        borderColor: ['rgba(200, 0, 15, 1)'],
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Относительная влажность воздуха, %',
-                        data: humidity,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(9, 132, 0, 1)'],                            
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Точка росы, °C',
-                        data: dew_point,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(12, 0, 134, 1)'],                            
-                        borderWidth: 2
-                    }
-                ]
+                // var S_002099C5_dataset = 
+                // [
+                //     {                     
+                //         label: 'Средняя температура воздуха, °C',
+                //         data: air_temp,
+                //         backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                //         borderColor: ['rgba(200, 0, 15, 1)'],
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Относительная влажность воздуха, %',
+                //         data: humidity,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(9, 132, 0, 1)'],                            
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Точка росы, °C',
+                //         data: dew_point,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(12, 0, 134, 1)'],                            
+                //         borderWidth: 2
+                //     }
+                // ]
 
-                var S_002099C5_dataset_temp = 
-                [
-                    {                     
-                        label: 'Средняя скорость ветра, м/с',
-                        data: wind_speed_avg,
-                        backgroundColor: ['rgba(255, 255,255, 0.2)'],
-                        borderColor: ['rgba(200, 0, 15, 1)'],
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Максимальная скорость ветра, м/с',
-                        data: wind_speed_max,
-                        backgroundColor: ['rgba(255, 255, 255, 0.2)'],
-                        borderColor: ['rgba(9, 132, 0, 1)'],                            
-                        borderWidth: 2
-                    }
-                ]
-                createChart1(dates, S_002099C5_dataset, S_002099C5_dataset_temp);
+                // var S_002099C5_dataset_temp = 
+                // [
+                //     {                     
+                //         label: 'Средняя скорость ветра, м/с',
+                //         data: wind_speed_avg,
+                //         backgroundColor: ['rgba(255, 255,255, 0.2)'],
+                //         borderColor: ['rgba(200, 0, 15, 1)'],
+                //         borderWidth: 2
+                //     },
+                //     {
+                //         label: 'Максимальная скорость ветра, м/с',
+                //         data: wind_speed_max,
+                //         backgroundColor: ['rgba(255, 255, 255, 0.2)'],
+                //         borderColor: ['rgba(9, 132, 0, 1)'],                            
+                //         borderWidth: 2
+                //     }
+                // ]
+                // createChart1(dates, S_002099C5_dataset, S_002099C5_dataset_temp);
             }
               
-              //сортировка таблицы	
-              document.addEventListener('DOMContentLoaded', () => {
-              const getSort = ({ target }) => {
-              const order = (target.dataset.order = -(target.dataset.order || -1));
-              const index = [...target.parentNode.cells].indexOf(target);
-              const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
-              const comparator = (index, order) => (a, b) => order * collator.compare(
-                  a.children[index].innerHTML,
-                  b.children[index].innerHTML
-              );
+    //           //сортировка таблицы
+    //           document.addEventListener('DOMContentLoaded', () => {
+    //           const getSort = ({ target }) => {
+    //           const order = (target.dataset.order = -(target.dataset.order || -1));
+    //           const index = [...target.parentNode.cells].indexOf(target);
+    //           const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
+    //           const comparator = (index, order) => (a, b) => order * collator.compare(
+    //               a.children[index].innerHTML,
+    //               b.children[index].innerHTML
+    //           );
 
-              for(const tBody of target.closest('table').tBodies)
-                  tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+    //           for(const tBody of target.closest('table').tBodies)
+    //               tBody.append(...[...tBody.rows].sort(comparator(index, order)));
 
-              for(const cell of target.parentNode.cells)
-                  cell.classList.toggle('sorted', cell === target);
-          };
+    //           for(const cell of target.parentNode.cells)
+    //               cell.classList.toggle('sorted', cell === target);
+    //       };
 
-          document.querySelectorAll('.table thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+    //       document.querySelectorAll('.table thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
 
-      });	  
+    //   });	  
             
         }
     });

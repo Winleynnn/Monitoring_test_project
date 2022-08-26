@@ -29,17 +29,17 @@
 			</div>
 			<div id="tab2" class="tab"> 
 				<p id = "messageNoInfo2"></p>
-				<table class="table table_sort" id="myTable">
-					<tbody>
+				<table class="table" id="myTable">
 						<thead>
-						<tr>
-							<th onclick="sortTable(0)">Дата </th>
-							<th onclick="sortTable(1)">Средняя температура воздуха, °C</th>
-							<th onclick="sortTable(2)">Относительная влажность воздуха, %</th>
-							<th onclick="sortTable(3)">Средняя температура почвы, °C</th>
-							<th onclick="sortTable(4)">Влажность почвы, %</th>
-						</tr>
+							<tr>
+								<th>Дата </th>
+								<th>Средняя температура воздуха, °C</th>
+								<th>Относительная влажность воздуха, %</th>
+								<th>Средняя температура почвы, °C</th>
+								<th>Влажность почвы, %</th>
+							</tr>
 						</thead>
+						<tbody>
 						{% for a in data %}
 							<tr>
 								<td>{{a.date}}</td>
@@ -49,7 +49,7 @@
 								<td>{{a.soil_moisture}}</td>
 							</tr>
 						{% endfor %}
-					</tbody>
+						</tbody>
 				</table>
 			</div>
 		</div>
@@ -225,8 +225,6 @@
 				});
 			});
 
-		//Сортировка таблицы v2
-		
 		</script> 
 	  </div>
   </body>
