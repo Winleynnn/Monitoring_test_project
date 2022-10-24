@@ -1,0 +1,8 @@
+Django==3.2.6
+mysqlclient==2.1.1
+requests==2.28.1
+pycryptodome==3.15.0
+apscheduler==3.9.1
+pandas==1.5.1
+sklearn
+plotly==5.10.0
