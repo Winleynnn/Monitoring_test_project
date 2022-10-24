@@ -8,13 +8,17 @@ body {
 	width:100%;
 
 }
-.chart1 {
+
+
+/* .chart1 {
 	background-color: #fff;
 }
 .chart2 {
 	margin-top: 20px;
 	background-color: #fff;
-}
+} */
+
+
 button:focus,
 input:focus,
 textarea:focus,
@@ -76,6 +80,25 @@ li.active a, li.active a:hover {
 	display:block;
 }
 
+
+th.sorted[data-order="1"],
+th.sorted[data-order="-1"] {
+    position: relative;
+}
+
+th.sorted[data-order="1"]::after,
+th.sorted[data-order="-1"]::after {
+    right: 8px;
+    position: absolute;
+}
+
+th.sorted[data-order="-1"]::after {
+	content: "▼"
+}
+
+th.sorted[data-order="1"]::after {
+	content: "▲"
+}
 .table{
 	width: 100%;
 	border-collapse:collapse;
@@ -529,3 +552,6 @@ input[type=checkbox] {
 	margin-top: 30px;
 }
 
+.chart {
+  width: 100%;
+}
