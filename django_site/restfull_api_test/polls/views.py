@@ -72,6 +72,8 @@ def graph_make(data, data_name):
     fig_plot = plot(fig, output_type='div', include_plotlyjs=True)
     return fig_plot
 
+from django.db.models import F
+
 def index(request):
     if (request.is_ajax()):
         station_name = 'Station_'
