@@ -27,7 +27,9 @@
 					{% include "polls/graphs/chart.html" %}
 				</div>
 			</div>
-			<div id="tab2" class="tab"> 
+			<div id="tab2" class="tab">
+				<a href="#" onclick="download_table_as_csv('myTable');">Download as CSV</a>
+				<a href="#" onclick="download_table_as_xlsx('myTable');">Download as XLSX</a>  
 				<p id = "messageNoInfo2"></p>
 				<table class="table" id="myTable">
 						<thead>
