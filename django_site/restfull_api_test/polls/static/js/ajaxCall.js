@@ -121,8 +121,10 @@ function ajaxCall(timeData){
                 var soil_moisture = response['soil_moisture']
                 var chart = response['graph']
                 var graphic = $('.graphic')[0]
+                var bp = response['box_plot_chart']
+                $('body').append(bp)
                 // id = graphic.childNodes[0].childNodes[2].id
-                graphic.innerHTML = chart
+                graphic.innerHTML = bp
                 // graphic.childNodes[0].childNodes[2].id = id
 
                 var arr = graphic.getElementsByTagName('script')
