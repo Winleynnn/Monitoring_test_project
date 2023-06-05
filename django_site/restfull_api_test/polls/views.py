@@ -34,16 +34,18 @@ def pre_data(data, data_name):
 
 #функция сбора описательной статистики
 def data_stat(col_names, plot_features):
-    plot_features.columns = col_names
-    df = plot_features.apply(pd.to_numeric)
+    df = plot_features.copy()
+    df.columns = col_names
+    df = df.apply(pd.to_numeric)
     df_stat = df.describe()
     df_info = df.info()
     return df_stat, df_info
 
 #функция создания графика тепловой карты корреляции между переменными
 def graph_corr(col_names, plot_features):
-    plot_features.columns = col_names
-    df = plot_features.apply(pd.to_numeric)
+    df = plot_features.copy()
+    df.columns = col_names
+    df = df.apply(pd.to_numeric)
     fig = px.imshow(df.corr(),
                 labels=dict(x="Variables", y="Variables", color="Correlation Coefficient"),
                 color_continuous_scale=px.colors.sequential.Agsunset, text_auto = True
@@ -73,6 +75,8 @@ def graph_box(col_names, plot_features, plot_cols):
     for row_num in range(1, row+1, 1):
         for col_num in range(1, col+1, 1):
             if(row_num * col_num <= len(plot_cols)):
+                #print(plot_cols[num_name - 1])
+                #print(plot_features)
                 fig.add_trace(go.Box(y=plot_features[str(plot_cols[num_name - 1])], 
                     name = col_names[num_name - 1]), row = row_num, col= col_num)
                 fig.update_yaxes(title_text=str(col_names[num_name - 1]), row=row_num, col=col_num)
@@ -157,6 +161,7 @@ def index(request):
             date_time_1, plot_cols_1, col_names_1, plot_features_1 = pre_data(data = data_1, data_name = data_name_1)
             text_chart = graph_make(date_time = date_time_1, plot_cols = plot_cols_1, col_names = col_names_1, plot_features = plot_features_1)
             stat, info = data_stat(col_names = col_names_1, plot_features = plot_features_1)
+            #print(plot_features_1)
             corr_chart = graph_corr(col_names = col_names_1, plot_features = plot_features_1)
             box_chart = graph_box(col_names = col_names_1, plot_features = plot_features_1, plot_cols = plot_cols_1)
             return JsonResponse({
