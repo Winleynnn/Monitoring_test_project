@@ -1,18 +1,35 @@
-	<div class="container">
-		<select name="potencial" class="custom-select sources select1" placeholder="0020CF3B" id="select_station" >
-			<option value="0020CF3B" selected>0020CF3B</option>
-			<option value="002099C5">002099C5</option>
-			<option value="00000235">00000235</option>
-		</select>
-		<select name="potencial" class="custom-select select2 sources" placeholder="По часам" id="select_mode">
-			<option value="hourly" selected>По часам</option>
-			<option value="daily">По дням</option>
-			<option value="weekly">По неделям</option>
-		</select>
-			<input id="first_date" type="date" name="calendar" value="2022-08-20">
-			<input id="second_date" type="date" name="calendar" value="2022-08-22">
-			<input id="button_date" type="submit" value="Применить" class="ind_btn">
-	</div>
+		<div class="container">
+			<select name="potencial" class="custom-select sources select1" placeholder="0020CF3B" id="select_station" >
+				<option value="0020CF3B" selected>0020CF3B</option>
+				<option value="002099C5">002099C5</option>
+				<option value="00000235">00000235</option>
+			</select>
+			<select name="potencial" class="custom-select select2 sources" placeholder="По часам" id="select_mode">
+				<option value="hourly" selected>По часам</option>
+				<option value="daily">По дням</option>
+				<option value="weekly">По неделям</option>
+			</select>
+				<input id="first_date" type="date" name="calendar" value="2022-08-20">
+				<input id="second_date" type="date" name="calendar" value="2022-08-22">
+				<input id="button_date" type="submit" value="Применить" class="ind_btn">
+				<div class='status'>Connection status : <a class='status-on'>Online</a></div>
+				
+
+		</div>
+		<div class='rightcolumn'>
+			<img src="https://mobile-comp.com/images/user.png" class='avatar'>
+			{% if user.is_authenticated %}
+				<div class='user list'><a onmousedown="return false" style="cursor: pointer;">{{user.username|title}}</a></div>
+				<div class='column_btn'>
+					<div class='list'><a href="/feedbackform.html">Поддержка</a></div>
+					<div class='exit list' >
+						<a href="/logout"  onmousedown="return false">Выйти</a>
+						{% comment %} <img src="http://cdn.onlinewebfonts.com/svg/img_356907.png" class='exit_icon'/> {% endcomment %}
+					</div>
+				</div>
+            {% endif %}
+			
+		</div>
 	<div class="tabs">
 		<ul class="tab-links">
 			<li class="active" onmousedown="return false"><a href="#tab1">Графики</a></li>
@@ -28,8 +45,27 @@
 				</div>
 			</div>
 			<div id="tab2" class="tab">
-				<a href="#" onclick="download_table_as_csv('myTable');">Download as CSV</a>
-				<a href="#" onclick="download_table_as_xlsx('myTable');">Download as XLSX</a>  
+				<div class='btns'>
+					{% comment %} <div class="btn-group">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+						  Скачать
+						</button>
+						<ul class="dropdown-menu dropdown-menu-end">
+						  <li><button onclick="download_table_as_csv('myTable');" class='download download1'>Формт CSV</button></li>
+						  <li><button onclick="download_table_as_xlsx('myTable');" class='download download2'>Формат XLSX</button></li>
+						</ul>
+					  </div> {% endcomment %}
+					<div class='down'>
+						<i class="gg-software-download" onclick="download_table_as_csv('myTable');"></i>
+						<a href="#" onclick="download_table_as_csv('myTable');" class='download download1'>.csv</a>
+					</div>
+					<div class='down'>
+						<i class="gg-software-download download2" onclick="download_table_as_xlsx('myTable');"></i>
+						<a href="#" onclick="download_table_as_xlsx('myTable');" class='download'>.xlsx</a>
+					</div>
+					<input id="button_date2" type="submit" value="Обновить" class="btn_refresh download">  
+
+				</div>
 				<p id = "messageNoInfo2"></p>
 				<table class="table" id="myTable">
 						<thead>
@@ -56,6 +92,8 @@
 			</div>
 		</div>
 	</div>
+
+
 	<div class="display">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>

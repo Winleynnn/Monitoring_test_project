@@ -103,7 +103,19 @@ $(document).ready(function(){
         second_date = $('#second_date').val()        
         ajaxCall(timeData)
     })
-   
+    $("#button_date2").on('click', function()
+    {
+        timeData = 
+            {
+            first_date: $('#first_date').val(),
+            second_date: $('#second_date').val(),
+            selected_station: $('#select_station option:selected').text(),
+            selected_mode: $('#select_mode option:selected').val()
+            }
+        first_date = $('#first_date').val()
+        second_date = $('#second_date').val()        
+        ajaxCall(timeData)
+    })
 });
 
 function ajaxCall(timeData){

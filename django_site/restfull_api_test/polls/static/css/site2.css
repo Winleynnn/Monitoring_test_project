@@ -4,12 +4,60 @@ body {
   margin: 0;
   font-family: Century Gothic;
 }
-.graphic {
-	width:100%;
+.rightcolumn{
+  background-color: #1caeae;
+  position: fixed;
+  width: 7%;
+  top: 0;
+  right: 0;
+  height: 100%;
+  visibility: visible;
+  text-align: center;
+  list-style-type: none;
+}
+.rightcolumn a {
+  text-decoration: none;
+  color:white;
+  text-shadow:#000000;
 
 }
+.exit {
 
+}
+.exit a {
+  /* padding-left: 20px; */
+}
+.user {
+  font-size: 20px;
 
+}
+.avatar {
+  width: 80px;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 30px;
+}
+.list {
+transition: all 0.5s;
+padding: 10px 0;
+color:#fff;
+}
+.list:hover{
+background-color: #08CFCF;
+cursor: pointer;
+}
+.graphic {
+	width:93%;
+
+}
+.exit_icon {
+  width: 20px;
+  color: #ffffff;
+  margin-bottom: -5px;
+}
+.column_btn {
+  margin-top: 10px;
+}
 /* .chart1 {
 	background-color: #fff;
 }
@@ -100,7 +148,7 @@ th.sorted[data-order="1"]::after {
 	content: "▲"
 }
 .table{
-	width: 100%;
+	width: 93%;
 	border-collapse:collapse;
 	border-spacing:0;
 	 height: auto;
@@ -134,31 +182,43 @@ th.sorted[data-order="1"]::after {
 }
 
 .table thead th {
-    color: #ffffff;
-    background: #219a78;
+    color: #000000;
+
 }
 
 
 .table thead th:nth-child(odd) {
-    color: #ffffff;
-    background: #4975a1;
+    color: #000000;
+
 }
 
 /*Кнопки хедера*/
 .top_nav{
-  background-color: #1caeae;
+  /* background-color: #1caeae; */
   /* background-color: #7FB5DA; */
-  display: block;
-  width: 100%;
+  display: inline-flex;
+  width: 93%;
   height: fit-content;
+
 
 }
 .nav_container{
   display: flex;
   flex-direction: row;
   width: auto;
+  height: 60px;
 }
-.nav_list{
+.status {
+  margin-left: 15px;
+  margin-top: 10px;
+}
+.status-on {
+  color:green;
+  cursor: pointer;
+  font-weight:bold;
+}
+/* Старые кнопки авторизации и выхода*/ 
+/* .nav_list{
   margin: 0;
   display:inline-flex;
 }
@@ -178,7 +238,7 @@ th.sorted[data-order="1"]::after {
 .nav_list a
 {
   text-decoration: none;
-}
+} */
 .header_name {
   width: 100%;
   font-size: 20px; 
@@ -555,3 +615,67 @@ input[type=checkbox] {
 .chart {
   width: 100%;
 }
+
+.download {
+  text-decoration: none;
+  color: black;
+}
+.download2 {
+  margin-left: 15px;
+}
+.down {
+  display: inline-flex;
+
+}
+.down:hover {
+  color:#555;
+  text-decoration: underline;
+  cursor: pointer;
+
+}
+
+.btns {
+  width: 93%;
+  text-align: right;
+  margin-top: -50px;
+}
+.btn_refresh {
+  margin: 0 15px;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #16A9A9;
+  border-radius: 8px;
+  font-family: Century Gothic;
+  color: rgb(20, 112, 112);
+  transition: .2s ease-in-out;
+}
+.btn_refresh:before {
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+.btn_refresh:hover {
+  background: #16A9A9;
+  color: #fff;
+  cursor: pointer;
+}
+.btn_refresh:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
+}
+.gg-software-download {
+  margin-right: 3px;
+  padding-top: 7px;
+}
+
+
+
+
