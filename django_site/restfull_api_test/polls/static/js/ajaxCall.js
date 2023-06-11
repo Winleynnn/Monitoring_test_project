@@ -205,7 +205,7 @@ function ajaxCall(timeData){
             }
 
             if (response.name == "Station_002099C5")
-            {                    
+            {
                 var dates = response['dates']
                 var air_temp = response['air_temp_avg']
                 var humidity = response['relative_humidity_avg']
