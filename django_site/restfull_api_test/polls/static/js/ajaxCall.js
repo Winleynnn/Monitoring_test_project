@@ -120,18 +120,37 @@ function ajaxCall(timeData){
                 var humidity = response['relative_humidity_avg']
                 var soil_moisture = response['soil_moisture']
                 var chart = response['graph']
+                var stat = response['statistics']
+                var info = response['information']
+                var corr_chart = response['correlation_chart']
+                var box_chart = response['box_plot_chart']
                 var graphic = $('.graphic')[0]
-                var bp = response['box_plot_chart']
-                $('body').append(bp)
+                var graphic2 = $('.graphic2')[0]
+                var graphic3 = $('.graphic3')[0]
                 // id = graphic.childNodes[0].childNodes[2].id
-                graphic.innerHTML = bp
-                // graphic.childNodes[0].childNodes[2].id = id
 
+                // graphic.childNodes[0].childNodes[2].id = id
+                graphic.innerHTML = chart
+                graphic2.innerHTML = corr_chart
+                graphic3.innerHTML = box_chart
+
+                var statistics = $('.stat')[0]
+                var information = $('.info')[0]
+                statistics.innerHTML = stat
+                information.innerHTML = info
+                console.log(stat)
+                console.log(info)
                 var arr = graphic.getElementsByTagName('script')
                 for (var n = 0; n < arr.length; n++)
                     eval(arr[n].innerHTML)
 
+                var arr = graphic2.getElementsByTagName('script')
+                for (var n = 0; n < arr.length; n++)
+                    eval(arr[n].innerHTML)
 
+                var arr = graphic3.getElementsByTagName('script')
+                for (var n = 0; n < arr.length; n++)
+                    eval(arr[n].innerHTML)
 
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()

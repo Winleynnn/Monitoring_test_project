@@ -37,9 +37,9 @@ def data_stat(col_names, plot_features):
     df = plot_features.copy()
     df.columns = col_names
     df = df.apply(pd.to_numeric)
-    df_stat = df.describe()
-    df_info = df.info()
-    return df_stat, df_info
+    df_stat = pd.DataFrame(df.describe())
+    df_info = pd.DataFrame(df.info())
+    return df_stat.to_html(), df_info.to_html()
 
 #функция создания графика тепловой карты корреляции между переменными
 def graph_corr(col_names, plot_features):
