@@ -158,12 +158,14 @@ def index(request):
             data_name_1 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'soil_temp_avg':'Средняя температура почвы', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_moisture':'Влажность почвы'}
             data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
             #print(data_1)
+            text_chart = graph_make(data = data_1, data_name = data_name_1)
             date_time_1, plot_cols_1, col_names_1, plot_features_1 = pre_data(data = data_1, data_name = data_name_1)
             text_chart = graph_make(date_time = date_time_1, plot_cols = plot_cols_1, col_names = col_names_1, plot_features = plot_features_1)
             stat, info = data_stat(col_names = col_names_1, plot_features = plot_features_1)
             #print(plot_features_1)
             corr_chart = graph_corr(col_names = col_names_1, plot_features = plot_features_1)
             box_chart = graph_box(col_names = col_names_1, plot_features = plot_features_1, plot_cols = plot_cols_1)
+            print("[18/Jun/2023 21:18:34] ERROR /?first_date=2020-06-20&second_date=2022-08-22&selected_station=002AFDB9&selected_mode=daily HTTP/1.1 403 Forbidden")
             return JsonResponse({
                                     'name': station_name,
                                     'mode': station_mode, 
@@ -253,7 +255,7 @@ def index(request):
             station_wind_speed_avg = selected.values_list('wind_speed_avg', flat = True)
             station_wind_speed_max = selected.values_list('wind_speed_max', flat = True)
             data_3 = [station_dates, station_temp, station_humidity, station_dew_point, station_wind_speed_avg, station_wind_speed_max]
-            data_name_3 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'relative_humidity_avg':'Относителбная влажность воздуха', 'dew_point':'Точка росы', 'wind_speed_avg':'Средняя скорость ветра', 'wind_speed_max':'Максимальная скорость ветра'}
+            data_name_3 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'relative_humidity_avg':'Относительная влажность воздуха', 'dew_point':'Точка росы', 'wind_speed_avg':'Средняя скорость ветра', 'wind_speed_max':'Максимальная скорость ветра'}
             date_time_3, plot_cols_3, col_names_3, plot_features_3 = pre_data(data = data_3, data_name = data_name_3)
             text_chart = graph_make(date_time = date_time_3, plot_cols = plot_cols_3, col_names = col_names_3, plot_features = plot_features_3)
             stat, info = data_stat(col_names = col_names_3, plot_features = plot_features_3)
@@ -302,3 +304,21 @@ def login_request(request):
     return render(request=request,
                     template_name="polls/login.html",
                     context={"form": form})
+
+def feedback(request):
+    return render(request, 'polls/feedbackform.html')
+
+from .forms import NewUserForm
+
+def register(request):
+    if request.method == 'POST':
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = NewUserForm()
+    return render(request, 'polls/register.html', {'form': form})
