@@ -152,7 +152,6 @@ function ajaxCall(timeData){
                 for (var n = 0; n < arr.length; n++)
                     eval(arr[n].innerHTML)
 
-
                 tableParent = document.getElementById('myTable').parentNode
                 $("#myTable").remove()
                 tableChild = document.createElement('table')

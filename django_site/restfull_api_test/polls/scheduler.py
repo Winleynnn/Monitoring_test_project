@@ -42,17 +42,17 @@ class AuthHmacMetosGet(AuthBase):
         request.headers['Authorization'] = 'hmac ' + self._publicKey + ':' + signature
         return request
 
+
 # Endpoint of the API, version for example: v1
 apiURI = 'https://api.fieldclimate.com/v2'
 
 # HMAC Authentication credentials
-
-publicKey = '02e99bbbf3f55b76a53525e09d0ed4051cd93ae1bd5c8735'
-privateKey = 'cd749d389a1150bd79b22e9fa0c60c532eda69bba4ba933e'
+publicKey = '390cf046de64c36802b3d85cbf1883bf1294fe919549a3fe'
+privateKey = '838e76d236581a4776b2e4b0f712c6ebc1c7789f32af7aca'
 
 def station_0020CF3B_update():
-    print('[UPDATE] Starting update for last 3 days on 0020CF3B.')
-    apiRoute = '/data/0020CF3B/hourly/last/3d'
+    print('[UPDATE] Starting update for last day on 0020CF3B.')
+    apiRoute = '/data/0020CF3B/hourly/last/1d'
 
     auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
     response = requests.get(apiURI+apiRoute, headers={'Accept': 'application/json'}, auth=auth)
@@ -76,7 +76,12 @@ def station_0020CF3B_update():
     relative_humidity_avg = humidity['values']['avg']
     soil_temperature_avg = soil_t['values']['avg']
     soil_moisture_avg = soil_moisture['values']['avg']
-    
+
+    # with open('data.csv', mode="w+", encoding='cp1251') as csvfile:
+    #     writer = csv.writer(csvfile, delimiter=',', lineterminator="\r")
+    #     writer.writerow(['Date', 'Air Temperature', 'Relative Humidity', 'Soil Temperature', 'Soil Moisture'])
+    #     for i in range(1, len(air_t['values']['avg'])):
+    #         writer.writerow([dates[i], air_temperature_avg[i], relative_humidity_avg[i], soil_temperature_avg[i], soil_moisture_avg[i]])
     count = 0
     for i in range(1, len(air_t['values']['avg'])):
         if ((air_temperature_avg[i] != None) & (relative_humidity_avg[i] != None) & (soil_temperature_avg[i] != None) & (soil_moisture_avg[i] != None)):
@@ -89,7 +94,7 @@ def station_0020CF3B_update():
 
 def station_002099C5_update():
     print('[UPDATE] Starting update for last day on 002099C5.')
-    apiRoute = '/data/002099C5/hourly/last/3d'
+    apiRoute = '/data/002099C5/hourly/last/1d'
     auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
     response = requests.get(apiURI+apiRoute, headers={'Accept': 'application/json'}, auth=auth)
     data = response.json()
@@ -126,7 +131,7 @@ def station_002099C5_update():
 
 def station_00000235_update():
     print('[UPDATE] Starting update for last day on 00000235.')
-    apiRoute = '/data/00000235/hourly/last/3d'
+    apiRoute = '/data/00000235/hourly/last/1d'
     auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
     response = requests.get(apiURI+apiRoute, headers={'Accept': 'application/json'}, auth=auth)
     data = response.json()
@@ -168,7 +173,6 @@ def get_station_info():
     station_00000235_update()
     station_002099C5_update()
     station_0020CF3B_update()
-
 
 def start():
     # get_station_info()
