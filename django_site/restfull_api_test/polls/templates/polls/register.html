@@ -1,0 +1,22 @@
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/site3.css' %}" type="text/css"/>
+</head>
+    {% block content %}
+    {% if user.is_authenticated %}
+    <script>
+        document.location.replace('/')
+    </script>
+    {% else %}
+    <div id="container">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div id="lower">
+                <input class="log_btn" type="submit" value="Зарегистрироваться">
+				<a class = "log_btn" href="/login">Войти</a>
+			</div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
