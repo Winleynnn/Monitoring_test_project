@@ -22,3 +22,7 @@ class Station_Jena_Admin(admin.ModelAdmin):
 class Station_Gallipoli_Admin(admin.ModelAdmin):
      # date temp sunshine short_rad relative_humidity mean_sea_pressure soil_temp soil_moisture wind_speed wind_direction
     list_display = ('id','date', 'sunshine', 'short_rad', 'relative_humidity', 'mean_sea_pressure', 'soil_temp', 'soil_moisture', 'wind_speed', 'wind_direction')
+
+@admin.register(User_Models)
+class User_Models_Admin(admin.ModelAdmin):
+    list_display = ('login', 'station_id')

@@ -74,22 +74,25 @@ class Station_Jena(models.Model):
     def __str__(self):
         return self.date
         
+class User_Models(models.Model):
+    login = models.TextField(null=False)
+    station_id = models.TextField(null=False)
+    def __str__(self):
+        return self.login
+    
 # def jena_gallipoli():
-#     with open('jena_climate_2009_2016.csv', encoding='utf-8') as jena_file:
-#         reader = csv.reader(jena_file, delimiter=',')
+#     with open('jena.csv', encoding='utf-8') as jena_file:
+#         reader = csv.reader(jena_file, delimiter=';')
 #         next(reader, None)
 #         for row in reader:
 #             #date p T Tpot Tdew rh VPmax VPact VPdef sh H2OC rho wv max_wv wd
-#              Station_Jena.objects.create(date=row[0], p=row[1], T=row[2], Tpot=row[3], 
-#              Tdew=row[4], rh=row[5], VPmax=row[6], VPact=row[7], VPdef=row[8], sh=row[9], 
-#              H2OC=row[10], rho=row[11], wv=row[12], max_wv=row[13], wd=row[14])
-#     with open('Hourly Weather Data in Gallipoli (2008-2021).csv', encoding='utf-8') as gal_file:
+#              Station_Jena.objects.create(date=row[0], p=row[1], T=row[2], Tpot=row[3], Tdew=row[4], rh=row[5], VPmax=row[6], VPact=row[7], VPdef=row[8], sh=row[9], H2OC=row[10], rho=row[11], wv=row[12], max_wv=row[13], wd=row[14])
+#     with open('gallipoli.csv', encoding='utf-8') as gal_file:
 #         reader = csv.reader(gal_file, delimiter=';')
 #         next(reader, None)
 #         for row in reader:
 #             # date temp sunshine short_rad relative_humidity mean_sea_pressure soil_temp soil_moisture wind_speed wind_direction
-#              Station_Gallipoli.objects.create(date=row[0], sunshine=row[1], short_rad=row[2], relative_humidity=row[3], 
-#              mean_sea_pressure=row[4], soil_temp=row[5], soil_moisture=row[6], wind_speed=row[7], wind_direction=row[8])
+#              Station_Gallipoli.objects.create(date=row[0], sunshine=row[1], short_rad=row[2], relative_humidity=row[3], mean_sea_pressure=row[4], soil_temp=row[5], soil_moisture=row[6], wind_speed=row[7], wind_direction=row[8])
 
 # jena_gallipoli()
 
