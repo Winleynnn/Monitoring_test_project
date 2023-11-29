@@ -74,7 +74,7 @@ def graph_box(col_names, plot_features, plot_cols):
     num_name = 1
     for row_num in range(1, row+1, 1):
         for col_num in range(1, col+1, 1):
-            if(row_num * col_num <= len(plot_cols)):
+            if(row_num * col_num <= len(plot_cols) and num_name-1 < len(plot_cols)):
                 #print(plot_cols[num_name - 1])
                 #print(plot_features)
                 fig.add_trace(go.Box(y=plot_features[str(plot_cols[num_name - 1])], 
@@ -119,7 +119,12 @@ def graph_make(date_time, plot_cols, col_names, plot_features):
     num_name = 1
     for row_num in range(1, row+1, 1):
         for col_num in range(1, col+1, 1):
-            if(row_num * col_num <= len(plot_cols)):
+            if(row_num * col_num <= len(plot_cols) and num_name-1 < len(plot_cols)):
+                print(row_num * col_num <= len(plot_cols))
+                print((num_name-1) < len(plot_cols))    
+                print(row_num*col_num)
+                print(len(plot_cols))
+                print("num_name " + str(num_name))
                 fig.add_trace(go.Scatter(x=date_time, y=plot_features[str(plot_cols[num_name - 1])], 
                     name = col_names[num_name - 1]), row = row_num, col= col_num)
                 fig.update_xaxes(title_text="Дата", row=row_num, col=col_num)
@@ -132,54 +137,6 @@ def graph_make(date_time, plot_cols, col_names, plot_features):
     return fig_plot
 
 from django.db.models import F
-
-def response(station_name, station_mode, first_date, second_date):
-    name = station_name
-    mode = station_mode
-    date1 = first_date
-    date2 = second_date
-    columns = list(eval(station_name)._meta.get_fields(include_parents=False))
-    columns.pop(0)
-    print(columns)
-    column_names = list()
-    column_aliases = list()
-    for f in columns:
-        column_names.append(f.name)
-        column_aliases.append(f.verbose_name)
-    if (station_mode == 'hourly'):
-        selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
-    elif (station_mode == 'daily'):
-        selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-    elif (station_mode == 'weekly'):                
-        selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
-    info = {}
-    data_name_1 = {}
-    data_1 = []
-    info['names'] = column_names
-    print(column_names)
-    print(column_aliases)
-    info['aliases'] = column_aliases
-    for column in column_names:
-        info[column] = list(selected.values_list(column, flat=True))
-    for i in range(0, len(column_names)):
-        data_name_1[column_names[i]] = column_aliases[i]
-        data_1.append(info[column_names[i]])
-    # data_name_1 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'soil_temp_avg':'Средняя температура почвы', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_moisture':'Влажность почвы'}
-    # data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
-    #print(data_1)
-    # text_chart = graph_make(data = data_1, data_name = data_name_1)
-    date_time_1, plot_cols_1, col_names_1, plot_features_1 = pre_data(data = data_1, data_name = data_name_1)
-    text_chart = graph_make(date_time = date_time_1, plot_cols = plot_cols_1, col_names = col_names_1, plot_features = plot_features_1)
-    stat, inform = data_stat(col_names = col_names_1, plot_features = plot_features_1)
-    #print(plot_features_1)
-    corr_chart = graph_corr(col_names = col_names_1, plot_features = plot_features_1)
-    box_chart = graph_box(col_names = col_names_1, plot_features = plot_features_1, plot_cols = plot_cols_1)
-    info['graph'] = str(text_chart)
-    info['statistics'] = str(stat)
-    info['information'] = str(inform)
-    info['correlation_chart'] = str(corr_chart)
-    info['box_plot_chart'] = str(box_chart)
-    return JsonResponse(info, status=200)
 
 def index(request):
     if (request.is_ajax()):
@@ -200,7 +157,7 @@ def index(request):
         date2 = second_date
         columns = list(eval(station_name)._meta.get_fields(include_parents=False))
         columns.pop(0)
-        print(columns)
+        # print(columns)
         column_names = list()
         column_aliases = list()
         for f in columns:
@@ -216,14 +173,14 @@ def index(request):
         data_name_1 = {}
         data_1 = []
         info['names'] = column_names
-        print(column_names)
-        print(info['names'])
+        # print(column_names)
+        # print(info['names'])
         info['aliases'] = column_aliases
         for column in column_names:
-            print(list(selected.values_list(column, flat=True)))
+            # print(list(selected.values_list(column, flat=True)))
             info[column] = list(selected.values_list(column, flat=True))
-            print(column)
-            print(info[column])
+            # print(column)
+            # print(info[column])
         for i in range(0, len(column_names)):
             data_name_1[column_names[i]] = column_aliases[i]
             data_1.append(info[column_names[i]])

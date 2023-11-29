@@ -16,12 +16,12 @@ class Station_00000235_Admin(admin.ModelAdmin):
 @admin.register(Station_Jena)
 class Station_Jena_Admin(admin.ModelAdmin):
     #date p T Tpot Tdew rh VPmax VPact VPdef sh H2OC rho wv max_wv wd
-    list_display = ('id','date', 'T', 'Tpot', 'Tdew', 'rh', 'VPmax', 'VPact', 'VPdef', 'sh', 'H2OC', 'rho', 'wv', 'max_wv', 'wd')
+    list_display = ('id','date', 'p', 'T', 'Tpot', 'Tdew', 'rh', 'VPmax', 'VPact', 'VPdef', 'sh', 'H2OC', 'rho', 'wv', 'max_wv', 'wd')
 
 @admin.register(Station_Gallipoli)
 class Station_Gallipoli_Admin(admin.ModelAdmin):
      # date temp sunshine short_rad relative_humidity mean_sea_pressure soil_temp soil_moisture wind_speed wind_direction
-    list_display = ('id','date', 'sunshine', 'short_rad', 'relative_humidity', 'mean_sea_pressure', 'soil_temp', 'soil_moisture', 'wind_speed', 'wind_direction')
+    list_display = ('id','date', 'temp', 'sunshine', 'short_rad', 'relative_humidity', 'mean_sea_pressure', 'soil_temp', 'soil_moisture', 'wind_speed', 'wind_direction')
 
 @admin.register(User_Models)
 class User_Models_Admin(admin.ModelAdmin):
