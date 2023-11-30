@@ -17,6 +17,9 @@ import pandas as pd
 from datetime import datetime
 import math
 from plotly.offline import plot
+from django.apps import AppConfig
+# from AppConfig import get_model
+from django.utils.module_loading import import_string
 from django.db.models import F
 
 #функция обработки данных
@@ -136,218 +139,94 @@ def graph_make(date_time, plot_cols, col_names, plot_features):
     fig_plot = plot(fig, output_type='div', include_plotlyjs=True)
     return fig_plot
 
-from django.db.models import F
-
 def index(request):
     if (request.is_ajax()):
+        if request.user.is_authenticated:
+                username = request.user.username
+                ret = User_Models.objects.filter(login=username)
+                if ret:
+                    stations = ret.values_list('station_id', flat = True)
+                    stations = stations[0].split(',')
+        else:
+            redirect("/login")
         print(request.GET.get('action'))
-        # if (request.GET.get('action') == 'take_info'):
-        print("take_info")
-        station_name = 'Station_'
-        station_name += request.GET.get('selected_station')
-        station_mode = request.GET.get('selected_mode')
-        first_date = request.GET.get('first_date')
-        first_date += ' 00:00:00'
-        second_date = request.GET.get('second_date')
-        second_date += ' 23:00:00'
-        print('---------------------GO RESPONSE---------------------')
-        name = station_name
-        mode = station_mode
-        date1 = first_date
-        date2 = second_date
-        columns = list(eval(station_name)._meta.get_fields(include_parents=False))
-        columns.pop(0)
-        # print(columns)
-        column_names = list()
-        column_aliases = list()
-        for f in columns:
-            column_names.append(f.name)
-            column_aliases.append(f.verbose_name)
-        if (station_mode == 'hourly'):
-            selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
-        elif (station_mode == 'daily'):
-            selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-        elif (station_mode == 'weekly'):                
-            selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
-        info = {}
-        data_name_1 = {}
-        data_1 = []
-        info['names'] = column_names
-        # print(column_names)
-        # print(info['names'])
-        info['aliases'] = column_aliases
-        for column in column_names:
-            # print(list(selected.values_list(column, flat=True)))
-            info[column] = list(selected.values_list(column, flat=True))
-            # print(column)
-            # print(info[column])
-        for i in range(0, len(column_names)):
-            data_name_1[column_names[i]] = column_aliases[i]
-            data_1.append(info[column_names[i]])
-        # data_name_1 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'soil_temp_avg':'Средняя температура почвы', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_moisture':'Влажность почвы'}
-        # data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
-        #print(data_1)
-        # text_chart = graph_make(data = data_1, data_name = data_name_1)
-        date_time_1, plot_cols_1, col_names_1, plot_features_1 = pre_data(data = data_1, data_name = data_name_1)
-        text_chart = graph_make(date_time = date_time_1, plot_cols = plot_cols_1, col_names = col_names_1, plot_features = plot_features_1)
-        stat, inform = data_stat(col_names = col_names_1, plot_features = plot_features_1)
-        #print(plot_features_1)
-        corr_chart = graph_corr(col_names = col_names_1, plot_features = plot_features_1)
-        box_chart = graph_box(col_names = col_names_1, plot_features = plot_features_1, plot_cols = plot_cols_1)
-        info['graph'] = str(text_chart)
-        info['statistics'] = str(stat)
-        info['information'] = str(inform)
-        info['correlation_chart'] = str(corr_chart)
-        info['box_plot_chart'] = str(box_chart)
-        info['name'] = name
-        return JsonResponse(info, status=200)
-        response(station_name, station_mode, first_date, second_date)
-        print('---------------------GO STATION----------------------')
-        if (station_name == 'Station_0020CF3B'):
-            if (station_mode == 'hourly'):
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
-            elif (station_mode == 'daily'):
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-            elif (station_mode == 'weekly'):                
-                selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
-            # 0020CF3B stats : air_temp_avg, date, id, relative_humidity_avg, soil_moisture, soil_temp_avg
-            station_dates = selected.values_list('date', flat = True)
-            station_temp = selected.values_list('air_temp_avg', flat = True)
-            station_soil_temp = selected.values_list('soil_temp_avg', flat = True)           
-            station_humidity = selected.values_list('relative_humidity_avg', flat = True)
-            station_soil_moisture = selected.values_list('soil_moisture', flat = True)
-            data_name_1 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'soil_temp_avg':'Средняя температура почвы', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_moisture':'Влажность почвы'}
-            data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
-            #print(data_1)
-            # text_chart = graph_make(data = data_1, data_name = data_name_1)
-            date_time_1, plot_cols_1, col_names_1, plot_features_1 = pre_data(data = data_1, data_name = data_name_1)
-            text_chart = graph_make(date_time = date_time_1, plot_cols = plot_cols_1, col_names = col_names_1, plot_features = plot_features_1)
-            stat, info = data_stat(col_names = col_names_1, plot_features = plot_features_1)
-            #print(plot_features_1)
-            corr_chart = graph_corr(col_names = col_names_1, plot_features = plot_features_1)
-            box_chart = graph_box(col_names = col_names_1, plot_features = plot_features_1, plot_cols = plot_cols_1)
-            return JsonResponse({
-                                    'name': station_name,
-                                    'mode': station_mode, 
-                                    'dates' : list(station_dates),
-                                    'air_temp_avg' : list(station_temp), 
-                                    'soil_temp_avg' : list(station_soil_temp),
-                                    'relative_humidity_avg' : list(station_humidity),
-                                    'soil_moisture' : list(station_soil_moisture),
-                                    'graph': str(text_chart),
-                                    'statistics':str(stat),
-                                    'information':str(info),
-                                    'correlation_chart':str(corr_chart),
-                                    'box_plot_chart': str(box_chart)
-                                }, status=200)
-        if (station_name == 'Station_002099C5'):
-            if (station_mode == 'hourly'):
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
-            elif (station_mode == 'daily'):
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-            elif (station_mode == 'weekly'):                
-                selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
-            # 002099C5 stats : air_temp_avg, date, id, relative_humidity_avg, soil_temp_1, soil_temp_2, soil_temp_3
-            station_dates = selected.values_list('date', flat = True)
-            station_temp = selected.values_list('air_temp_avg', flat = True)
-            station_humidity = selected.values_list('relative_humidity_avg', flat = True)
-            station_soil_temp_1 = selected.values_list('soil_temp_1', flat = True)
-            station_soil_temp_2 = selected.values_list('soil_temp_2', flat = True)
-            station_soil_temp_3 = selected.values_list('soil_temp_3', flat = True)
-            data_2 = [station_dates, station_temp, station_humidity, station_soil_temp_1, station_soil_temp_2, station_soil_temp_3]
-            data_name_2 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_temp_1':'Температура почвы 1', 'soil_temp_2':'Температура почвы 2', 'soil_temp_3':'Температура почвы 3'}
-            date_time_2, plot_cols_2, col_names_2, plot_features_2 = pre_data(data = data_2, data_name = data_name_2)
-            text_chart = graph_make(date_time = date_time_2, plot_cols = plot_cols_2, col_names = col_names_2, plot_features = plot_features_2)
-            stat, info = data_stat(col_names = col_names_2, plot_features = plot_features_2)
-            corr_chart = graph_corr(col_names = col_names_2, plot_features = plot_features_2)
-            box_chart = graph_box(col_names = col_names_2, plot_features = plot_features_2, plot_cols = plot_cols_2)
-            main_station_data = Station_0020CF3B.objects.all()
-            data_temp = main_station_data.values_list('air_temp_avg', flat=True)
-            data_humidity = main_station_data.values_list('relative_humidity_avg', flat=True)
-            data_soil_temp = main_station_data.values_list('soil_temp_avg', flat=True)
-            data_moist = main_station_data.values_list('soil_moisture', flat=True)
-            main_station_data2 = Station_002099C5.objects.all()
-            data2_temp = main_station_data2.values_list('air_temp_avg', flat=True)
-            data2_humidity = main_station_data2.values_list('relative_humidity_avg', flat=True)
-            data2_soil_temp = main_station_data2.values_list('soil_temp_1', flat=True)
-            predict = ml_predict_test(
-                {
-                    'Air Temperature' : list(data_temp), 
-                    'Relative Humidity' : list(data_humidity), 
-                    'Soil Temperature' : list(data_soil_temp),
-                    'Soil Moisture' : list(data_moist)
-                },
-                {
-                    'Air Temperature' : list(data2_temp), 
-                    'Relative Humidity' : list(data2_humidity), 
-                    'Soil Temperature' : list(data2_soil_temp)
-                })
-            # file_dir = '../../data2.csv'
-            # predict = ml_predict(file_dir)
-
-            return JsonResponse({
-                                    'name': station_name,
-                                    'dates' : list(station_dates), 
-                                    'air_temp_avg' : list(station_temp), 
-                                    'relative_humidity_avg' : list(station_humidity), 
-                                    'soil_temp_1' : list(station_soil_temp_1),
-                                    'soil_temp_2' : list(station_soil_temp_2),
-                                    'soil_temp_3' : list(station_soil_temp_3),
-                                    'predict' : predict,
-                                    'graph': str(text_chart),
-                                    'statistics':str(stat),
-                                    'information':str(info),
-                                    'correlation_chart':str(corr_chart),
-                                    'box_plot_chart': str(box_chart)
-                                }, status=200)
-        if (station_name == 'Station_00000235'):
-            if (station_mode == 'hourly'):
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
-            elif (station_mode == 'daily'):
-                selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
-            elif (station_mode == 'weekly'):                
-                selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
-            # 00000235: id, date, air_temp_avg, relative_humidity_avg, dew_point, wind_speed_avg, wind_speed_max
-            station_dates = selected.values_list('date', flat = True)
-            station_temp = selected.values_list('air_temp_avg', flat = True)
-            station_humidity = selected.values_list('relative_humidity_avg', flat = True)
-            station_dew_point = selected.values_list('dew_point', flat = True)
-            station_wind_speed_avg = selected.values_list('wind_speed_avg', flat = True)
-            station_wind_speed_max = selected.values_list('wind_speed_max', flat = True)
-            data_3 = [station_dates, station_temp, station_humidity, station_dew_point, station_wind_speed_avg, station_wind_speed_max]
-            data_name_3 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'relative_humidity_avg':'Относительная влажность воздуха', 'dew_point':'Точка росы', 'wind_speed_avg':'Средняя скорость ветра', 'wind_speed_max':'Максимальная скорость ветра'}
-            date_time_3, plot_cols_3, col_names_3, plot_features_3 = pre_data(data = data_3, data_name = data_name_3)
-            text_chart = graph_make(date_time = date_time_3, plot_cols = plot_cols_3, col_names = col_names_3, plot_features = plot_features_3)
-            stat, info = data_stat(col_names = col_names_3, plot_features = plot_features_3)
-            corr_chart = graph_corr(col_names = col_names_3, plot_features = plot_features_3)
-            box_chart = graph_box(col_names = col_names_3, plot_features = plot_features_3, plot_cols = plot_cols_3)
-            return JsonResponse({
-                                    'name': station_name,
-                                    'mode': station_mode, 
-                                    'dates' : list(station_dates),
-                                    'air_temp_avg' : list(station_temp), 
-                                    'relative_humidity_avg' : list(station_humidity),
-                                    'dew_point' : list(station_dew_point),
-                                    'wind_speed_avg' : list(station_wind_speed_avg),
-                                    'wind_speed_max' : list(station_wind_speed_max),
-                                    'graph': str(text_chart),
-                                    'statistics':str(stat),
-                                    'information':str(info),
-                                    'correlation_chart':str(corr_chart),
-                                    'box_plot_chart': str(box_chart)
-                                }, status=200)
-        # elif (request.GET.get('action') == 'get_stations'):
-        #     print('get_stations')
-        #     if request.user.is_authenticated:
-        #         username = request.user.username
-        #         ret = User_Models.objects.filter(login=username)
-        #         if ret:
-        #             stations = ret.values_list('station_id', flat = True)
-        #             return JsonResponse({
-        #                 'stations': list(stations)
-        #             })
-        #         else:
-        #             return JsonResponse(None, status = 404)
+        if (request.GET.get('action') == 'take_info'):
+            print("take_info")
+            temp = request.GET.get('selected_station')
+            if (temp in stations):
+                station_name = 'Station_'
+                station_name += request.GET.get('selected_station')
+                station_mode = request.GET.get('selected_mode')
+                first_date = request.GET.get('first_date')
+                first_date += ' 00:00:00'
+                second_date = request.GET.get('second_date')
+                second_date += ' 23:00:00'
+                print('---------------------GO RESPONSE---------------------')
+                name = station_name
+                mode = station_mode
+                date1 = first_date
+                date2 = second_date
+                columns = list(eval(station_name)._meta.get_fields(include_parents=False))
+                columns.pop(0)
+                # print(columns)
+                column_names = list()
+                column_aliases = list()
+                for f in columns:
+                    column_names.append(f.name)
+                    column_aliases.append(f.verbose_name)
+                if (station_mode == 'hourly'):
+                    selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
+                elif (station_mode == 'daily'):
+                    selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+                elif (station_mode == 'weekly'):                
+                    selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
+                info = {}
+                data_name_1 = {}
+                data_1 = []
+                info['names'] = column_names
+                # print(column_names)
+                # print(info['names'])
+                info['aliases'] = column_aliases
+                for column in column_names:
+                    # print(list(selected.values_list(column, flat=True)))
+                    info[column] = list(selected.values_list(column, flat=True))
+                    # print(column)
+                    # print(info[column])
+                for i in range(0, len(column_names)):
+                    data_name_1[column_names[i]] = column_aliases[i]
+                    data_1.append(info[column_names[i]])
+                # data_name_1 = {'date':'Дата', 'air_temp_avg':'Средняя температура воздуха', 'soil_temp_avg':'Средняя температура почвы', 'relative_humidity_avg':'Относительная влажность воздуха', 'soil_moisture':'Влажность почвы'}
+                # data_1 = [station_dates, station_temp, station_soil_temp, station_humidity, station_soil_moisture]
+                #print(data_1)
+                # text_chart = graph_make(data = data_1, data_name = data_name_1)
+                date_time_1, plot_cols_1, col_names_1, plot_features_1 = pre_data(data = data_1, data_name = data_name_1)
+                text_chart = graph_make(date_time = date_time_1, plot_cols = plot_cols_1, col_names = col_names_1, plot_features = plot_features_1)
+                stat, inform = data_stat(col_names = col_names_1, plot_features = plot_features_1)
+                #print(plot_features_1)
+                corr_chart = graph_corr(col_names = col_names_1, plot_features = plot_features_1)
+                box_chart = graph_box(col_names = col_names_1, plot_features = plot_features_1, plot_cols = plot_cols_1)
+                info['graph'] = str(text_chart)
+                info['statistics'] = str(stat)
+                info['information'] = str(inform)
+                info['correlation_chart'] = str(corr_chart)
+                info['box_plot_chart'] = str(box_chart)
+                info['name'] = name
+                return JsonResponse(info, status=200)
+            else:
+                logout_request(request)
+        elif (request.GET.get('action') == 'get_stations'):
+            print('get_stations')
+            if request.user.is_authenticated:
+                username = request.user.username
+                ret = User_Models.objects.filter(login=username)
+                if ret:
+                    stations = ret.values_list('station_id', flat = True)
+                    stations = stations[0].split(',')
+                    return JsonResponse({
+                        'stations': list(stations)
+                    })
+                else:
+                    return JsonResponse(None, status = 404)
     return render(request, "polls/header.html")
     
 

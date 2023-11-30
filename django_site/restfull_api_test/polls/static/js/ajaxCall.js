@@ -59,7 +59,11 @@ $(document).ready(function(){
     }
 var first_date = $('#first_date').val()
 var second_date = $('#second_date').val()
-ajaxCall(timeData)
+if (get_stations())
+{
+    ajaxCall(timeData)
+}
+// ajaxCall(timeData)
 
 var today = new Date();
 var dd = today.getDate();
@@ -99,13 +103,12 @@ $("#button_date").on('click', function()
         second_date: $('#second_date').val(),
         selected_station: $('#select_station option:selected').text(),
         selected_mode: $('#select_mode option:selected').val(),
-        // action: 'take_info'
+        action: 'take_info'
         }
     first_date = $('#first_date').val()
     second_date = $('#second_date').val()        
     ajaxCall(timeData)
 })
-    // get_stations()
     get_info()
 });
 
@@ -125,7 +128,92 @@ function get_stations(){
             $('#select_station').empty()
             for (var i = 0; i < stations.length; i++)
                 $('#select_station').append("<option value='" + stations[i] + "'>" + stations[i] +"</option>")
+            $('#select_station').value = $('#select_station')[0].value
+            $('.custom-select-trigger').text = $('#select_station')[0].value
+        
+        $(".custom-select").each(function() {
+            var classes = $(this).attr("class"),
+                id = $(this).attr("id"),
+                name = $(this).attr("name");
+            var template = '<div class="' + classes + '">';
+            template +=
+                '<span class="custom-select-trigger">' +
+                $(this).attr("placeholder") +
+                "</span>";
+            template += '<div class="custom-options">';
+            $(this)
+                .find("option")
+                .each(function() {
+                template +=
+                    '<span class="custom-option ' +
+                    $(this).attr("class") +
+                    '" data-value="' +
+                    $(this).attr("value") +
+                    '">' +
+                    $(this).html() +
+                    "</span>";
+                });
+            template += "</div></div>";
 
+            $(this).wrap('<div class="custom-select-wrapper"></div>');
+            $(this).hide();
+            $(this).after(template);
+            });
+            $(".custom-option:first-of-type").hover(
+            function() {
+                $(this)
+                .parents(".custom-options")
+                .addClass("option-hover");
+            },
+            function() {
+                $(this)
+                .parents(".custom-options")
+                .removeClass("option-hover");   
+            }
+            );
+            $('.custom-select-trigger')[0].innerHTML = $('#select_station')[0].value
+            $(".custom-select-trigger").on("click", function() {
+            $("html").one("click", function() {
+                $(".custom-select").removeClass("opened");
+            });
+            $(this)
+                .parents(".custom-select")
+                .toggleClass("opened");
+            event.stopPropagation();
+            });
+            $(".custom-option").on("click", function() {
+            $(this)
+                .parents(".custom-select-wrapper")
+                .find("select")
+                .val($(this).data("value"));
+            $(this)
+                .parents(".custom-options")
+                .find(".custom-option")
+                .removeClass("selection");
+            $(this).addClass("selection");
+            $(this)
+                .parents(".custom-select")
+                .removeClass("opened");
+            $(this)
+                .parents(".custom-select")
+                .find(".custom-select-trigger")
+                .text($(this).text());
+            });
+            return(response['stations'])    
+        }
+        })
+}
+function get_time(){
+    $.ajax({
+        url: '',
+        type: 'get',
+        data: {action: 'get_stations'},
+        success: function(response){
+            var stations = response['stations']
+            console.log(stations[0])
+            $('#select_station').empty()
+            for (var i = 0; i < stations.length; i++)
+                $('#select_station').append("<option value='" + stations[i] + "'>" + stations[i] +"</option>")
             }
     })
 }
@@ -138,9 +226,9 @@ function get_info(){
         selected_station: $('#select_station option:selected').text(),
         selected_mode: $('#select_mode option:selected').val()
         }
+        ajaxCall(timeData)
     var first_date = $('#first_date').val()
     var second_date = $('#second_date').val()
-    ajaxCall(timeData)
     
     var today = new Date();
     var dd = today.getDate();
@@ -160,18 +248,18 @@ function get_info(){
         'max' : today
     })
 
-    $(".custom-select-trigger").on('DOMSubtreeModified', function()
-    {
-        timeData = 
-            {
-            first_date: first_date,
-            second_date: second_date,
-            selected_station: $('#select_station option:selected').text(),
-            selected_mode: $('#select_mode option:selected').val(),
-            // action: 'take_info'
-            }        
-        ajaxCall(timeData)
-    })
+    // $(".custom-select-trigger").on('DOMSubtreeModified', function()
+    // {
+    //     timeData = 
+    //         {
+    //         first_date: first_date,
+    //         second_date: second_date,
+    //         selected_station: $('#select_station option:selected').text(),
+    //         selected_mode: $('#select_mode option:selected').val(),
+    //         // action: 'take_info'
+    //         }        
+    //     ajaxCall(timeData)
+    // })
     $("#button_date").on('click', function()
     {
         timeData = 
@@ -180,7 +268,7 @@ function get_info(){
             second_date: $('#second_date').val(),
             selected_station: $('#select_station option:selected').text(),
             selected_mode: $('#select_mode option:selected').val(),
-            // action: 'take_info'
+            action: 'take_info'
             }
         first_date = $('#first_date').val()
         second_date = $('#second_date').val()        
@@ -189,6 +277,7 @@ function get_info(){
 }
 
 function ajaxCall(timeData){
+    console.log(timeData['action'])
     $.ajax({
         url: '',
         type: 'get',
@@ -196,6 +285,7 @@ function ajaxCall(timeData){
         success: function(response){
             var columns = response['names']
             var aliases = response['aliases']
+            console.log(response)
             // var dates = response['date']
             // var variables = []
             // for (column in columns)
