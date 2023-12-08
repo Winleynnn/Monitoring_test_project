@@ -124,13 +124,13 @@ function get_stations(){
         data: {action: 'get_stations'},
         success: function(response){
             var stations = response['stations']
-            console.log(stations[0])
             $('#select_station').empty()
             for (var i = 0; i < stations.length; i++)
                 $('#select_station').append("<option value='" + stations[i] + "'>" + stations[i] +"</option>")
             $('#select_station').value = $('#select_station')[0].value
-            $('.custom-select-trigger').text = $('#select_station')[0].value
-        
+            $('.custom-select-trigger').first().text($('#select_station')[0].value)
+            // if (stations[0].includes($('.custom-select-trigger').first().text()))
+            // console.log('bruhhh')
         $(".custom-select").each(function() {
             var classes = $(this).attr("class"),
                 id = $(this).attr("id"),
@@ -271,7 +271,8 @@ function get_info(){
             action: 'take_info'
             }
         first_date = $('#first_date').val()
-        second_date = $('#second_date').val()        
+        second_date = $('#second_date').val()
+        // if (rights[] $('custom-select_trigger').text)       
         ajaxCall(timeData)
     })
 }
@@ -283,9 +284,11 @@ function ajaxCall(timeData){
         type: 'get',
         data: timeData,
         success: function(response){
+            var stations = response['stations']
+            var rights = response['rights']
             var columns = response['names']
             var aliases = response['aliases']
-            console.log(response)
+            // console.log(response)
             // var dates = response['date']
             // var variables = []
             // for (column in columns)
@@ -308,7 +311,15 @@ function ajaxCall(timeData){
             graphic.innerHTML = chart
             graphic2.innerHTML = corr_chart
             graphic3.innerHTML = box_chart
-
+            console.log(rights[stations.indexOf($('.custom-select-trigger').first().text())])
+            console.log(rights)
+            console.log(rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("download"))
+            if (rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("download"))
+            {
+                $('#save_buttons:not(:has("#save_csv"))').append('<a href="#" id="save_csv" style="margin-right: 5px;"onclick="download_table_as_csv("myTable");">Download as CSV</a>')
+                $('#save_buttons:not(:has("#save_xlsx"))').append('<a href="#" id="save_xlsx" onclick="download_table_as_xlsx("myTable");">Download as XLSX</a>')
+            }
+            else $('#save_buttons:has(a)').empty()
             var statistics = $('.stat')[0]
             var information = $('.info')[0]
             statistics.innerHTML = stat

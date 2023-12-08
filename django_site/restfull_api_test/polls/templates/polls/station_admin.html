@@ -1,0 +1,33 @@
+<head>
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/station_admin.css' %}" type="text/css"/>
+    <script src="{% static 'js/station_admin.js' %}"></script>     
+</head>
+<body>
+{% if user.is_superuser %}
+<div class = "first">
+    <div class = "username">
+        <h3>Username</h3>  
+        <select name="users" id="user_select">
+        </select>
+    </div>
+    <div class = "stations">
+        <h3>Add stations</h3>
+        <select name="stations" id="station_add">
+        </select>
+    </div>
+</div>
+<div class = "second">
+    <div class = "column">
+    <h3>station_name</h3>
+    <label><input type="checkbox" value="check">check</label>
+    <label><input type="checkbox" value="download">download</label>
+    </div>
+</div>
+    {% else %}
+    <script>
+        document.location.replace('/404')
+    </script>
+    {% endif %}
+</body>

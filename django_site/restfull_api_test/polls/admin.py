@@ -25,4 +25,4 @@ class Station_Gallipoli_Admin(admin.ModelAdmin):
 
 @admin.register(User_Models)
 class User_Models_Admin(admin.ModelAdmin):
-    list_display = ('login', 'station_id')
+    list_display = ('login', 'station_info')

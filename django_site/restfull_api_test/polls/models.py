@@ -76,7 +76,7 @@ class Station_Jena(models.Model):
         
 class User_Models(models.Model):
     login = models.TextField(null=False)
-    station_id = models.TextField(null=False)
+    station_info = models.JSONField(null=False)
     def __str__(self):
         return self.login
     

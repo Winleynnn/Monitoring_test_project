@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from pip import main
 from .models import *
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
@@ -17,10 +17,11 @@ import pandas as pd
 from datetime import datetime
 import math
 from plotly.offline import plot
-from django.apps import AppConfig
+from django.apps import AppConfig, apps
 # from AppConfig import get_model
 from django.utils.module_loading import import_string
 from django.db.models import F
+from django.http import Http404
 
 #функция обработки данных
 def pre_data(data, data_name):
@@ -145,15 +146,23 @@ def index(request):
                 username = request.user.username
                 ret = User_Models.objects.filter(login=username)
                 if ret:
-                    stations = ret.values_list('station_id', flat = True)
-                    stations = stations[0].split(',')
+                    stations = ret.values_list('station_info', flat = True)
+                    temp_keys = ""
+                    for key in stations[0].keys():
+                        temp_keys += key + " "
+                    temp_keys = temp_keys.strip(" ")
+                    stations = temp_keys.split(' ')
+                    
         else:
-            redirect("/login")
-        print(request.GET.get('action'))
+            logout_request(request)
+            redirect('/login')
+        print('action ' + str(request.GET.get('action')))
         if (request.GET.get('action') == 'take_info'):
             print("take_info")
             temp = request.GET.get('selected_station')
             if (temp in stations):
+                print("temp + {0}", temp)
+                print(stations)
                 station_name = 'Station_'
                 station_name += request.GET.get('selected_station')
                 station_mode = request.GET.get('selected_mode')
@@ -211,22 +220,60 @@ def index(request):
                 info['correlation_chart'] = str(corr_chart)
                 info['box_plot_chart'] = str(box_chart)
                 info['name'] = name
+                username = request.user.username
+                ret = User_Models.objects.filter(login=username)
+                if ret:
+                    stations = ret.values_list('station_info', flat = True)
+                    print(stations)
+                    # print(stations[0].keys())
+                    # for key in stations[0].keys():
+                    #     print(key)
+                    #     print(stations[0][key])
+                    #     if 'download' in stations[0][key]:
+                    #         print(str(key) + ' True')
+                    temp_keys = ""
+                    temp_rights = list()
+                    for key in stations[0].keys():
+                        temp_keys += key + " "
+                        temp_rights.append(stations[0][key])
+                    print(temp_rights)
+                    temp_keys = temp_keys.strip(' ')
+                    print(temp_keys)
+                    stations = temp_keys.split(' ')
+                    info['stations'] = stations
+                    info['rights'] = temp_rights
                 return JsonResponse(info, status=200)
             else:
                 logout_request(request)
+                redirect("/login")
         elif (request.GET.get('action') == 'get_stations'):
             print('get_stations')
             if request.user.is_authenticated:
                 username = request.user.username
                 ret = User_Models.objects.filter(login=username)
                 if ret:
-                    stations = ret.values_list('station_id', flat = True)
-                    stations = stations[0].split(',')
+                    stations = ret.values_list('station_info', flat = True)
+                    print(stations)
+                    # print(stations[0].keys())
+                    # for key in stations[0].keys():
+                    #     print(key)
+                    #     print(stations[0][key])
+                    #     if 'download' in stations[0][key]:
+                    #         print(str(key) + ' True')
+                    temp_keys = ""
+                    temp_rights = list()
+                    for key in stations[0].keys():
+                        temp_keys += key + " "
+                        temp_rights.append(stations[0][key])
+                    print(temp_rights)
+                    temp_keys = temp_keys.strip(' ')
+                    stations = temp_keys.split(' ')
                     return JsonResponse({
-                        'stations': list(stations)
+                        'stations': list(stations),
+                        'rights': list(temp_rights)
                     })
                 else:
-                    return JsonResponse(None, status = 404)
+                    return render(request, 'polls/404.html')
     return render(request, "polls/header.html")
     
 
@@ -272,3 +319,31 @@ def register(request):
     else:
         form = NewUserForm()
     return render(request, 'polls/register.html', {'form': form})
+
+def station_admin(request):
+    if request.user.is_superuser:
+        if (request.is_ajax()):
+            User = get_user_model()
+            models = apps.get_app_config('polls').get_models()
+
+            users = User.objects.all()
+            user_list = list()
+            for user in users:
+                user_list.append(user.username)
+
+            model_list = list()
+            for model in models:
+                if "Station_" in str(model.__name__):
+                    model_list.append(model.__name__)
+            
+            temp_users = dict()
+            temp_users['usernames'] = user_list
+            temp_users['stations'] = model_list
+            
+            return JsonResponse(temp_users, status=200)
+        return render(request, 'polls/station_admin.html')
+    else: raise Http404
+    
+    
+def not_found(request):
+    return render(request, 'polls/404.html')
