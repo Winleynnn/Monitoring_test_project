@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import os
 from ml_script import ml_predict_test, ml_predict
 import json
@@ -152,7 +152,6 @@ def index(request):
                         temp_keys += key + " "
                     temp_keys = temp_keys.strip(" ")
                     stations = temp_keys.split(' ')
-                    
         else:
             logout_request(request)
             redirect('/login')
@@ -323,27 +322,81 @@ def register(request):
 def station_admin(request):
     if request.user.is_superuser:
         if (request.is_ajax()):
-            User = get_user_model()
-            models = apps.get_app_config('polls').get_models()
+            if (request.GET.get('action') == 'load_info'):
+                User = get_user_model()
+                models = apps.get_app_config('polls').get_models()
 
-            users = User.objects.all()
-            user_list = list()
-            for user in users:
-                user_list.append(user.username)
+                users = User.objects.all()
+                user_list = list()
+                for user in users:
+                    user_list.append(user.username)
 
-            model_list = list()
-            for model in models:
-                if "Station_" in str(model.__name__):
-                    model_list.append(model.__name__)
-            
-            temp_users = dict()
-            temp_users['usernames'] = user_list
-            temp_users['stations'] = model_list
-            
-            return JsonResponse(temp_users, status=200)
+                model_list = list()
+                for model in models:
+                    if "Station_" in str(model.__name__):
+                        model_list.append(model.__name__.replace("Station_", ""))
+                
+                temp_users = dict()
+                temp_users['usernames'] = user_list
+                temp_users['stations'] = model_list
+                
+                return JsonResponse(temp_users, status=200)
+            elif (request.GET.get('action') == 'get_user_stations'):
+                user = request.GET.get('username')
+                user_info = User_Models.objects.filter(login=user)
+                if user_info:
+                    stations = user_info.values_list('station_info', flat = True)
+                    temp_keys = ""
+                    temp_rights = list()
+                    for key in stations[0].keys():
+                        temp_keys += key + " "
+                        temp_rights.append(stations[0][key])
+                    temp_keys = temp_keys.strip(' ')
+                    stations = temp_keys.split(' ')
+                    return JsonResponse({
+                        'stations': list(stations),
+                        'rights': list(temp_rights)
+                    })
+                else:
+                    return JsonResponse({
+                        'stations': list(),
+                        'rights': list()
+                    })
         return render(request, 'polls/station_admin.html')
     else: raise Http404
     
+def station_admin_add(request):
+    if request.user.is_superuser:
+        if (request.method == 'POST'):
+        # elif (request.GET.get('action') == 'upload'):
+            # data = dict(json.loads(request.body))
+            # print(data)
+            # print(data.keys())
+            login = json.loads(request.body)['username']
+            data = json.loads(request.body)['stations']
+            if bool(data):
+                temp = dict()
+                for key in data.keys():
+                    temp[key] = data[key]
+                try:
+                    mod = User_Models.objects.get(login=login)
+                    mod.delete()
+                except:
+                    mod = None
+                mod = User_Models.objects.create(login=login, station_info=temp)
+                mod.save()
+            # print(json.loads(request.body))
+            # temp = User_Models.objects.create(login='sss', station_info='{"bebra":["gaming"]}')
+            # temp.save()
+            # User_Models.objects.create(login = data['stations']['username'], station_info = data['stations'])
+        json_obj = json.dumps({ "time": '00:00:00', "method": "post" })
+        result = HttpResponse(json_obj, 'text/plain', charset='utf-8')
+        return result
+                # us(rname = json.loads(request.POST.get('stations'))
+                # username = username['username']
+                # stat_info = json.loads(request.POST.get('stations'))
+                # print(username)
+                # return JsonResponse({'username':list(username)}, status=200, safe=False)
     
 def not_found(request):
     return render(request, 'polls/404.html')

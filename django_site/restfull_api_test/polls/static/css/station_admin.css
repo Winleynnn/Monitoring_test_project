@@ -13,3 +13,14 @@
     margin-right: 30px;
     margin-bottom: 30px;
 }
+.up
+{
+    display:flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+.up h3
+{
+    margin-right: 30px;
+}

@@ -6,25 +6,29 @@
 </head>
 <body>
 {% if user.is_superuser %}
+
 <div class = "first">
     <div class = "username">
         <h3>Username</h3>  
-        <select name="users" id="user_select">
+        <select name="users" id="user_select" onchange="get_user_stations()">
         </select>
     </div>
     <div class = "stations">
         <h3>Add stations</h3>
         <select name="stations" id="station_add">
         </select>
+        <button onclick="add_station()">+</button>
     </div>
 </div>
 <div class = "second">
     <div class = "column">
-    <h3>station_name</h3>
-    <label><input type="checkbox" value="check">check</label>
-    <label><input type="checkbox" value="download">download</label>
+    <!-- <h3>station_name</h3>
+    <input type="checkbox" value="check">
+    <label><input type="checkbox" value="download">download</label> -->
     </div>
 </div>
+{% csrf_token %}
+<button onclick="upload()">Сохранить</button>
     {% else %}
     <script>
         document.location.replace('/404')
