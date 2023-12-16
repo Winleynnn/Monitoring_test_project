@@ -6,20 +6,22 @@
 </head>
 <body>
 {% if user.is_superuser %}
-
+{% include "polls/navbar.html" %}
 <div class = "first">
     <div class = "username">
-        <h3>Username</h3>  
+        <h3>Пользователь</h3>  
         <select name="users" id="user_select" onchange="get_user_stations()">
         </select>
     </div>
     <div class = "stations">
-        <h3>Add stations</h3>
+        <h3>Станция</h3>
         <select name="stations" id="station_add">
         </select>
-        <button onclick="add_station()">+</button>
     </div>
+    <button class = "ind_btn add_btn" onclick="add_station()">Добавить</button> 
 </div>
+<hr class = "line">
+<p class = "p_text">Станции пользователя</p>
 <div class = "second">
     <div class = "column">
     <!-- <h3>station_name</h3>
@@ -28,7 +30,7 @@
     </div>
 </div>
 {% csrf_token %}
-<button onclick="upload()">Сохранить</button>
+<button class = "upload ind_btn" onclick="upload()">Сохранить</button>
     {% else %}
     <script>
         document.location.replace('/404')

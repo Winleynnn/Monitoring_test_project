@@ -275,7 +275,6 @@ def index(request):
                     return render(request, 'polls/404.html')
     return render(request, "polls/header.html")
     
-
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out succesfully")
@@ -397,6 +396,6 @@ def station_admin_add(request):
                 # stat_info = json.loads(request.POST.get('stations'))
                 # print(username)
                 # return JsonResponse({'username':list(username)}, status=200, safe=False)
-    
+    else: raise Http404
 def not_found(request):
     return render(request, 'polls/404.html')

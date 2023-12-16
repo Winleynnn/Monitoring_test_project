@@ -15,7 +15,7 @@ $(document).ready(function(){
                 // $('#user_select').innerHTML += "<option value='" + username + "'>" + username + "</option>"
             }            
             get_stations()
-            get_user_stations()
+            setTimeout(() => {get_user_stations()}, 50);
         }
     })
 })
@@ -62,6 +62,7 @@ function get_user_stations(){
             let download_input = document.createElement('input')
             let delete_button = document.createElement('button')
             delete_button.innerHTML = '-'
+            delete_button.classList.add('delete_btn')
             delete_button.onclick = function(){delete_station(this.parentNode.parentNode);};
             stat_name.innerHTML = stations[stat]
             check_input.type = 'checkbox'
@@ -127,6 +128,7 @@ function add_station(){
     let delete_button = document.createElement('button')
     delete_button.innerHTML = '-'
     delete_button.onclick = function(){delete_station(this.parentNode.parentNode);};
+    delete_button.classList.add('delete_btn')
     up.classList.add('up')
     up.appendChild(stat_name)
     up.appendChild(delete_button)
