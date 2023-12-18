@@ -141,6 +141,18 @@ def graph_make(date_time, plot_cols, col_names, plot_features):
     fig_plot = plot(fig, output_type='div', include_plotlyjs=True)
     return fig_plot
 
+def map_make(data):
+    fig = go.Figure(go.Scattermapbox(
+        lat = data['lat'],
+        lon = data['long'],
+        mode='markers',
+        marker=go.scattermapbox.Marker(
+            size=9),
+        text = data['names'],
+    ))
+    fig_plot = plot(fig, output_type='div', include_plotlyjs=True)
+    return fig_plot
+
 def index(request):
     if (request.is_ajax()):
         if request.user.is_authenticated:
@@ -268,9 +280,33 @@ def index(request):
                     print(temp_rights)
                     temp_keys = temp_keys.strip(' ')
                     stations = temp_keys.split(' ')
+                    data = pd.DataFrame()
+                    station_coords = Stations_Coords.objects.all()
+                    names = list(station_coords.values_list('name', flat=True))
+                    lat = list(station_coords.values_list('latitude', flat=True))
+                    long = list(station_coords.values_list('longitude', flat=True))
+                    temp1 = list()
+                    temp2 = list()
+                    temp3 = list()
+                    print(names)
+                    print(stations)
+                    for i in range(0, len(names)):
+                        print(names[i])
+                        print(i)
+                        if (names[i] in stations):
+                            temp1.append(names[i])
+                            temp2.append(lat[i])
+                            temp3.append(long[i])
+                    data['names'] = temp1
+                    data['lat'] = temp2
+                    data['long'] = temp3
+                    print(data)
                     return JsonResponse({
                         'stations': list(stations),
-                        'rights': list(temp_rights)
+                        'rights': list(temp_rights),
+                        'names': list(data['names']),
+                        'lats': list(data['lat']),
+                        'longs': list(data['long'])
                     })
                 else:
                     return render(request, 'polls/404.html')

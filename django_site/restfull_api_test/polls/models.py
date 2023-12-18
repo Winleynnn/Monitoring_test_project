@@ -80,6 +80,11 @@ class User_Models(models.Model):
     def __str__(self):
         return self.login
     
+class Stations_Coords(models.Model):
+    name = models.TextField(null=False)
+    latitude = models.TextField(null=False)
+    longitude = models.TextField(null=False)
+    
 def jena_gallipoli():
     with open('jena2.csv', encoding='utf-8') as jena_file:
         reader = csv.reader(jena_file, delimiter=';')

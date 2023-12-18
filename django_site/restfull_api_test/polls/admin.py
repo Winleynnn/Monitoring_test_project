@@ -26,3 +26,7 @@ class Station_Gallipoli_Admin(admin.ModelAdmin):
 @admin.register(User_Models)
 class User_Models_Admin(admin.ModelAdmin):
     list_display = ('login', 'station_info')
+
+@admin.register(Stations_Coords)
+class Stations_Coords_Admin(admin.ModelAdmin):
+    list_display = ('name', 'latitude', 'longitude')
