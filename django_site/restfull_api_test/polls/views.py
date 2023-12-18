@@ -20,8 +20,9 @@ from plotly.offline import plot
 from django.apps import AppConfig, apps
 # from AppConfig import get_model
 from django.utils.module_loading import import_string
-from django.db.models import F
+from django.db.models import F, Min, Max
 from django.http import Http404
+from django.db.models.functions import Greatest, Least
 
 #функция обработки данных
 def pre_data(data, data_name):
@@ -174,7 +175,7 @@ def index(request):
                 mode = station_mode
                 date1 = first_date
                 date2 = second_date
-                columns = list(eval(station_name)._meta.get_fields(include_parents=False))
+                columns = list(apps.get_model(app_label="polls",model_name = station_name)._meta.get_fields(include_parents=False))
                 columns.pop(0)
                 # print(columns)
                 column_names = list()
@@ -183,11 +184,11 @@ def index(request):
                     column_names.append(f.name)
                     column_aliases.append(f.verbose_name)
                 if (station_mode == 'hourly'):
-                    selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date)
+                    selected = apps.get_model(app_label="polls",model_name = station_name).objects.filter(date__gte=first_date, date__lte=second_date)
                 elif (station_mode == 'daily'):
-                    selected = eval(station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
+                    selected = apps.get_model(app_label="polls",model_name = station_name).objects.filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00")
                 elif (station_mode == 'weekly'):                
-                    selected = eval(station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
+                    selected = apps.get_model(app_label="polls",model_name = station_name).objects.annotate(idmod7=F('id') % 7).filter(date__gte=first_date, date__lte=second_date, date__icontains="00:00:00", idmod7=0)
                 info = {}
                 data_name_1 = {}
                 data_1 = []
@@ -273,8 +274,21 @@ def index(request):
                     })
                 else:
                     return render(request, 'polls/404.html')
+        elif (request.GET.get('action') == 'get_station_dates'):
+            print('get_stat_dates')
+            station_name = 'Station_'
+            station_name += request.GET.get('station')
+            max_time = apps.get_model(app_label='polls', model_name=station_name).objects.aggregate(Max('date'))
+            min_time = apps.get_model(app_label='polls', model_name=station_name).objects.aggregate(Min('date'))
+            min_time = min_time['date__min'].split(' ')[0]
+            max_time = max_time['date__max'].split(' ')[0]
+            return JsonResponse({
+                'min_time': min_time,
+                'max_time': max_time
+            })
     return render(request, "polls/header.html")
     
+
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out succesfully")

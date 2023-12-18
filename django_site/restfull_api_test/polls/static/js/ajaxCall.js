@@ -49,6 +49,7 @@
     // }
 // };
 
+
 $(document).ready(function(){
     var timeData = 
     {
@@ -199,9 +200,32 @@ function get_stations(){
                 .find(".custom-select-trigger")
                 .text($(this).text());
             });
+            var target = document.querySelector('.custom-select-trigger')
+            const observer = new MutationObserver(function(mutations){
+            console.log('changed stat')
+            $.ajax({
+                url: '',
+                type: 'get',
+                data: {action: 'get_station_dates', station: $(".custom-select-trigger").first().text()},
+                success: function(response){
+                    console.log(response['max_time'])
+                    console.log(response['min_time'])
+                    $('#first_date').attr('max', response['max_time'])
+                    $('#second_date').attr('max', response['max_time'])
+                    $('#first_date').attr('min', response['min_time'])
+                    $('#second_date').attr('min', response['min_time'])
+                    $('#second_date').val($('#second_date').attr('max'))
+                    $('#first_date').val((moment($('#second_date').attr('max')).subtract(7, 'days').format('YYYY-MM-DD')))
+                    }
+                })
+            })
+            var config = { attributes: true, childList: true, characterData: true };
+            console.log(target)
+            observer.observe(target, config)
             return(response['stations'])    
         }
-        })
+    })
+    
 }
 function get_time(){
     $.ajax({
@@ -217,6 +241,8 @@ function get_time(){
             }
     })
 }
+
+
 
 function get_info(){
     var timeData = 
