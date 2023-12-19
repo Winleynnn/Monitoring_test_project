@@ -116,6 +116,7 @@ function add_station(){
     let check_input = document.createElement('input')
     let download_input = document.createElement('input')
     let temp = $('#station_add option:selected').val()
+    if (temp != undefined){
     stat_name.innerHTML = temp
     $('#station_add option:selected').remove()
     check_input.type = 'checkbox'
@@ -140,6 +141,7 @@ function add_station(){
     column.appendChild(check_box)
     column.appendChild(download_box)
     $('.second').append(column)
+    }
 }
 
 function delete_station(elem)
