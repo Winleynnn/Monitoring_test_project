@@ -7,6 +7,11 @@
 <body>
 {% if user.is_superuser %}
 {% include "polls/navbar.html" %}
+<div class = "window_blackout" onclick="close_modal()"></div>
+<div class = "modal_window">
+    <a class = "close_modal" onclick="close_modal()">X</a>
+    <div id="station_text"></div>
+</div>
 <div class = "first">
     <div class = "username">
         <h3>Пользователь</h3>  

@@ -218,7 +218,10 @@ select {
   display: inline-block;
   font-family: Century Gothic;
   font-size: 15px;
-
+}
+.select1
+{
+    z-index: 100
 }
 .custom-select-trigger {
   position: relative;

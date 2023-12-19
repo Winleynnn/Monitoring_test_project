@@ -82,6 +82,57 @@ h3
     margin-right: 30px;
 }
 
+.window_blackout
+{
+    display:none;
+    position:fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index:10;
+    background-color: #000000;
+    opacity: 0.4;
+}
+
+.modal_window
+{
+    display:none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index:100;
+    background-color:#FFFFFF;
+    width:fit-content;
+    height:fit-content;
+    padding: 60px 60px;
+    border-radius: 30px;
+}
+
+#station_text
+{
+  font-family: Century Gothic;
+  font-weight:300;
+  font-size:16px;
+}
+
+.close_modal
+{
+    /* background: url(../img/cross.png) no-repeat 10px center;
+    background-size:contain;
+    background-position: center; */
+    position:absolute;
+    right: 20px;
+    top: 20px;
+    width: 20px;
+    height:20px;
+    cursor:pointer;
+    font-family: Century Gothic;
+}
+
 /*Кнопки хедера*/
 .top_nav{
     background-color: #1caeae;
@@ -89,74 +140,76 @@ h3
     display: block;
     width: 100%;
     height: fit-content;
-  
-  }
-  .nav_container{
-    display: flex;
-    flex-direction: row;
-    width: auto;
-  }
-  .nav_list{
-    margin: 0;
-    display:inline-flex;
-  }
-  .nav_list li
-  {
-    transition: all 0.5s;
-    font-family: Century Gothic;
-    color: black;
-    display: inline-block;
-    list-style: none;
-    text-align: right;
-    padding: 20px 20px;
-  }
-  .nav_list li:hover{
-    background-color: #3edede;
-  }
-  .nav_list a
-  {
-    text-decoration: none;
-  }
-  .header_name {
-    width: 100%;
-    font-size: 20px; 
-    padding: 15px 20px;
-    cursor: default;
-  }
-  .header_name div {
-    vertical-align: middle;
-    
-  }
 
-  .ind_btn {
-    text-decoration: none;
-    display: inline-block;
-    padding: 10px 30px;
-    margin: 10px 15px;
-    position: relative;
-    overflow: hidden;
-    border: 2px solid #16A9A9;
-    border-radius: 8px;
-    font-family: Century Gothic;
-    color: rgb(20, 112, 112);
-    transition: .2s ease-in-out;
-  }
-  .ind_btn:before {
-    content: "";
-    background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
-    height: 50px;
-    width: 50px;
-    position: absolute;
-    top: -8px;
-    left: -75px;
-    transform: skewX(-45deg);
-  }
-  .ind_btn:hover {
-    background: #16A9A9;
-    color: #fff;
-    cursor: pointer;
-  }
-  .ind_btn:hover:before {
-    left: 150px;
-    transition: .5s ease-in-out;
-  }
+}
+.nav_container{
+  display: flex;
+  flex-direction: row;
+  width: auto;
+}
+.nav_list{
+  margin: 0;
+  display:inline-flex;
+}
+.nav_list li
+{
+  transition: all 0.5s;
+  font-family: Century Gothic;
+  color: black;
+  display: inline-block;
+  list-style: none;
+  text-align: right;
+  padding: 20px 20px;
+}
+.nav_list li:hover{
+  background-color: #3edede;
+}
+.nav_list a
+{
+  text-decoration: none;
+}
+.header_name {
+  width: 100%;
+  font-size: 20px; 
+  padding: 15px 20px;
+  cursor: default;
+}
+.header_name div {
+  vertical-align: middle;
+  
+}
+
+.ind_btn {
+  z-index: 5;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 15px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #16A9A9;
+  border-radius: 8px;
+  font-family: Century Gothic;
+  color: rgb(20, 112, 112);
+  transition: .2s ease-in-out;
+}
+.ind_btn:before {
+  z-index:6;
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+.ind_btn:hover {
+  background: #16A9A9;
+  color: #fff;
+  cursor: pointer;
+}
+.ind_btn:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
+}

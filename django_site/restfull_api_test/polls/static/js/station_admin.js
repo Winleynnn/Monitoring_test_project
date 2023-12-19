@@ -40,6 +40,8 @@ function get_stations(){
 })
 }
 
+var stations, rights
+
 function get_user_stations(){
     get_stations()
     $.ajax({
@@ -47,8 +49,10 @@ function get_user_stations(){
         type: 'get',
         data: {action: 'get_user_stations', username: $('#user_select option:selected').val()},
         success: function(response){
-            var stations = response['stations']
-            var rights = response['rights']
+            stations = response['stations']
+            rights = response['rights']
+            console.log(stations)
+            console.log(rights)
             $('.second').empty()
             for (stat in stations){
             let column = document.createElement('div')
@@ -78,8 +82,8 @@ function get_user_stations(){
             if (rights[stat].includes(download_input.value))
                 download_input.checked = true
             }
-            check_box.innerHTML = 'check'
-            download_box.innerHTML = 'download'
+            check_box.innerHTML = 'Просмотр'
+            download_box.innerHTML = 'Загрузка'
             check_box.appendChild(check_input)
             download_box.appendChild(download_input)
             up.appendChild(stat_name)
@@ -118,8 +122,8 @@ function add_station(){
     download_input.type = 'checkbox'
     check_input.value = 'check'
     download_input.value = 'download'
-    check_box.innerHTML = 'check'
-    download_box.innerHTML = 'download'
+    check_box.innerHTML = 'Просмотр'
+    download_box.innerHTML = 'Загрузка'
     check_input.name = temp
     download_input.name = temp
     check_box.appendChild(check_input)
@@ -150,13 +154,13 @@ function delete_station(elem)
 
 function upload(){
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    console.log(csrftoken)
+    // console.log(csrftoken)
     var info = {}
     $(".info").each(function(){
         // console.log(this.firstChild.firstChild.innerHTML)
         var temp = []
         
-        console.log($(this).children('label').children('input:checked').length)
+        // console.log($(this).children('label').children('input:checked').length)
         if ($(this).children('label').children('input:checked').length != 0)
         {
             $(this).children('label').children('input:checked').each(function(){
@@ -174,7 +178,7 @@ function upload(){
         //     }
         // }
     })
-    console.log(info)
+    // console.log(info)
     const BASE_URL = window.location.href;
     const API_URL = BASE_URL + '/add';
     const request = new Request(
@@ -189,18 +193,82 @@ function upload(){
         success: function(response){
             console.log('bruh')
         }
-    // const BASE_URL = window.location.href;
-    // const API_URL = BASE_URL + '/add';
-    // const request = new Request(
-    //     API_URL,
-    //     {headers: {'X-CSRFToken': csrftoken}}
-    // );
-    // fetch(request, {
-    //     method: 'POST',
-    //     mode: 'same-origin',
-    //     data: {stations: info}  // Do not send CSRF token to another domain.
-    // }).then(function(response) {
-    //     console.log(info)
-    // });
     })
+    var stations_upload = Object.keys(info)
+    var rights_upload = Object.values(info)
+    for (i in stations_upload)
+    {
+        for (j in info[stations_upload[i]])
+        {
+            console.log(info[stations_upload[i]][j] == 'check')
+            console.log(info[stations_upload[i]][j] == 'download')
+            if (info[stations_upload[i]][j] == 'check')
+            info[stations_upload[i]][j] = 'Просмотр'
+            if (info[stations_upload[i]][j] == 'download')
+            info[stations_upload[i]][j] = 'Загрузка'
+            
+        }
+    }
+    var text = ""
+    for (i in rights)
+    {
+        for (j in rights[i])
+        {
+            if (rights[i][j] == "check")
+            rights[i][j] = 'Просмотр'
+            if (rights[i][j] == "download")
+            rights[i][j] = 'Загрузка'
+        }
+    }
+    for (i in stations)
+    {
+        if (info[stations[i]])
+        {
+            for (j in info[stations[i]])
+            {
+                for (s in rights[i])
+                {
+                    if (!rights[i].includes(info[stations[i]][j]))
+                    {
+                        text += "Добавлено разрешение '" + info[stations[i]][j] + "' на станции '" + stations[i] + "'<br>"
+                    }
+                    if (!info[stations[i]].includes(rights[i][s]))
+                    {
+                        text += "Удалено разрешение '" + rights[i][s] + "' на станции '" + stations[i] + "'<br>"
+                    }
+                }
+            }
+        }
+        else
+        {
+            text += "Удалена станция '" + stations[i] + "'<br>"
+        }
+    }
+    for (a in stations_upload)
+    {
+        if (!stations.includes(stations_upload[a]))
+        {
+            text += "Добавлена станция '" + stations_upload[a] + "'<br>"
+            for (b in rights_upload[a])
+            {
+                text += "Добавлено разрешение '" + rights_upload[a][b] + "' на станции '" + stations_upload[a] + "'<br>" 
+            }
+        }
+    }
+    console.log(text)
+    if (text == "")
+    text = "Никаких изменений не было проведено"
+    $('#station_text')[0].innerHTML = text
+    open_modal()
+}
+
+function close_modal()
+{
+    $('.modal_window').fadeOut();
+    $('.window_blackout').fadeOut();
+}
+function open_modal()
+{
+    $('.modal_window').fadeIn()
+    $('.window_blackout').fadeIn()
 }

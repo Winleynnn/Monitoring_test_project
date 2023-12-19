@@ -1,5 +1,17 @@
 $(document).ready(function(){
     var timeData;
+    var graphic = $('.graphic')[0]
+    var graphic2 = $('.graphic2')[0]
+    var graphic3 = $('.graphic3')[0]
+    
+    $('a[href=#tab1]').click(function(){
+        console.log('tab1')
+        window.dispatchEvent(new Event('resize'));
+    })
+    $('a[href=#tab3]').click(function(){
+        console.log('tab3')
+        window.dispatchEvent(new Event('resize'));
+    })
     console.log('ready')
     $.ajax({
         url: '',
@@ -149,6 +161,7 @@ function get_stations(){
             var target = document.querySelector('.custom-select-trigger')
             const observer = new MutationObserver(function(mutations){
                 get_time()
+                $('.map_element').hide();
             })
             var config = { attributes: true, childList: true, characterData: true };
             observer.observe(target, config)
@@ -183,7 +196,7 @@ function get_stations(){
         }
     })
 }
-
+    
 function open_map(){
     $('.map_element').toggle();
 }
