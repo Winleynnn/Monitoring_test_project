@@ -268,6 +268,7 @@ function close_modal()
 {
     $('.modal_window').fadeOut();
     $('.window_blackout').fadeOut();
+    get_user_stations()
 }
 function open_modal()
 {
