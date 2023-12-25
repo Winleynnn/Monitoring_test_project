@@ -60,37 +60,47 @@ function get_user_stations(){
             let up = document.createElement('div')
             up.classList.add('up')
             let stat_name = document.createElement('h3')
-            let check_box = document.createElement('label')
-            let download_box = document.createElement('label')
-            let check_input = document.createElement('input')
-            let download_input = document.createElement('input')
+            let info_box = document.createElement('label')
+            let stat_box = document.createElement('label')
+            let pred_box = document.createElement('label')
+            let info_input = document.createElement('input')
+            let stat_input = document.createElement('input')
+            let pred_input = document.createElement('input')
             let delete_button = document.createElement('button')
             delete_button.innerHTML = '-'
             delete_button.classList.add('delete_btn')
             delete_button.onclick = function(){delete_station(this.parentNode.parentNode);};
             stat_name.innerHTML = stations[stat]
-            check_input.type = 'checkbox'
-            download_input.type = 'checkbox'
-            check_input.value = 'check'
-            download_input.value = 'download'
-            check_input.name = stations[stat]
-            download_input.name = stations[stat]
+            info_input.type = 'checkbox'
+            stat_input.type = 'checkbox'
+            pred_input.type = 'checkbox'
+            info_input.value = 'check_info'
+            stat_input.value = 'check_stat'
+            pred_input.value = 'check_pred'
+            info_input.name = stations[stat]
+            stat_input.name = stations[stat]
+            pred_input.name = stations[stat]
             for (right in rights[stat])
             {
-            if (rights[stat].includes(check_input.value))
-                check_input.checked = true
-            if (rights[stat].includes(download_input.value))
-                download_input.checked = true
+            if (rights[stat].includes(info_input.value))
+                info_input.checked = true
+            if (rights[stat].includes(stat_input.value))
+                stat_input.checked = true
+            if (rights[stat].includes(pred_input.value))
+                pred_input.checked = true
             }
-            check_box.innerHTML = 'Просмотр'
-            download_box.innerHTML = 'Загрузка'
-            check_box.appendChild(check_input)
-            download_box.appendChild(download_input)
+            info_box.appendChild(info_input)
+            stat_box.appendChild(stat_input)
+            pred_box.appendChild(pred_input)
+            info_box.appendChild(document.createTextNode('Просмотр данных'))
+            stat_box.appendChild(document.createTextNode('Просмотр статистики'))
+            pred_box.appendChild(document.createTextNode('Просмотр прогноза'))
             up.appendChild(stat_name)
             up.appendChild(delete_button)
             column.appendChild(up)
-            column.appendChild(check_box)
-            column.appendChild(download_box)
+            column.appendChild(info_box)
+            column.appendChild(stat_box)
+            column.appendChild(pred_box)
             $('.second').append(column)
         }
         //    <div class = "column">
@@ -111,24 +121,30 @@ function add_station(){
     let column = document.createElement('div')
     column.classList.add('info')
     let stat_name = document.createElement('h3')
-    let check_box = document.createElement('label')
-    let download_box = document.createElement('label')
-    let check_input = document.createElement('input')
-    let download_input = document.createElement('input')
+    let info_box = document.createElement('label')
+    let stat_box = document.createElement('label')
+    let pred_box = document.createElement('label')
+    let info_input = document.createElement('input')
+    let stat_input = document.createElement('input')
+    let pred_input = document.createElement('input')
     let temp = $('#station_add option:selected').val()
     if (temp != undefined){
     stat_name.innerHTML = temp
     $('#station_add option:selected').remove()
-    check_input.type = 'checkbox'
-    download_input.type = 'checkbox'
-    check_input.value = 'check'
-    download_input.value = 'download'
-    check_box.innerHTML = 'Просмотр'
-    download_box.innerHTML = 'Загрузка'
-    check_input.name = temp
-    download_input.name = temp
-    check_box.appendChild(check_input)
-    download_box.appendChild(download_input)
+    info_input.type = 'checkbox'
+    stat_input.type = 'checkbox'
+    pred_input.type = 'checkbox'
+    info_input.value = 'check_info'
+    stat_input.value = 'check_stat'
+    pred_input.value = 'check_pred'
+    info_input.name = temp
+    stat_input.name = temp
+    info_box.appendChild(info_input)
+    stat_box.appendChild(stat_input)
+    pred_box.appendChild(pred_input)
+    info_box.appendChild(document.createTextNode('Просмотр данных'))
+    stat_box.appendChild(document.createTextNode('Просмотр статистики'))
+    pred_box.appendChild(document.createTextNode('Просмотр прогноза'))
     let up = document.createElement('div')
     let delete_button = document.createElement('button')
     delete_button.innerHTML = '-'
@@ -138,8 +154,9 @@ function add_station(){
     up.appendChild(stat_name)
     up.appendChild(delete_button)
     column.appendChild(up)
-    column.appendChild(check_box)
-    column.appendChild(download_box)
+    column.appendChild(info_box)
+    column.appendChild(stat_box)
+    column.appendChild(pred_box)
     $('.second').append(column)
     }
 }
@@ -163,13 +180,13 @@ function upload(){
         var temp = []
         
         // console.log($(this).children('label').children('input:checked').length)
-        if ($(this).children('label').children('input:checked').length != 0)
-        {
-            $(this).children('label').children('input:checked').each(function(){
+        // if ($(this).children('label').children('input:checked').length != 0)
+        // {
+        $(this).children('label').children('input:checked').each(function(){
             temp.push(this.value)
         })
         info[this.firstChild.firstChild.innerHTML] = temp
-        }
+        
         // for (var i in temp)
         // {
         //     console.log(temp)
@@ -202,12 +219,14 @@ function upload(){
     {
         for (j in info[stations_upload[i]])
         {
-            console.log(info[stations_upload[i]][j] == 'check')
-            console.log(info[stations_upload[i]][j] == 'download')
-            if (info[stations_upload[i]][j] == 'check')
-            info[stations_upload[i]][j] = 'Просмотр'
-            if (info[stations_upload[i]][j] == 'download')
-            info[stations_upload[i]][j] = 'Загрузка'
+            // console.log(info[stations_upload[i]][j] == 'check')
+            // console.log(info[stations_upload[i]][j] == 'download')
+            if (info[stations_upload[i]][j] == 'check_info')
+            info[stations_upload[i]][j] = 'Просмотр данных'
+            if (info[stations_upload[i]][j] == 'check_stat')
+            info[stations_upload[i]][j] = 'Просмотр статистики'
+            if (info[stations_upload[i]][j] == 'check_pred')
+            info[stations_upload[i]][j] = 'Просмотр прогноза'
             
         }
     }
@@ -216,10 +235,12 @@ function upload(){
     {
         for (j in rights[i])
         {
-            if (rights[i][j] == "check")
-            rights[i][j] = 'Просмотр'
-            if (rights[i][j] == "download")
-            rights[i][j] = 'Загрузка'
+            if (rights[i][j] == "check_info")
+            rights[i][j] = 'Просмотр данных'
+            if (rights[i][j] == "check_stat")
+            rights[i][j] = 'Просмотр статистики'
+            if (rights[i][j] == "check_pred")
+            rights[i][j] = 'Просмотр прогноза'
         }
     }
     for (i in stations)

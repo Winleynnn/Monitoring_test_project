@@ -241,15 +241,6 @@ function ajaxCall(timeData){
             var rights = response['rights']
             var columns = response['names']
             var aliases = response['aliases']
-            // console.log(response)
-            // var dates = response['date']
-            // var variables = []
-            // for (column in columns)
-            //     variables.append(response[columns[column]])
-            // var air_temp = response['air_temp_avg']
-            // var soil_temp = response['soil_temp_avg']
-            // var humidity = response['relative_humidity_avg']
-            // var soil_moisture = response['soil_moisture']
             var chart = response['graph']
             var stat = response['statistics']
             var info = response['information']
@@ -258,27 +249,44 @@ function ajaxCall(timeData){
             var graphic = $('.graphic')[0]
             var graphic2 = $('.graphic2')[0]
             var graphic3 = $('.graphic3')[0]
-            // id = graphic.childNodes[0].childNodes[2].id
-
-            // graphic.childNodes[0].childNodes[2].id = id
             graphic.innerHTML = chart
             graphic2.innerHTML = corr_chart
             graphic3.innerHTML = box_chart
-            console.log(rights[stations.indexOf($('.custom-select-trigger').first().text())])
-            console.log(rights)
-            console.log(rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("download"))
-            if (rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("download"))
+            if (!rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("check_pred"))
             {
-                $('#save_buttons:not(:has("#save_csv"))').append('<a href="#" id="save_csv" style="margin-right: 5px;"onclick="download_table_as_csv("myTable");">Download as CSV</a>')
-                $('#save_buttons:not(:has("#save_xlsx"))').append('<a href="#" id="save_xlsx" onclick="download_table_as_xlsx("myTable");">Download as XLSX</a>')
+                $('a[href="#tab4"]').hide()
             }
-            else $('#save_buttons:has(a)').empty()
+            else
+            {
+                $('a[href="#tab4"]').show()
+                $('a[href="#tab2"]').click()
+            }
+            if (!rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("check_stat"))
+            {
+                $('a[href="#tab3"]').hide()
+            }
+            else
+            {
+                $('a[href="#tab3"]').show()
+                $('a[href="#tab2"]').click()
+            }
+            if (!rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("check_info"))
+            {
+                $('a[href="#tab1"]').hide()
+            }
+            else
+            {
+                $('a[href="#tab1"]').show()
+                $('a[href="#tab1"]').click()
+            }
+            if (!rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("check_pred"))
+                if (!rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("check_stat"))
+                    if (!rights[stations.indexOf($('.custom-select-trigger').first().text())].includes("check_info"))
+                        $('a[href="#tab2"]').click()
             var statistics = $('.stat')[0]
             var information = $('.info')[0]
             statistics.innerHTML = stat
             information.innerHTML = info
-            // console.log(stat)
-            // console.log(info)
             var arr = graphic.getElementsByTagName('script')
             for (var n = 0; n < arr.length; n++)
                 eval(arr[n].innerHTML)
@@ -297,11 +305,6 @@ function ajaxCall(timeData){
             var newRow = tableChild.insertRow(0);
             for (var n = 0; n < aliases.length; n++)
                 newRow.insertCell(n).outerHTML = '<th>' + aliases[n] + '</th>'
-            // newRow.insertCell(0).outerHTML = '<th>Дата</th>';
-            // newRow.insertCell(1).outerHTML = '<th>Средняя температура воздуха, °C</th>';
-            // newRow.insertCell(2).outerHTML = '<th>Средняя температура почвы, °C</th>';
-            // newRow.insertCell(3).outerHTML = '<th>Относительная влажность воздуха, %</th>';
-            // newRow.insertCell(4).outerHTML = '<th>Влажность почвы, %</th>';
             tableChild.appendChild(newRow);
             console.log(columns)
             console.log(response[columns[0]].length)
@@ -313,16 +316,6 @@ function ajaxCall(timeData){
                     newRow.insertCell(i).innerHTML = response[columns[i]][n]
                 tableChild.appendChild(newRow)
             }
-            // for (var i in dates)
-            // {
-            //     var newRow = tableChild.insertRow(i.indexOf);
-            //     newRow.insertCell(0).innerHTML = dates[i];
-            //     newRow.insertCell(1).innerHTML = air_temp[i];
-            //     newRow.insertCell(2).innerHTML = soil_temp[i];
-            //     newRow.insertCell(3).innerHTML = humidity[i];
-            //     newRow.insertCell(4).innerHTML = soil_moisture[i];            
-            //     tableChild.appendChild(newRow);           
-            // }
 
             tableParent.appendChild(tableChild)
 

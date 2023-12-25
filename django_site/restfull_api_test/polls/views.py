@@ -205,14 +205,9 @@ def index(request):
                 data_name_1 = {}
                 data_1 = []
                 info['names'] = column_names
-                # print(column_names)
-                # print(info['names'])
                 info['aliases'] = column_aliases
                 for column in column_names:
-                    # print(list(selected.values_list(column, flat=True)))
                     info[column] = list(selected.values_list(column, flat=True))
-                    # print(column)
-                    # print(info[column])
                 for i in range(0, len(column_names)):
                     data_name_1[column_names[i]] = column_aliases[i]
                     data_1.append(info[column_names[i]])
@@ -226,23 +221,17 @@ def index(request):
                 #print(plot_features_1)
                 corr_chart = graph_corr(col_names = col_names_1, plot_features = plot_features_1)
                 box_chart = graph_box(col_names = col_names_1, plot_features = plot_features_1, plot_cols = plot_cols_1)
-                info['graph'] = str(text_chart)
-                info['statistics'] = str(stat)
-                info['information'] = str(inform)
-                info['correlation_chart'] = str(corr_chart)
-                info['box_plot_chart'] = str(box_chart)
+                
+                # info['statistics'] = str(stat)
+                # info['information'] = str(inform)
+                # info['correlation_chart'] = str(corr_chart)
+                # info['box_plot_chart'] = str(box_chart)
                 info['name'] = name
                 username = request.user.username
                 ret = User_Models.objects.filter(login=username)
                 if ret:
                     stations = ret.values_list('station_info', flat = True)
                     print(stations)
-                    # print(stations[0].keys())
-                    # for key in stations[0].keys():
-                    #     print(key)
-                    #     print(stations[0][key])
-                    #     if 'download' in stations[0][key]:
-                    #         print(str(key) + ' True')
                     temp_keys = ""
                     temp_rights = list()
                     for key in stations[0].keys():
@@ -254,6 +243,24 @@ def index(request):
                     stations = temp_keys.split(' ')
                     info['stations'] = stations
                     info['rights'] = temp_rights
+                    if ('check_info' in temp_rights[stations.index(request.GET.get('selected_station'))]):
+                        info['graph'] = str(text_chart)
+                    else:
+                        info['graph'] = 'None'
+                    if ('check_stat' in temp_rights[stations.index(request.GET.get('selected_station'))]):
+                        info['statistics'] = str(stat)
+                        info['information'] = str(inform)
+                        info['correlation_chart'] = str(corr_chart)
+                        info['box_plot_chart'] = str(box_chart)
+                    else:
+                        info['statistics'] = 'None'
+                        info['information'] = 'None'
+                        info['correlation_chart'] = 'None'
+                        info['box_plot_chart'] = 'None'
+                    if ('check_pred' in temp_rights[stations.index(request.GET.get('selected_station'))]):
+                        print('yes pred')
+                    else:
+                        print('no pred')
                 return JsonResponse(info, status=200)
             else:
                 logout_request(request)
@@ -266,12 +273,6 @@ def index(request):
                 if ret:
                     stations = ret.values_list('station_info', flat = True)
                     print(stations)
-                    # print(stations[0].keys())
-                    # for key in stations[0].keys():
-                    #     print(key)
-                    #     print(stations[0][key])
-                    #     if 'download' in stations[0][key]:
-                    #         print(str(key) + ' True')
                     temp_keys = ""
                     temp_rights = list()
                     for key in stations[0].keys():
